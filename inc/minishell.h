@@ -8,7 +8,7 @@
 typedef struct s_parsing_data
 {
 	char *str;
-	char cmd[6];
+	char *cmd;
 }		t_parsing_data;
 
 void	reading_parsing(char *buf, t_parsing_data *parsing_data);

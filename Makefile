@@ -1,7 +1,7 @@
 NAME		= minishell
 CC			= gcc
 RM			= rm -rf
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g3
 SRCS_LIST	= main.c reading_parsing.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
 LIB_FT		= -Llibft -lft

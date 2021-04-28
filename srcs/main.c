@@ -12,7 +12,10 @@ int main(int argc, char **argv, char **envp)
 	{
 		write(1, "\e[32mminishell> \e[0m", 20);
 		reading_parsing(buf, &parsing_data);
-		if (!ft_strncmp(parsing_data.str, "exit", ft_strlen("exit")))
+		if (parsing_data.cmd && !ft_strncmp(parsing_data.cmd, "exit",
+									  ft_strlen("exit")))
 			exit(0);
+		if (parsing_data.cmd)
+			free(parsing_data.cmd);
 	}
 }
