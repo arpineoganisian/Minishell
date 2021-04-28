@@ -8,12 +8,27 @@ void	read_stdin(char *buf)
 void	parse_command(char *buf, t_parsing_data *parsing_data)
 {
 	int		i;
+	int 	j;
 
 	i = 0;
-	while ((buf[i] != ' ' && buf[i] != '\0') || i < 1023)
+	while (buf[i])
 	{
-		parsing_data->cmd[i] = buf[i];
-		i++;
+		while (buf[i] == ' ')
+			i++;
+		j = 0;
+		while (buf[i] != ' ' && buf[i] != ';' && buf[i] != '\0')
+		{
+			parsing_data->cmd[j] = buf[i];
+			i++;
+			j++;
+		}
+		parsing_data->cmd[j] = '\0';
+		while (buf[i] == ' ')
+			i++;
+		if (buf[i] == ';')
+			execute_cmd(parsing_data);
+		if (buf[i])
+			i++;
 	}
 	parsing_data->cmd[i] = '\0';
 }
