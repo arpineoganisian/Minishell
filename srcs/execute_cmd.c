@@ -2,8 +2,9 @@
 
 void	execute_cmd(t_parsing_data *parsing_data)
 {
-	if (!ft_strncmp(parsing_data->cmd, "echo", ft_strlen("echo")))
-		write(0, "echo\n", ft_strlen("echo\n"));
+	if (!ft_strncmp(parsing_data->cmd, "echo ", ft_strlen("5")))
+		// write(0, "echo\n", ft_strlen("echo\n"));
+		echo(parsing_data);
 	else if (!ft_strncmp(parsing_data->cmd, "cd", ft_strlen("cd")))
 		;
 	else if (!ft_strncmp(parsing_data->cmd, "pwd", ft_strlen("pwd")))
