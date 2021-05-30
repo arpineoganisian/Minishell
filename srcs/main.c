@@ -2,37 +2,38 @@
 
 void	error_handler(char *str)
 {
-	ft_putstr_fd("minishell: ", 0);
-	ft_putendl_fd(str, 0);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putendl_fd(str, 2);
 }
 
-void	init(t_parsing_data *parsing_data)
+void	init(t_data *data, char **env)
 {
-	parsing_data->syn_error = 0;
-	parsing_data->cmd = malloc(sizeof(char) * 1024);
-	parsing_data->arg = malloc(sizeof(char) * 1024);
-
+	data->syn_error = 0;
+	data->cmd = malloc(sizeof(char) * 1024);
+	data->arg = malloc(sizeof(char) * 1024);
+	data->env = env;
+	data->cmd_count = 0;
+	data->str = NULL;
 }
 
 void	set_promt()
 {
 	write(1, "\e[32mminishell> \e[0m", 20);
 }
-int		main(int argc, char **argv, char **envp)
+int		main(int argc, char **argv, char **env)
 {
-	char			buf[1024];
-	t_parsing_data	*parsing_data;
+	t_data 	*data;
+	char	c;
 	(void)argc;
 	(void)argv;
-	(void)envp;
 
-	parsing_data = (t_parsing_data *) malloc(sizeof(t_parsing_data));
-	init(parsing_data);
+	data = (t_data *) malloc(sizeof(t_data));
+	init(data, env);
 	while (1)
 	{
 		set_promt();
-		reading_parsing(buf, parsing_data);
-		if (!parsing_data->syn_error)
-			execute_cmd(parsing_data);
+		while (read(0, &c, 1) && c != '\n')
+			data->str = make_string(data->str, c);
+		parsing(data);
 	}
 }

@@ -3,22 +3,30 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 
-typedef struct s_parsing_data
+typedef struct s_data
 {
 	int		syn_error;
+	char	*str;
 	char	*cmd;
+	char	***cmd_lines;
+	int 	cmd_count;
 	char	*arg;
 	int		flag;
-}		t_parsing_data;
+	char	**env;
+	int		fd;
+	int 	fd2;
+}				t_data;
 
-void	reading_parsing(char *buf, t_parsing_data *parsing_data);
-void	read_stdin(char *buf);
-void	parsing(char *buf, t_parsing_data *parsing_data);
-void	execute_cmd(t_parsing_data *parsing_data);
+void	parsing(t_data *data);
+void	execute_cmd(char **cmd_line);
 void	error_handler(char *str);
-int 	preparsing(char *buf);
-char	*spec_sym_handler(char *str);
+int		check_syntax(char *str);
+void	spec_sym_handler(t_data *data);
+void	split_cmd(t_data *data);
+char  	*make_string(char *str, char c);
+char	*env_handler(char *str, int *i, char **env);
 #endif
 

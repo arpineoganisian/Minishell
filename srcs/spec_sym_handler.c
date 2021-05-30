@@ -1,79 +1,82 @@
 #include "minishell.h"
 
-char	*slash_handler(char *str, int *i)
+char	*backslash_handler(char *str, int *i)
 {
-	char	*tmp;
-	char	*t_tmp;
+	char	*first_part;
+	char	*new_str;
 
-	tmp = ft_substr(str, 0, *i);
-	t_tmp = ft_strjoin(tmp, str + *i + 1);
-	free(tmp);
-	return (t_tmp);
+	first_part = ft_substr(str, 0, *i);
+	new_str = ft_strjoin(first_part, str + *i + 1);
+	free(first_part);
+	free(str);
+	return (new_str);
 }
 
 char	*quotes_handler(char *str, int *i)
 {
-	char	*tmp;
-	char	*s_tmp;
-	char	*t_tmp;
-	int		j;
+	char	*new_str;
+	char	*in_quotes_part;
+	char	*merge_parts;
+	int		start;
 
-	j = *i;
+	start = *i;
+	new_str = ft_substr(str, 0, start);
 	(*i)++;
 	while (str[*i] != '\'')
 		(*i)++;
-	tmp = ft_substr(str, 0, j);
-	s_tmp = ft_substr(str, j + 1, *i - j - 1);
-	t_tmp = ft_strjoin(tmp, s_tmp);
-	free(s_tmp);
-	free(tmp);
-	tmp = ft_strjoin(t_tmp, str + *i + 1);
-	free(t_tmp);
-	return (tmp);
+	in_quotes_part = ft_substr(str, start + 1, *i - start - 1);
+	merge_parts = ft_strjoin(new_str, in_quotes_part);
+	free(new_str);
+	free(in_quotes_part);
+	new_str = ft_strjoin(merge_parts, str + *i + 1);
+	free(merge_parts);
+	free(str);
+	return (new_str);
 }
 
 char	*dquotes_handler(char *str, int *i)
 {
-	char	*tmp;
-	char	*s_tmp;
-	char	*t_tmp;
-	int		j;
+	char	*new_str;
+	char	*in_quotes_part;
+	char	*merge_parts;
+	int		start;
 
-	j = *i;
+	start = *i;
 	(*i)++;
 	while (str[*i] != '\"')
 	{
 		if (str[*i] == '\\' && (str[*i + 1] == '\"' || str[*i + 1] == '\\' ||
 		str[*i + 1] == '$'))
-			str = slash_handler(str, i);
-		if (str[*i] && str[*i] != '\n')
-			(*i)++;
+			str = backslash_handler(str, i);
+		(*i)++;
 	}
-	tmp = ft_substr(str, 0, j);
-	s_tmp = ft_substr(str, j + 1, *i - j - 1);
-	t_tmp = ft_strjoin(tmp, s_tmp);
-	free(s_tmp);
-	free(tmp);
-	tmp = ft_strjoin(t_tmp, str + *i + 1);
-	free(t_tmp);
-	return (tmp);
+	new_str = ft_substr(str, 0, start);
+	in_quotes_part = ft_substr(str, start + 1, *i - start - 1);
+	merge_parts = ft_strjoin(new_str, in_quotes_part);
+	free(new_str);
+	free(in_quotes_part);
+	new_str = ft_strjoin(merge_parts, str + *i + 1);
+	free(merge_parts);
+	free(str);
+	return (new_str);
 }
 
-char	*spec_sym_handler(char *str)
+void	spec_sym_handler(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\n' && str[i] != '\0')
+	while (data->str[i])
 	{
-		if (str[i] == '\'')
-			str = quotes_handler(str, &i);
-		if (str[i] == '\"')
-			str = dquotes_handler(str, &i);
-		if (str[i] == '\\')
-			str = slash_handler(str, &i);
-		if (str[i] != '\n' && str[i] != '\0')
+		if (data->str[i] == '\'')
+			data->str = quotes_handler(data->str, &i);
+		if (data->str[i] == '\"')
+			data->str = dquotes_handler(data->str, &i);
+		if (data->str[i] == '\\')
+			data->str = backslash_handler(data->str, &i);
+		if (data->str[i] == '$')
+			data->str = env_handler(data->str, &i, data->env);
+		if (data->str[i])
 			i++;
 	}
-	return (str);
 }
