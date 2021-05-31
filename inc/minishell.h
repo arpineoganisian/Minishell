@@ -26,7 +26,7 @@ void	error_handler(char *str);
 int		check_syntax(char *str);
 void	spec_sym_handler(t_data *data);
 void	split_cmd(t_data *data);
-char  	*make_string(char *str, char c);
+void	make_string(char **str, char c);
 char	*env_handler(char *str, int *i, char **env);
 #endif
 

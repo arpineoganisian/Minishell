@@ -9,8 +9,6 @@ void	error_handler(char *str)
 void	init(t_data *data, char **env)
 {
 	data->syn_error = 0;
-	data->cmd = malloc(sizeof(char) * 1024);
-	data->arg = malloc(sizeof(char) * 1024);
 	data->env = env;
 	data->cmd_count = 0;
 	data->str = NULL;
@@ -20,6 +18,31 @@ void	set_promt()
 {
 	write(1, "\e[32mminishell> \e[0m", 20);
 }
+
+void	free_cmd_lines(char ***cmd_lines, char **str)
+{
+	int	i;
+	int	k;
+
+	i = 0;
+	while (cmd_lines[i])
+	{
+		k = 0;
+		while (cmd_lines[i][k])
+		{
+			free(cmd_lines[i][k]);
+			k++;
+		}
+		free(cmd_lines[i]);
+		i++;
+	}
+	if (cmd_lines)
+		free(cmd_lines);
+	if (*str)
+		free(*str);
+	*str = NULL;
+}
+
 int		main(int argc, char **argv, char **env)
 {
 	t_data 	*data;
@@ -33,7 +56,8 @@ int		main(int argc, char **argv, char **env)
 	{
 		set_promt();
 		while (read(0, &c, 1) && c != '\n')
-			data->str = make_string(data->str, c);
+			make_string(&data->str, c);
 		parsing(data);
+		free_cmd_lines(data->cmd_lines, &data->str);
 	}
 }
