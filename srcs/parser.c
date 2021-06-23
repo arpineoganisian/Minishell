@@ -2,11 +2,13 @@
 
 void	parsing(t_data *data)
 {
-	if ((data->syn_error = check_syntax(data->str)))
-		free(data->str);
+	if (check_syntax(data->str))
+		return ;
 	else
-	{
-		spec_sym_handler(data);
 		split_cmd(data);
-	}
 }
+
+/* 1 проверить синтакс (1 символ, не закрытые кавычки)
+ * 2 разделить на ;
+ * 3 раскрыть кавычки
+ */

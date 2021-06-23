@@ -10,7 +10,7 @@ int	check_pipe_semicolon(char *str, int i)
 		error_handler("syntax error near unexpected token `;'");
 	else if (str[i] == '|' && str[i + 1] == ';')
 		error_handler("syntax error near unexpected token `|'");
-	else if (str[i] == '\\' && str[i + 1] == '\n')
+	else if (str[i] == '\\' && str[i + 1] == '\0')
 		error_handler("syntax error: missing symbol after `\\'");
 	else
 		return (0);
@@ -61,7 +61,6 @@ int	check_syntax(char *str)
 
 	if (check_first_symbol(str))
 		return (1);
-
 	i = 0;
 	while (str[i])
 	{

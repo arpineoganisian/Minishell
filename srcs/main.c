@@ -2,8 +2,8 @@
 
 void	error_handler(char *str)
 {
-	ft_putstr_fd("minishell: ", 2);
-	ft_putendl_fd(str, 2);
+	ft_putstr_fd("minishell: ", 0);
+	ft_putendl_fd(str, 0);
 }
 
 void	init(t_data *data, char **env)
@@ -12,6 +12,7 @@ void	init(t_data *data, char **env)
 	data->env = env;
 	data->cmd_count = 0;
 	data->str = NULL;
+	data->fd = 1;
 }
 
 void	set_promt()
@@ -21,7 +22,8 @@ void	set_promt()
 
 void	free_cmd_lines(char ***cmd_lines, char **str)
 {
-	int	i;
+	(void)cmd_lines;
+	/*int	i;
 	int	k;
 
 	i = 0;
@@ -37,7 +39,7 @@ void	free_cmd_lines(char ***cmd_lines, char **str)
 		i++;
 	}
 	if (cmd_lines)
-		free(cmd_lines);
+		free(cmd_lines);*/
 	if (*str)
 		free(*str);
 	*str = NULL;
@@ -57,7 +59,8 @@ int		main(int argc, char **argv, char **env)
 		set_promt();
 		while (read(0, &c, 1) && c != '\n')
 			make_string(&data->str, c);
-		parsing(data);
+		if (data->str)
+			parsing(data);
 		free_cmd_lines(data->cmd_lines, &data->str);
 	}
 }

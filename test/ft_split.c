@@ -1,154 +1,112 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: thjonell <thjonell@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/02 14:44:13 by thjonell          #+#    #+#             */
-/*   Updated: 2021/05/29 16:39:31 by thjonell         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../libft/libft.h"
 #include <stdio.h>
 
-static void	**ft_free(char **strs, int i)
+static void	**ft_free(char **str_arr, int i)
 {
 	while (i >= 0)
-		free(strs[i--]);
-	free(strs);
+		free(str_arr[i--]);
+	free(str_arr);
 	return (NULL);
 }
 
-static void	*ft_strmalloc(char **strs, char const *s, char c)
+static void	*ft_strmalloc(char **str_arr, char const *str, char c)
 {
+	int	str_i;
 	int	i;
-	int	k;
-	int	j;
+	int	chr_i;
 
+	str_i = 0;
 	i = 0;
-	k = 0;
-	while (s[k])
+	while (str[i])
 	{
-		if (s[k] != c)
+		chr_i = 0;
+		while (str[i])
 		{
-			j = 0;
-			while (s[k] != c && s[k] != '\0')
-			{
-				k++;
-				j++;
-			}
-			strs[i] = (char *)malloc(sizeof(char) * (j + 1));
-			if (!strs[i])
-				return (ft_free(strs, i));
+			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
+				&& str[i - 1] != '\\')
+				break ;
+			chr_i++;
 			i++;
 		}
-		if (s[k] != '\0')
-			k++;
-	}
-	return (strs);
-}
-
-static void	*ft_strsmalloc(char **strs, char const *s, char c)
-{
-	int	k;
-	int	i;
-
-	i = 0;
-	k = 0;
-	while (s[k])
-	{
-		if (s[k] != c)
+		str_arr[str_i] = (char *)malloc(sizeof(char) * (chr_i + 1));
+		if (!str_arr[str_i])
+			return (ft_free(str_arr, str_i));
+		if (str[i])
 			i++;
-		while (s[k] != c && s[k])
-			k++;
-		if (s[k])
-			k++;
+		str_i++;
 	}
-	strs = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!strs)
-		return (NULL);
-	return (ft_strmalloc(strs, s, c));
+	return (str_arr);
 }
 
-char	**ft_split(char const *s, char c)
+static void	*ft_strsmalloc(char **str_arr, char const *str, char c)
 {
-	char	**strs;
-	int		i;
-	int		j;
-	int		k;
-
-	strs = NULL;
-	strs = ft_strsmalloc(strs, s, c);
-	if (!s || !strs)
-		return (NULL);
-	i = 0;
-	k = 0;
-	while (s[k])
-	{
-		if (s[k] != c)
-		{
-			j = 0;
-			while (s[k] != c && s[k] != '\0')
-				strs[i][j++] = s[k++];
-			strs[i++][j] = '\0';
-		}
-		if (s[k])
-			k++;
-	}
-	strs[i] = NULL;
-	return (strs);
-}
-
-int	main(void)
-{
-	char *str = "hello world ; 21 school";
-	char ***array;
-	char **tmp;
+	int	count;
 	int	i;
-	int k;
-	int count;
 
-	/*
-	 * 	tmp = {"hello world ", " 21 school"};
-	 * 	tmp2 = ft_split(tmp[0], ' ');
-	 * 	tmp2 = {"hello", "world"};
-	 * 	tmp3 = ft_split(tmp[1], ' ');
-	 * 	tmp3 = {"21", "school"};
-	 * array = {{"hello", "world"}, {"21", "school"}};
-	 * array[0] = {"hello", "world"};
-	 * array[0][0] = "hello";
-	 */
 	i = 0;
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == ';')
+		if (str[i] != c)
 			count++;
-		i++;
-	}
-	array = malloc(sizeof(char **) * (count + 2));
-	tmp = ft_split(str, ';');
-	i = 0;
-	while (tmp[i])
-	{
-		array[i] = ft_split(tmp[i], ' ');
-		i++;
-	}
-	array[i] = NULL;
-	i = 0;
-	while (array[i])
-	{
-		k = 0;
-		printf("%d cmd = %s\n", i + 1, array[i][k]);
-		k++;
-		while (array[i][k])
+		while (str[i])
 		{
-			printf("%d arg = %s\n", k, array[i][k]);
-			k++;
+			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
+				&& str[i - 1] != '\\')
+				break ;
+			i++;
 		}
+		if (str[i])
+			i++;
+	}
+	str_arr = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!str_arr)
+		return (NULL);
+	return (ft_strmalloc(str_arr, str, c));
+}
+
+char	**smart_split(char const *str, char c)
+{
+	char	**str_arr;
+	int		str_i;
+	int		chr_i;
+	int		i;
+
+	str_arr = NULL;
+	str_arr = ft_strsmalloc(str_arr, str, c);
+	str_i = 0;
+	i = 0;
+	while (str[i])
+	{
+		chr_i = 0;
+		while (str[i])
+		{
+			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
+				&& str[i - 1] != '\\')
+				break ;
+			str_arr[str_i][chr_i++] = str[i++];
+		}
+		str_arr[str_i++][chr_i] = '\0';
+		if (str[i])
+			i++;
+	}
+	str_arr[str_i] = NULL;
+	return (str_arr);
+}
+
+int	main(void)
+{
+	char *str = "echo";
+	char **array_str;
+	int i;
+
+	array_str = smart_split(str, ';');
+	i = 0;
+	while (array_str[i])
+	{
+		printf("%s\n", array_str[i]);
 		i++;
 	}
+	printf("%s\n", array_str[i]);
 	return (0);
 }

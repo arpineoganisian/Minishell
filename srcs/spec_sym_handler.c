@@ -61,22 +61,32 @@ char	*dquotes_handler(char *str, int *i)
 	return (new_str);
 }
 
-void	spec_sym_handler(t_data *data)
+int		spec_sym_handler(char **str, t_data *data)
 {
 	int	i;
+	int	check_fd;
 
+	check_fd = 0;
 	i = 0;
-	while (data->str[i])
+	while ((*str)[i])
 	{
-		if (data->str[i] == '\'')
-			data->str = quotes_handler(data->str, &i);
-		if (data->str[i] == '\"')
-			data->str = dquotes_handler(data->str, &i);
-		if (data->str[i] == '\\')
-			data->str = backslash_handler(data->str, &i);
-		if (data->str[i] == '$')
-			data->str = env_handler(data->str, &i, data->env);
-		if (data->str[i])
+		if ((*str)[i] == '>')
+		{
+			if (redir_handler(*str, i, data, check_fd))
+				return (1);
+			check_fd = 1;
+			*str = remove_redirect(*str, &i);
+		}
+		if ((*str)[i] == '\'')
+			*str = quotes_handler(*str, &i);
+		if ((*str)[i] == '\"')
+			*str = dquotes_handler(*str, &i);
+		if ((*str)[i] == '\\')
+			*str = backslash_handler(*str, &i);
+		if ((*str)[i] == '$')
+			*str = env_handler(*str, &i, data->env);
+		if ((*str)[i])
 			i++;
 	}
+	return (0);
 }
