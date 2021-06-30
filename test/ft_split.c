@@ -1,88 +1,153 @@
 #include "../libft/libft.h"
 #include <stdio.h>
 
-static void	**ft_free(char **str_arr, int i)
+int command_line_count(char *str)
 {
-	while (i >= 0)
-		free(str_arr[i--]);
-	free(str_arr);
-	return (NULL);
-}
-
-static void	*ft_strmalloc(char **str_arr, char const *str, char c)
-{
-	int	str_i;
 	int	i;
-	int	chr_i;
+	int k;
+	int count;
 
-	str_i = 0;
+	count = 0;
 	i = 0;
 	while (str[i])
 	{
-		chr_i = 0;
-		while (str[i])
+		if (str[i] == '\"')
 		{
-			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
-				&& str[i - 1] != '\\')
-				break ;
-			chr_i++;
+			k = i;
 			i++;
+			while (str[i] != '\"' && str[i])
+				i++;
+			if (str[i] != '\"')
+				i = k;
 		}
-		str_arr[str_i] = (char *)malloc(sizeof(char) * (chr_i + 1));
-		if (!str_arr[str_i])
-			return (ft_free(str_arr, str_i));
+		if (str[i] == '\'')
+		{
+			k = i;
+			i++;
+			while (str[i] != '\'' && str[i])
+				i++;
+			if (str[i] != '\'')
+				i = k;
+		}
+		if (str[i] == '|')
+			count++;
 		if (str[i])
 			i++;
-		str_i++;
+	}
+	return (count);
+}
+
+static void	*cmd_line_malloc(char **str_arr, char *str)
+{
+	int	cl_count;
+	int	i;
+	int	chr_count;
+	int	start;
+	int	tmp_i;
+
+	cl_count = 0;
+	chr_count = 0;
+	i = 0;
+	while (str[i])
+	{
+		start = i;
+		chr_count = i;
+		while (str[chr_count] != '|' && str[chr_count])
+		{
+			if (str[chr_count] == '\"')
+			{
+				tmp_i = i;
+				chr_count++;
+				while (str[chr_count] != '\"' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\"')
+					chr_count = tmp_i;
+			}
+			if (str[chr_count] == '\'')
+			{
+				tmp_i = chr_count;
+				chr_count++;
+				while (str[chr_count] != '\'' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\'')
+					chr_count = tmp_i;
+			}
+			chr_count++;
+		}
+		printf("line number %d have %d sym\n", cl_count, chr_count - start);
+		str[cl_count] = (char *) malloc(sizeof(char) * (chr_count - start + 1));
+		cl_count++;
+		i = chr_count;
+		if (str[i])
+			i++;
 	}
 	return (str_arr);
 }
 
-static void	*ft_strsmalloc(char **str_arr, char const *str, char c)
+void	*cmd_lines_malloc(char **str_arr, char *str)
 {
 	int	count;
-	int	i;
 
+	count = command_line_count(str);
+	str_arr = (char **)malloc(sizeof(char *) * (count + 2));
+	if (!str_arr)
+		return (NULL);
+	return (cmd_line_malloc(str_arr, str));
+}
+
+char	**split_cmds(char *str)
+{
+	char	**str_arr;
+	int		cl_count;
+	int		chr_count;
+	int		i;
+	int 	cmd_chr;
+
+	str_arr = NULL;
+	str_arr = cmd_lines_malloc(str_arr, str);
+	cl_count = 0;
+	chr_count = 0;
 	i = 0;
-	count = 0;
 	while (str[i])
 	{
-		if (str[i] != c)
-			count++;
-		while (str[i])
+		start = i;
+		chr_count = i;
+		cmd_chr = 0;
+		while (str[chr_count] != '|' && str[chr_count])
 		{
-			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
-				&& str[i - 1] != '\\')
-				break ;
-			i++;
+			if (str[chr_count] == '\"')
+			{
+				tmp_i = i;
+				str_arr[cl_count][cmd_chr++] = str[chr_count++];
+				while (str[chr_count] != '\"' && str[chr_count])
+					str_arr[cl_count][cmd_chr++] = str[chr_count++];
+				if (str[chr_count] != '\"')
+					chr_count = tmp_i;
+			}
+			if (str[chr_count] == '\'')
+			{
+				tmp_i = chr_count;
+				chr_count++;
+				while (str[chr_count] != '\'' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\'')
+					chr_count = tmp_i;
+			}
+			str_arr[cl_count][cmd_chr++] = str[chr_count++];
 		}
+		cl_count++;
+		i = chr_count;
 		if (str[i])
 			i++;
 	}
-	str_arr = (char **)malloc(sizeof(char *) * (count + 1));
-	if (!str_arr)
-		return (NULL);
-	return (ft_strmalloc(str_arr, str, c));
-}
 
-char	**smart_split(char const *str, char c)
-{
-	char	**str_arr;
-	int		str_i;
-	int		chr_i;
-	int		i;
 
-	str_arr = NULL;
-	str_arr = ft_strsmalloc(str_arr, str, c);
-	str_i = 0;
-	i = 0;
-	while (str[i])
+	/*while (str[i])
 	{
 		chr_i = 0;
 		while (str[i])
 		{
-			if (str[i] == c && str[i - 1] != '\'' && str[i - 1] != '\"'
-				&& str[i - 1] != '\\')
+			if (str[i] == '|')
 				break ;
 			str_arr[str_i][chr_i++] = str[i++];
 		}
@@ -90,23 +155,67 @@ char	**smart_split(char const *str, char c)
 		if (str[i])
 			i++;
 	}
-	str_arr[str_i] = NULL;
+	str_arr[str_i] = NULL;*/
 	return (str_arr);
 }
 
 int	main(void)
 {
-	char *str = "echo";
-	char **array_str;
+	char *str;
+	char	**tmp;
+	int count;
 	int i;
+	int k;
+	int z;
+	int lines_count;
+	int start;
 
-	array_str = smart_split(str, ';');
+	str = ft_strdup("\"foo | bar\" |pwd one|ls two three \'four five\' |"
+			"\"hello ' world\" \'okay | \' not okay");
+	/*count = command_line_count(str);
+	printf("count = %d\n", count);
+	tmp = split_cmds(str);
 	i = 0;
-	while (array_str[i])
+	while (tmp[i])
 	{
-		printf("%s\n", array_str[i]);
+		printf("%s\n", tmp[i]);
 		i++;
 	}
-	printf("%s\n", array_str[i]);
+	printf("%s\n", tmp[i]);*/
+	z = 0;
+	lines_count = 0;
+	while (str[z])
+	{
+		i = z;
+		start = i;
+		printf("start from %c | ", str[z]);
+		while (str[i] != '|' && str[i])
+		{
+			if (str[i] == '\"')
+			{
+				k = i;
+				i++;
+				while (str[i] != '\"' && str[i])
+					i++;
+				if (str[i] != '\"')
+					i = k;
+			}
+			if (str[i] == '\'')
+			{
+				k = i;
+				i++;
+				while (str[i] != '\'' && str[i])
+					i++;
+				if (str[i] != '\'')
+					i = k;
+			}
+			i++;
+		}
+		lines_count++;
+		printf("line number %d have %d sym\n", lines_count, i - start);
+		z = i;
+		if (str[z])
+			z++;
+	}
 	return (0);
 }

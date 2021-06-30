@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-char	*backslash_handler(char *str, int *i)
-{
-	char	*first_part;
-	char	*new_str;
-
-	first_part = ft_substr(str, 0, *i);
-	new_str = ft_strjoin(first_part, str + *i + 1);
-	free(first_part);
-	free(str);
-	return (new_str);
-}
-
 char	*quotes_handler(char *str, int *i)
 {
 	char	*new_str;
@@ -34,7 +22,7 @@ char	*quotes_handler(char *str, int *i)
 	return (new_str);
 }
 
-char	*dquotes_handler(char *str, int *i)
+char	*dquotes_handler(char *str, int *i, char **env)
 {
 	char	*new_str;
 	char	*in_quotes_part;
@@ -45,9 +33,8 @@ char	*dquotes_handler(char *str, int *i)
 	(*i)++;
 	while (str[*i] != '\"')
 	{
-		if (str[*i] == '\\' && (str[*i + 1] == '\"' || str[*i + 1] == '\\' ||
-		str[*i + 1] == '$'))
-			str = backslash_handler(str, i);
+		if (str[*i] == '$')
+			str = env_handler(str, &(*i), env);
 		(*i)++;
 	}
 	new_str = ft_substr(str, 0, start);
@@ -59,6 +46,17 @@ char	*dquotes_handler(char *str, int *i)
 	free(merge_parts);
 	free(str);
 	return (new_str);
+}
+
+int		closed_quotes(char *str, int i, char qs)
+{
+	while (str[i])
+	{
+		if (str[i] == qs)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int		spec_sym_handler(char **str, t_data *data)
@@ -77,12 +75,10 @@ int		spec_sym_handler(char **str, t_data *data)
 			check_fd = 1;
 			*str = remove_redirect(*str, &i);
 		}
-		if ((*str)[i] == '\'')
+		if ((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 			*str = quotes_handler(*str, &i);
-		if ((*str)[i] == '\"')
-			*str = dquotes_handler(*str, &i);
-		if ((*str)[i] == '\\')
-			*str = backslash_handler(*str, &i);
+		if ((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
+			*str = dquotes_handler(*str, &i, data->env);
 		if ((*str)[i] == '$')
 			*str = env_handler(*str, &i, data->env);
 		if ((*str)[i])

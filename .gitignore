@@ -4,9 +4,16 @@ cmake-build-debug
 .idea
 libft/.idea
 <<<<<<< HEAD
+<<<<<<< HEAD
 minishell
 .vscode
 =======
 Minishell
 test
 >>>>>>> Misha
+=======
+Minishell
+test
+minishell
+.vscode
+>>>>>>> master

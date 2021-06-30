@@ -9,6 +9,7 @@
 # include "../libft/libft.h"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 typedef struct	s_parsing_data
 {
 	char	*str;
@@ -24,6 +25,8 @@ void	parsing(char *buf, t_parsing_data *parsing_data);
 void	execute_cmd(t_parsing_data *parsing_data);
 void	echo(t_parsing_data *parsing_data);
 =======
+=======
+>>>>>>> master
 typedef struct s_data
 {
 	int		syn_error;
@@ -41,14 +44,25 @@ typedef struct s_data
 void	parsing(t_data *data);
 void	execute_cmd(char **cmd_line, t_data *data);
 void	error_handler(char *str);
-int		check_syntax(char *str);
+int		check_syntax(const char *str);
 int 	spec_sym_handler(char **str, t_data *data);
 void	split_cmd(t_data *data);
 void	make_string(char **str, char c);
 char	*env_handler(char *str, int *i, char **env);
-int		check_first_symbol(char *str);
 int		redir_handler(char *str, int i, t_data *data, int check_fd);
 char	*remove_redirect(char *str, int *i);
+<<<<<<< HEAD
 >>>>>>> Misha
+=======
+int 	in_quotes(char *str, int i);
+int		closed_quotes(char *str, int i, char qs);
+char	**split_line(char *str);
+void	malloc_word(char *str, int *i, char **split_string, char s);
+int		char_count(char *str, int *i, char s);
+int		closed_quotes_check(char *str, int i, char qs);
+void	copy_space_word(char *str, int *i, char **split_string);
+void 	copy_word(char *str, int *i, char **split_string, char s);
+
+>>>>>>> master
 #endif
 
