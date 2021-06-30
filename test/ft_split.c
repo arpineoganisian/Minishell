@@ -41,34 +41,45 @@ static void	*cmd_line_malloc(char **str_arr, char *str)
 {
 	int	cl_count;
 	int	i;
-	int k;
 	int	chr_count;
+	int	start;
+	int	tmp_i;
 
 	cl_count = 0;
 	chr_count = 0;
-	k = 0;
 	i = 0;
-	while (str[i] != '|')
+	while (str[i])
 	{
-		if (str[i] == '\"')
+		start = i;
+		chr_count = i;
+		while (str[chr_count] != '|' && str[chr_count])
 		{
-			k = i;
-			i++;
-			while (str[i] != '\"' && str[i])
-				i++;
-			if (str[i] != '\"')
-				i = k;
+			if (str[chr_count] == '\"')
+			{
+				tmp_i = i;
+				chr_count++;
+				while (str[chr_count] != '\"' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\"')
+					chr_count = tmp_i;
+			}
+			if (str[chr_count] == '\'')
+			{
+				tmp_i = chr_count;
+				chr_count++;
+				while (str[chr_count] != '\'' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\'')
+					chr_count = tmp_i;
+			}
+			chr_count++;
 		}
-		if (str[i] == '\'')
-		{
-			k = i;
+		printf("line number %d have %d sym\n", cl_count, chr_count - start);
+		str[cl_count] = (char *) malloc(sizeof(char) * (chr_count - start + 1));
+		cl_count++;
+		i = chr_count;
+		if (str[i])
 			i++;
-			while (str[i] != '\'' && str[i])
-				i++;
-			if (str[i] != '\'')
-				i = k;
-		}
-		i++;
 	}
 	return (str_arr);
 }
@@ -87,15 +98,51 @@ void	*cmd_lines_malloc(char **str_arr, char *str)
 char	**split_cmds(char *str)
 {
 	char	**str_arr;
-	int		str_i;
-	int		chr_i;
+	int		cl_count;
+	int		chr_count;
 	int		i;
+	int 	cmd_chr;
 
 	str_arr = NULL;
 	str_arr = cmd_lines_malloc(str_arr, str);
-	str_i = 0;
+	cl_count = 0;
+	chr_count = 0;
 	i = 0;
 	while (str[i])
+	{
+		start = i;
+		chr_count = i;
+		cmd_chr = 0;
+		while (str[chr_count] != '|' && str[chr_count])
+		{
+			if (str[chr_count] == '\"')
+			{
+				tmp_i = i;
+				str_arr[cl_count][cmd_chr++] = str[chr_count++];
+				while (str[chr_count] != '\"' && str[chr_count])
+					str_arr[cl_count][cmd_chr++] = str[chr_count++];
+				if (str[chr_count] != '\"')
+					chr_count = tmp_i;
+			}
+			if (str[chr_count] == '\'')
+			{
+				tmp_i = chr_count;
+				chr_count++;
+				while (str[chr_count] != '\'' && str[chr_count])
+					chr_count++;
+				if (str[chr_count] != '\'')
+					chr_count = tmp_i;
+			}
+			str_arr[cl_count][cmd_chr++] = str[chr_count++];
+		}
+		cl_count++;
+		i = chr_count;
+		if (str[i])
+			i++;
+	}
+
+
+	/*while (str[i])
 	{
 		chr_i = 0;
 		while (str[i])
@@ -108,7 +155,7 @@ char	**split_cmds(char *str)
 		if (str[i])
 			i++;
 	}
-	str_arr[str_i] = NULL;
+	str_arr[str_i] = NULL;*/
 	return (str_arr);
 }
 
