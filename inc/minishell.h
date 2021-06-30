@@ -8,6 +8,7 @@
 # include <string.h>
 # include "../libft/libft.h"
 
+<<<<<<< HEAD
 typedef struct s_data
 {
 	int		syn_error;
@@ -33,5 +34,21 @@ char	*env_handler(char *str, int *i, char **env);
 int		check_first_symbol(char *str);
 int		redir_handler(char *str, int i, t_data *data, int check_fd);
 char	*remove_redirect(char *str, int *i);
+=======
+typedef struct	s_parsing_data
+{
+	char	*str;
+	char	cmd[1024];
+	int		option_n;
+	int		single_quoted;
+	int		double_quoted;
+}				t_parsing_data;
+
+void	reading_parsing(char *buf, t_parsing_data *parsing_data);
+void	read_stdin(char *buf);
+void	parsing(char *buf, t_parsing_data *parsing_data);
+void	execute_cmd(t_parsing_data *parsing_data);
+void	echo(t_parsing_data *parsing_data);
+>>>>>>> 563447a5929771f5da3d936076105b0c6d828cb7
 #endif
 

@@ -2,8 +2,12 @@ NAME		= minishell
 CC			= gcc
 RM			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror -g3
+<<<<<<< HEAD
 SRCS_LIST	= main.c parser.c execute_cmd.c syntax_handler.c spec_sym_handler.c split_command.c parser_utils.c \
 			env_handler.c redir_handler.c
+=======
+SRCS_LIST	= main.c reading_parsing.c execute_cmd.c echo.c
+>>>>>>> 563447a5929771f5da3d936076105b0c6d828cb7
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
 LIB_FT		= -Llibft -lft
 OBJ_LIST 	= $(patsubst %.c, %.o, $(SRCS_LIST))
