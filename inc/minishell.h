@@ -8,20 +8,6 @@
 # include <string.h>
 # include "../libft/libft.h"
 
-typedef struct	s_parsing_data
-{
-	char	*str;
-	char	cmd[1024];
-	int		option_n;
-	int		single_quoted;
-	int		double_quoted;
-}				t_parsing_data;
-
-void	reading_parsing(char *buf, t_parsing_data *parsing_data);
-void	read_stdin(char *buf);
-void	parsing(char *buf, t_parsing_data *parsing_data);
-void	execute_cmd(t_parsing_data *parsing_data);
-void	echo(t_parsing_data *parsing_data);
 typedef struct s_data
 {
 	int		syn_error;
