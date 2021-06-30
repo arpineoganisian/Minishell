@@ -3,7 +3,7 @@ a.out
 cmake-build-debug
 .idea
 libft/.idea
-Minishell
-test
 minishell
+test
+Minishell
 .vscode
