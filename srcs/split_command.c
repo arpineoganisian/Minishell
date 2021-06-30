@@ -63,7 +63,6 @@ void	split_cmd(t_data *data)
 {
 	char	**tmp;
 	int	i;
-	int k;
 
 	data->cmd_lines = (char ***)malloc(sizeof(char **) * (command_line_count
 			(data->str) + 1));
@@ -74,20 +73,7 @@ void	split_cmd(t_data *data)
 //		if (spec_sym_handler(&tmp[i], data))
 //			return ;
 		data->cmd_lines[i] = split_line(tmp[i]);
-		ft_putstr_fd("cmd line number ", 1);
-		ft_putnbr_fd(i + 1, 1);
-		ft_putstr_fd(":\n", 1);
-		k = 0;
-		while (data->cmd_lines[i][k])
-		{
-			ft_putnbr_fd(k + 1, 1);
-			ft_putstr_fd(" elem = ", 1);
-			ft_putstr_fd(data->cmd_lines[i][k], 1);
-			ft_putstr_fd(" ", 1);
-			k++;
-		}
-		ft_putstr_fd("\n", 1);
-		//execute_cmd(data->cmd_lines[i], data);
+		execute_cmd(data->cmd_lines[i], data);
 		i++;
 		//free tmp
 	}
