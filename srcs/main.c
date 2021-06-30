@@ -1,17 +1,66 @@
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+void	error_handler(char *str)
 {
-	char			buf[1024];
-	t_parsing_data	parsing_data;
+	ft_putstr_fd("minishell: ", 0);
+	ft_putendl_fd(str, 0);
+}
+
+void	init(t_data *data, char **env)
+{
+	data->syn_error = 0;
+	data->env = env;
+	data->cmd_count = 0;
+	data->str = NULL;
+	data->fd = 1;
+}
+
+void	set_promt()
+{
+	write(1, "\e[32mminishell> \e[0m", 20);
+}
+
+void	free_cmd_lines(char ***cmd_lines, char **str)
+{
+	(void)cmd_lines;
+	/*int	i;
+	int	k;
+
+	i = 0;
+	while (cmd_lines[i])
+	{
+		k = 0;
+		while (cmd_lines[i][k])
+		{
+			free(cmd_lines[i][k]);
+			k++;
+		}
+		free(cmd_lines[i]);
+		i++;
+	}
+	if (cmd_lines)
+		free(cmd_lines);*/
+	if (*str)
+		free(*str);
+	*str = NULL;
+}
+
+int		main(int argc, char **argv, char **env)
+{
+	t_data 	*data;
+	char	c;
 	(void)argc;
 	(void)argv;
-	(void)envp;
 
+	data = (t_data *) malloc(sizeof(t_data));
+	init(data, env);
 	while (1)
 	{
-		write(1, "\e[32mminishell> \e[0m", 20);
-		reading_parsing(buf, &parsing_data);
-		execute_cmd(&parsing_data);
+		set_promt();
+		while (read(0, &c, 1) && c != '\n')
+			make_string(&data->str, c);
+		if (data->str)
+			parsing(data);
+		free_cmd_lines(data->cmd_lines, &data->str);
 	}
 }

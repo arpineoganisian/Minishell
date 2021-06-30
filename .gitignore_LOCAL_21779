@@ -3,10 +3,5 @@ a.out
 cmake-build-debug
 .idea
 libft/.idea
-<<<<<<< HEAD
 minishell
 .vscode
-=======
-Minishell
-test
->>>>>>> Misha
