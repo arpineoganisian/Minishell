@@ -45,6 +45,6 @@ void	copy_space_word(char *str, int *i, char **split_string);
 void 	copy_word(char *str, int *i, char **split_string, char s);
 int		command_line_count(char *str);
 void	line_char_count(char *str, int *i);
-
+int		not_qs_char_count(char *str, int *i);
 #endif
 

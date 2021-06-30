@@ -3,8 +3,9 @@
 void	execute_cmd(char **cmd_line, t_data *data)
 {
 	int	i;
+	(void)data;
 
-	printf("fd = %d ", data->fd);
+	//printf("fd = %d ", data->fd);
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		printf("cmd = %s ", cmd_line[0]);

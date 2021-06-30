@@ -10,7 +10,7 @@ char	*quotes_handler(char *str, int *i)
 	start = *i;
 	new_str = ft_substr(str, 0, start);
 	(*i)++;
-	while (str[*i] != '\'')
+	while (str[*i] != '\'' && str[*i])
 		(*i)++;
 	in_quotes_part = ft_substr(str, start + 1, *i - start - 1);
 	merge_parts = ft_strjoin(new_str, in_quotes_part);
@@ -31,7 +31,7 @@ char	*dquotes_handler(char *str, int *i, char **env)
 
 	start = *i;
 	(*i)++;
-	while (str[*i] != '\"')
+	while (str[*i] != '\"' && str[*i])
 	{
 		if (str[*i] == '$')
 			str = env_handler(str, &(*i), env);
@@ -50,6 +50,7 @@ char	*dquotes_handler(char *str, int *i, char **env)
 
 int		closed_quotes(char *str, int i, char qs)
 {
+	i++;
 	while (str[i])
 	{
 		if (str[i] == qs)
@@ -68,13 +69,13 @@ int		spec_sym_handler(char **str, t_data *data)
 	i = 0;
 	while ((*str)[i])
 	{
-		if ((*str)[i] == '>')
+		/*if ((*str)[i] == '>')
 		{
 			if (redir_handler(*str, i, data, check_fd))
 				return (1);
 			check_fd = 1;
 			*str = remove_redirect(*str, &i);
-		}
+		}*/
 		if ((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 			*str = quotes_handler(*str, &i);
 		if ((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))

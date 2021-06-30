@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void	malloc_word(char *str, int *i, char **split_string, char s)
+{
+	*split_string = (char *)malloc(sizeof(char) *
+								   (char_count(str, i, s) + 1));
+	if (str[*i] == s)
+		(*i)++;
+}
+
 void	*split_words_malloc(char **split_string, char *str)
 {
 	int	i;
@@ -15,7 +23,7 @@ void	*split_words_malloc(char **split_string, char *str)
 			malloc_word(str, &i, &split_string[words_count++], '\"');
 		if (str[i] != ' ' && str[i])
 			split_string[words_count++] = (char *)malloc(sizeof(char) *
-														 (char_count(str, &i, ' ') + 1));
+														 (not_qs_char_count(str, &i) + 1));
 		if (str[i])
 			i++;
 	}
@@ -28,21 +36,21 @@ int		count_words(char *str, int i, int count)
 	{
 		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
 		{
-			i++;
 			char_count(str, &i, '\'');
 			count++;
-			i++;
+			if (str[i] == '\'')
+				i++;
 		}
 		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
 		{
-			i++;
 			char_count(str, &i, '\"');
 			count++;
-			i++;
+			if (str[i] == '\"')
+				i++;
 		}
 		if (str[i] != ' ' && str[i])
 		{
-			char_count(str, &i, ' ');
+			not_qs_char_count(str, &i);
 			count++;
 		}
 		if (str[i])
@@ -73,9 +81,9 @@ char	**split_line(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && closed_quotes(str, i, '\''))
+		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
 			copy_word(str, &i, &split_string[words_count++], '\'');
-		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
+		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
 			copy_word(str, &i, &split_string[words_count++], '\"');
 		if (str[i] != ' ' && str[i])
 			copy_space_word(str, &i, &split_string[words_count++]);
