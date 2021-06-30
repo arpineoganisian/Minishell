@@ -11,12 +11,15 @@
 typedef struct s_data
 {
 	int		syn_error;
+	//вся введенная строка:
 	char	*str;
 	char	*cmd;
+	//массив строк - команды и аргументы:
 	char	***cmd_lines;
 	int 	cmd_count;
 	char	*arg;
 	int		flag;
+	//переменные окружения:
 	char	**env;
 	int		fd;
 	int 	fd2;
