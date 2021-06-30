@@ -1,106 +1,61 @@
 #include "minishell.h"
 
-int 	in_quotes(char *str, int i)
+void	*cmd_line_malloc(char **str_arr, char *str)
 {
-	int	k;
-
-	while (i >= 0)
-	{
-		if (str[i] == '\'')
-		{
-			k = i;
-			while (str[++k])
-			{
-				if (str[k] == '\'')
-					return (1);
-			}
-		}
-		if (str[i] == '\"')
-		{
-			k = i;
-			while (str[++k])
-			{
-				if (str[k] == '\"')
-					return (1);
-			}
-		}
-		i--;
-	}
-	return (0);
-}
-
-static void	*ft_strmalloc(char **str_arr, char *str, char c)
-{
-	int	str_i;
+	int	cl_count;
 	int	i;
-	int	chr_i;
+	int	start;
 
-	str_i = 0;
+	cl_count = 0;
 	i = 0;
 	while (str[i])
 	{
-		chr_i = 0;
-		while (str[i])
-		{
-			if (str[i] == c && !in_quotes(str, i))
-				break ;
-			chr_i++;
-			i++;
-		}
-		str_arr[str_i] = (char *)malloc(sizeof(char) * (chr_i + 1));
-		if (!str_arr[str_i])
-			return (NULL);
+		start = i;
+		line_char_count(str, &i);
+		str_arr[cl_count] = (char *) malloc(sizeof(char) * (i - start + 1));
+		cl_count++;
 		if (str[i])
 			i++;
-		str_i++;
 	}
 	return (str_arr);
 }
 
-static void	*ft_strsmalloc(char **str_arr, char *str, char c)
+void	*cmd_lines_malloc(char **str_arr, char *str)
 {
 	int	count;
-	int	i;
 
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == '|' && !in_quotes(str, i))
-			count++;
-		i++;
-	}
-	str_arr = (char **)malloc(sizeof(char *) * (count + 2));
+	count = command_line_count(str);
+	str_arr = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!str_arr)
 		return (NULL);
-	return (ft_strmalloc(str_arr, str, c));
+	return (cmd_line_malloc(str_arr, str));
 }
 
-char	**smart_split(char *str, char c)
+char	**split_cmds(char *str)
 {
 	char	**str_arr;
-	int		str_i;
-	int		chr_i;
+	int		cl_count;
 	int		i;
+	int 	cmd_chr;
+	int		start;
 
 	str_arr = NULL;
-	str_arr = ft_strsmalloc(str_arr, str, c);
-	str_i = 0;
+	str_arr = cmd_lines_malloc(str_arr, str);
+	cl_count = 0;
 	i = 0;
 	while (str[i])
 	{
-		chr_i = 0;
-		while (str[i])
-		{
-			if (str[i] == c && !in_quotes(str, i))
-				break ;
-			str_arr[str_i][chr_i++] = str[i++];
-		}
-		str_arr[str_i++][chr_i] = '\0';
+		start = i;
+		line_char_count(str, &i);
+		cmd_chr = 0;
+		while (start <= i - 1)
+			str_arr[cl_count][cmd_chr++] = str[start++];
+		str_arr[cl_count][cmd_chr] = '\0';
+		cl_count++;
 		if (str[i])
 			i++;
 	}
-	str_arr[str_i] = NULL;
+	str_arr[cl_count] = NULL;
 	return (str_arr);
 }
 
@@ -110,15 +65,9 @@ void	split_cmd(t_data *data)
 	int	i;
 	int k;
 
-	i = 0;
-	while (data->str[i])
-	{
-		if (data->str[i] == '|' && !in_quotes(data->str, i))
-			data->cmd_count++;
-		i++;
-	}
-	data->cmd_lines = (char ***)malloc(sizeof(char **) * (data->cmd_count + 2));
-	tmp = smart_split(data->str, '|');
+	data->cmd_lines = (char ***)malloc(sizeof(char **) * (command_line_count
+			(data->str) + 1));
+	tmp = split_cmds(data->str);
 	i = 0;
 	while (tmp[i])
 	{
