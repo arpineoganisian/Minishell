@@ -69,19 +69,10 @@ int		closed_quotes(char *str, int i, char qs)
 int		spec_sym_handler(char **str, t_data *data)
 {
 	int	i;
-	int	check_fd;
 
-	check_fd = 0;
 	i = 0;
 	while ((*str)[i])
 	{
-		/*if ((*str)[i] == '>')
-		{
-			if (redir_handler(*str, i, data, check_fd))
-				return (1);
-			check_fd = 1;
-			*str = remove_redirect(*str, &i);
-		}*/
 		if ((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 			*str = quotes_handler(*str, &i);
 		if ((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))

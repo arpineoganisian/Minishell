@@ -33,9 +33,6 @@ int 	spec_sym_handler(char **str, t_data *data);
 void	split_cmd(t_data *data);
 void	make_string(char **str, char c);
 char	*env_handler(char *str, int *i, char **env);
-int		redir_handler(char *str, int i, t_data *data, int check_fd);
-char	*remove_redirect(char *str, int *i);
-int 	in_quotes(char *str, int i);
 int		closed_quotes(char *str, int i, char qs);
 char	**split_line(char *str);
 void	malloc_word(char *str, int *i, char **split_string, char s);
@@ -48,5 +45,6 @@ void	line_char_count(char *str, int *i);
 void    echo(char **cmd_line);
 int 	strings_counter(char **array);
 int		not_qs_char_count(char *str, int *i);
+int		redirect_handler(char **str, t_data *data);
 #endif
 

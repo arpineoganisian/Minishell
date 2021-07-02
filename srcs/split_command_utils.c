@@ -57,6 +57,7 @@ void	line_char_count(char *str, int *i)
 			if (str[*i] != '\'')
 				*i = tmp_i;
 		}
-		(*i)++;
+		if(str[*i])
+			(*i)++;
 	}
 }

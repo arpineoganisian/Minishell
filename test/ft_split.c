@@ -1,186 +1,114 @@
 #include "../libft/libft.h"
 #include <stdio.h>
+#include "../inc/minishell.h"
 
-int		closed_quotes_check(char *str, int i, char qs)
+int		redirect(char *str, int i, t_data *data)
 {
-	i++;
-	while (str[i])
-	{
-		if (str[i] == qs)
-			return (1);
+	int		tmp;
+	char	*filename;
+
+	while (str[i] == ' ')
 		i++;
+	tmp = i;
+	while (str[i] != ' ' && str[i])
+		i++;
+	filename = ft_substr(str, tmp, i - tmp - 1);
+	data->fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	free(filename);
+	if (data->fd == -1)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (1);
 	}
 	return (0);
 }
 
-void 	copy_word(char *str, int *i, char **split_string, char s)
+int 	app_redirect(char *str, int i, t_data *data)
 {
-	int char_count;
+	int		tmp;
+	char	*filename;
 
-	char_count = 0;
-	(*split_string)[char_count++] = str[(*i)++];
-	while (str[*i] != s && str[*i])
-		(*split_string)[char_count++] = str[(*i)++];
-	while(str[*i] != ' ' && str[*i])
-		(*split_string)[char_count++] = str[(*i)++];
-	(*split_string)[char_count] = '\0';
+	while (str[i] == ' ')
+		i++;
+	tmp = i;
+	while (str[i] != ' ' && str[i])
+		i++;
+	filename = ft_substr(str, tmp, i - tmp - 1);
+	data->fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
+	free(filename);
+	if (data->fd == -1)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (1);
+	}
+	return (0);
 }
 
-void	copy_space_word(char *str, int *i, char **split_string)
+void	skip_other(char *str, int *i)
 {
-	int	char_count;
+	int	tmp;
 
-	char_count = 0;
-	while (str[*i] != ' ' && str[*i])
+	while (str[*i] != '>' && str[*i])
 	{
-		if (str[*i] == '\'' && closed_quotes_check(str, *i, '\''))
+		if (str[*i] == '\'')
 		{
-			(*split_string)[char_count++] = str[(*i)++];
-			while (str[*i] != '\'' && str[*i])
-				(*split_string)[char_count++] = str[(*i)++];
-		}
-		(*split_string)[char_count++] = str[(*i)++];
-	}
-	(*split_string)[char_count] = '\0';
-}
-
-int		char_count(char *str, int *i, char s)
-{
-	int	char_count;
-
-	char_count = 0;
-	while (str[*i] != s && str[*i])
-	{
-		(*i)++;
-		char_count++;
-	}
-	while (str[*i] != ' ' && str[*i])
-	{
-		(*i)++;
-		char_count++;
-	}
-	return (char_count);
-}
-
-int		not_qs_char_count(char *str, int *i)
-{
-	int	char_count;
-
-	char_count = 0;
-	while (str[*i] != ' ' && str[*i])
-	{
-		if (str[*i] == '\'' && closed_quotes_check(str, *i, '\''))
-		{
+			tmp = 0;
 			(*i)++;
-			char_count++;
 			while (str[*i] != '\'' && str[*i])
-			{
 				(*i)++;
-				char_count++;
-			}
+			if (str[*i] != '\'')
+				*i = tmp;
 		}
-		(*i)++;
-		char_count++;
-	}
-	return (char_count);
-}
-
-void	malloc_word(char *str, int *i, char **split_string, char s)
-{
-	(*i)++;
-	*split_string = (char *)malloc(sizeof(char) *
-			(char_count(str, i, s) + 1));
-	if (str[*i] == s)
-		(*i)++;
-}
-
-void	*split_words_malloc(char **split_string, char *str)
-{
-	int	i;
-	int	words_count;
-
-	words_count = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
-			malloc_word(str, &i, &split_string[words_count++], '\'');
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
-			malloc_word(str, &i, &split_string[words_count++], '\"');
-		if (str[i] != ' ' && str[i])
-			split_string[words_count++] = (char *)malloc(sizeof(char) *
-					(not_qs_char_count(str, &i) + 1));
-		if (str[i])
-			i++;
-	}
-	return (split_string);
-}
-
-int		count_words(char *str, int i, int count)
-{
-	while (str[i])
-	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
+		if (str[*i] == '\"')
 		{
-			i++;
-			char_count(str, &i, '\'');
-			count++;
-			if (str[i] == '\'')
-				i++;
+			tmp = 0;
+			(*i)++;
+			while (str[*i] != '\"' && str[*i])
+				(*i)++;
+			if (str[*i] != '\"')
+				*i = tmp;
 		}
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
-		{
-			i++;
-			char_count(str, &i, '\"');
-			count++;
-			if (str[i] == '\"')
-				i++;
-		}
-		if (str[i] != ' ' && str[i])
-		{
-			not_qs_char_count(str, &i);
-			count++;
-		}
-		if (str[i])
-			i++;
+		if (str[*i])
+			(*i)++;
 	}
-	return (count);
 }
 
-void	*split_string_malloc(char **split_string, char *str)
+void	*remove_redirect(char **str, int i)
 {
-	split_string = (char **)malloc(sizeof(char *) *
-								   (count_words(str, 0, 0) + 1));
-	if (!split_string)
-		return (NULL);
-	return (split_words_malloc(split_string, str));
+	char	*new_str;
+	char	*first_part;
+	int 	start;
+
+	start = i;
+	if (*str[i] == '>')
+		(i)++;
+	while (*str[i] == ' ')
+		(i)++;
+	while (*str[i] != ' ' && *str[i])
+		i++;
+	first_part = ft_substr(*str, 0, start);
+	new_str = ft_strjoin(first_part, *str + i);
+	free(first_part);
+	*str = ft_strdup(new_str);
 }
 
-
-char	**split_line(char *str)
+int		redirect_handler(char **str, int i, t_data *data, int check_fd)
 {
-	char	**split_string;
-	int		i;
-	int 	words_count;
-
-	split_string = NULL;
-	split_string = split_string_malloc(split_string, str);
-	words_count = 0;
-	i = 0;
-	while (str[i])
+	if (check_fd)
+		close(data->fd);
+	skip_other(*str, &i);
+	if (*str[i] == '>' && *str[i + 1] != '>')
 	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
-			copy_word(str, &i, &split_string[words_count++], '\'');
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
-			copy_word(str, &i, &split_string[words_count++], '\"');
-		if (str[i] != ' ' && str[i])
-			copy_space_word(str, &i, &split_string[words_count++]);
-		if (str[i])
-			i++;
+		if (redirect(*str, i + 1, data))
+			return (1);
 	}
-	split_string[words_count] = NULL;
-	return (split_string);
+	else if (*str[i] == '>' && str[i + 1] *== '>')
+	if (app_redirect(*str, i + 1, data))
+		return (1);
+	remove_redirect(str, i + 1);
+	return (0);
 }
+
 int	main(void)
 {
 	char 	*str;

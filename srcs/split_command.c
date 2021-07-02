@@ -71,6 +71,8 @@ void	split_cmd(t_data *data)
 	i = 0;
 	while (tmp[i])
 	{
+		if (redirect_handler(&tmp[i], data))
+			return ;
 		data->cmd_lines[i] = split_line(tmp[i]);
 		k = 0;
 		while(data->cmd_lines[i][k])
