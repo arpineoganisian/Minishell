@@ -10,17 +10,18 @@ int	check_syntax(const char *str)
 	{
 		if (str[i] == '|')
 		{
-			tmp = i;
-			while (str[i] == ' ')
+			tmp = i + 1;
+			if (i > 0)
 				i--;
-			if (str[i] < 0)
-				error_handler("syntax error near unexpected token `|'");
+			while (str[i] == ' ' && i > 0)
+				i--;
+			if (str[i] == ' ' || str[i] == '|')
+				return (1);
 			i = tmp;
 			while (str[i] == ' ')
 				i++;
 			if (str[i] == '|' || str[i] == '\0')
-				error_handler("syntax error near unexpected token `|'");
-			return (1);
+				return (1);
 		}
 		if (str[i])
 			i++;
