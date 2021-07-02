@@ -5,18 +5,17 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	int	i;
 	(void)data;
 
-//	printf("fd = %d ", data->fd);
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		echo(cmd_line);
-//		printf("cmd = %s ", cmd_line[0]);
-//		i = 1;
-//		while (cmd_line[i])
-//		{
-//			printf("| %d arg = %s ", i, cmd_line[i]);
-//			i++;
-//		}
-//		printf("\n");
+		printf("cmd = %s ", cmd_line[0]);
+		i = 1;
+		while (cmd_line[i])
+		{
+			printf("| %d arg = |%s| ", i, cmd_line[i]);
+			i++;
+		}
+		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen("cd")))
 	{

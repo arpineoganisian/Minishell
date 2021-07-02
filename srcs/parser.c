@@ -2,8 +2,8 @@
 
 void	parsing(t_data *data)
 {
-	if (check_syntax(data->str))
-		return ;
+	if (check_syntax(data->str) == 1)
+		error_handler("syntax error near unexpected token `|'");
 	else
 		split_cmd(data);
 }
