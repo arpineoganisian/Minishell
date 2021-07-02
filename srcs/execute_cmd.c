@@ -12,7 +12,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		i = 1;
 		while (cmd_line[i])
 		{
-			printf("| %d arg = %s ", i, cmd_line[i]);
+			printf("| %d arg = |%s| ", i, cmd_line[i]);
 			i++;
 		}
 		printf("\n");

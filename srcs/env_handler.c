@@ -75,7 +75,10 @@ char	*env_handler(char *str, int *i, char **env)
 		(*i)++;
 	env_key = ft_substr(str, start + 1, *i - start - 1);
 	if ((line_number = env_key_finder(env, env_key)) == -1)
+	{
 		new_str = key_not_found(str, start, *i);
+		*i = start;
+	}
 	else
 		new_str = key_found(env[line_number], str, start, *i);
 	return (new_str);

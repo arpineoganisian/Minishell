@@ -28,4 +28,3 @@ int	check_syntax(const char *str)
 	}
 	return (0);
 }
-

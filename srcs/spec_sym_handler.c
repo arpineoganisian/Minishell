@@ -19,6 +19,9 @@ char	*quotes_handler(char *str, int *i)
 	new_str = ft_strjoin(merge_parts, str + *i + 1);
 	free(merge_parts);
 	free(str);
+	*i -= 2;
+	if (*i < 0)
+		*i = 0;
 	return (new_str);
 }
 
@@ -45,6 +48,9 @@ char	*dquotes_handler(char *str, int *i, char **env)
 	new_str = ft_strjoin(merge_parts, str + *i + 1);
 	free(merge_parts);
 	free(str);
+	*i -= 2;
+	if (*i < 0)
+		*i = 0;
 	return (new_str);
 }
 
@@ -82,7 +88,9 @@ int		spec_sym_handler(char **str, t_data *data)
 			*str = dquotes_handler(*str, &i, data->env);
 		if ((*str)[i] == '$')
 			*str = env_handler(*str, &i, data->env);
-		if ((*str)[i])
+		if ((*str)[i] && !((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
+		&& !((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
+		&& (*str)[i] != '$')
 			i++;
 	}
 	return (0);
