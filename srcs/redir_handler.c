@@ -2,15 +2,15 @@
 
 int		redirect(char *str, int i, t_data *data)
 {
-	int		filename_start;
+	int		tmp;
 	char	*filename;
 
 	while (str[i] == ' ')
 		i++;
-	filename_start = i;
-	while (str[i] != ' ')
+	tmp = i;
+	while (str[i] != ' ' && str[i] != '|' && str[i])
 		i++;
-	filename = ft_substr(str, filename_start, i - filename_start - 1);
+	filename = ft_substr(str, tmp, i - tmp - 1);
 	data->fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	free(filename);
 	if (data->fd == -1)
@@ -23,15 +23,15 @@ int		redirect(char *str, int i, t_data *data)
 
 int 	app_redirect(char *str, int i, t_data *data)
 {
-	int		filename_start;
+	int		tmp;
 	char	*filename;
 
 	while (str[i] == ' ')
 		i++;
-	filename_start = i;
-	while (str[i] != ' ')
+	tmp = i;
+	while (str[i] != ' ' && str[i] != '|' && str[i])
 		i++;
-	filename = ft_substr(str, filename_start, i - filename_start - 1);
+	filename = ft_substr(str, tmp, i - tmp - 1);
 	data->fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	free(filename);
 	if (data->fd == -1)
@@ -49,7 +49,7 @@ int		redir_handler(char *str, int i, t_data *data, int check_fd)
 	i++;
 	if (str[i] != '>')
 	{
-		if (redirect(str, i, data))
+		if (redirect(str, i + 1, data))
 			return (1);
 	}
 	else
