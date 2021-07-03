@@ -66,7 +66,7 @@ int		closed_quotes(char *str, int i, char qs)
 	return (0);
 }
 
-int		spec_sym_handler(char **str, t_data *data)
+void	spec_sym_handler(char **str, t_data *data)
 {
 	int	i;
 
@@ -84,5 +84,4 @@ int		spec_sym_handler(char **str, t_data *data)
 		&& (*str)[i] != '$')
 			i++;
 	}
-	return (0);
 }

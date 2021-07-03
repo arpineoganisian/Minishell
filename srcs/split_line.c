@@ -17,9 +17,9 @@ void	*split_words_malloc(char **split_string, char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
+		if (str[i] == '\'' && closed_quotes(str, i, '\''))
 			malloc_word(str, &i, &split_string[words_count++], '\'');
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
+		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 			malloc_word(str, &i, &split_string[words_count++], '\"');
 		if (str[i] != ' ' && str[i])
 			split_string[words_count++] = (char *)malloc(sizeof(char) *
@@ -34,14 +34,14 @@ int		count_words(char *str, int i, int count)
 {
 	while (str[i])
 	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
+		if (str[i] == '\'' && closed_quotes(str, i, '\''))
 		{
 			char_count(str, &i, '\'');
 			count++;
 			if (str[i] == '\'')
 				i++;
 		}
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
+		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 		{
 			char_count(str, &i, '\"');
 			count++;
@@ -81,9 +81,9 @@ char	**split_line(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && closed_quotes_check(str, i, '\''))
+		if (str[i] == '\'' && closed_quotes(str, i, '\''))
 			copy_word(str, &i, &split_string[words_count++], '\'');
-		if (str[i] == '\"' && closed_quotes_check(str, i, '\"'))
+		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 			copy_word(str, &i, &split_string[words_count++], '\"');
 		if (str[i] != ' ' && str[i])
 			copy_space_word(str, &i, &split_string[words_count++]);
