@@ -12,6 +12,8 @@ int input_redirect(char *str, int i, t_data *data)
 	if (data->fd_in == -1)
 	{
 		ft_putendl_fd(strerror(errno), 2);
+		close(data->fd_in);
+		data->fd_in = 0;
 		return (1);
 	}
 	return (0);
@@ -24,7 +26,7 @@ int output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 	error = 0;
 	if ((*str)[*i] == '>')
 	{
-		if (fd_out_opened)
+		if (*fd_out_opened)
 			close(data->fd_out);
 		*fd_out_opened = 1;
 		if ((*str)[*i + 1] == '>')
@@ -43,7 +45,7 @@ int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 	error = 0;
 	if ((*str)[*i] == '<')
 	{
-		if (fd_in_opened)
+		if (*fd_in_opened)
 			close(data->fd_in);
 		*fd_in_opened = 1;
 		if ((*str)[*i + 1] == '<')
