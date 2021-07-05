@@ -30,7 +30,7 @@ char	*make_filename(char *str, int i)
 
 void	skip_other(char *str, int *i)
 {
-	while (str[*i] != '>' && str[*i])
+	while (str[*i] != '>' && str[*i] != '<' && str[*i])
 	{
 		if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
 		{
@@ -90,6 +90,8 @@ int	redirect(char *str, int i, t_data *data)
 	if (data->fd_out == -1)
 	{
 		ft_putendl_fd(strerror(errno), 2);
+		close(data->fd_out);
+		data->fd_out = 1;
 		return (1);
 	}
 	return (0);
@@ -107,6 +109,8 @@ int 	app_redirect(char *str, int i, t_data *data)
 	if (data->fd_out == -1)
 	{
 		ft_putendl_fd(strerror(errno), 2);
+		close(data->fd_out);
+		data->fd_out = 1;
 		return (1);
 	}
 	return (0);

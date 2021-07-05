@@ -5,9 +5,18 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	int	i;
 	(void)data;
 
-	ft_putstr_fd("fd = ", 0);
-	ft_putnbr_fd(data->fd_out, 0);
-	ft_putstr_fd(" ", 0);
+	ft_putstr_fd("fd output = ", 1);
+	ft_putnbr_fd(data->fd_out, 1);
+	ft_putstr_fd(" ", 1);
+	ft_putstr_fd("fd input = ", 1);
+	ft_putnbr_fd(data->fd_in, 1);
+	ft_putstr_fd(" ", 1);
+	if (data->fd_out != 1)
+		close(data->fd_out);
+	data->fd_out = 1;
+	if (data->fd_in != 0)
+		close(data->fd_in);
+	data->fd_in = 0;
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		echo(cmd_line);
@@ -79,9 +88,9 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		exit(0);
 	else
 	{
-		ft_putstr_fd("minishell: ", 0);
-		ft_putstr_fd(cmd_line[0], 0);
-		ft_putstr_fd(": ", 0);
-		ft_putendl_fd("command not found", 0);
+		ft_putstr_fd("minishell: ", 1);
+		ft_putstr_fd(cmd_line[0], 1);
+		ft_putstr_fd(": ", 1);
+		ft_putendl_fd("command not found", 1);
 	}
 }
