@@ -6,13 +6,15 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../libft/libft.h"
 
 typedef struct s_data
 {
 	int		syn_error;
 	//вся введенная строка:
-	char	*str;
+	char	*line_read;
 	char	*cmd;
 	//массив строк - команды и аргументы:
 	char	***cmd_lines;
@@ -22,18 +24,18 @@ typedef struct s_data
 	//переменные окружения:
 	char	**env;
 	//тут храним фд вывода
-	int		fd;
-	int 	fd2;
+	int		fd_out;
+	//тут храним фд ввода
+	int 	fd_in;
 }				t_data;
 
 void	parsing(t_data *data);
 void	execute_cmd(char **cmd_line, t_data *data);
 void	error_handler(char *str);
 int		check_syntax(char *str);
-void 	spec_sym_handler(char **str, t_data *data);
+void 	spec_sym_handler(char **str);
 void	split_cmd(t_data *data);
-void	make_string(char **str, char c);
-char	*env_handler(char *str, int *i, char **env);
+char	*env_handler(char *str, int *i);
 int		closed_quotes(char *str, int i, char qs);
 char	**split_line(char *str);
 void	malloc_word(char *str, int *i, char **split_string, char s);
@@ -46,8 +48,12 @@ void    echo(char **cmd_line);
 int 	strings_counter(char **array);
 int		not_qs_char_count(char *str, int *i);
 int		redirect_handler(char **str, t_data *data);
-char	*dquotes_handler(char *str, int *i, char **env);
+char	*dquotes_handler(char *str, int *i);
 void	skip_other(char *str, int *i);
-char	*make_filename(char *str, int i, t_data *data);
+char	*make_filename(char *str, int i);
+char	*readline_history(char *prompt, char *line_read);
+void	remove_redirect(char **str, int *i, char c);
+int 	app_redirect(char *str, int i, t_data *data);
+int		redirect(char *str, int i, t_data *data);
 #endif
 

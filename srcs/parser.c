@@ -4,7 +4,7 @@ void	parsing(t_data *data)
 {
 	int syntax_error;
 
-	syntax_error = check_syntax(data->str);
+	syntax_error = check_syntax(data->line_read);
 	if (syntax_error == 1)
 		error_handler("syntax error near unexpected token `|'");
 	else if (syntax_error == 2)

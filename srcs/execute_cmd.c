@@ -5,7 +5,9 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	int	i;
 	(void)data;
 
-	printf("fd = %d ", data->fd);
+	ft_putstr_fd("fd = ", 0);
+	ft_putnbr_fd(data->fd_out, 0);
+	ft_putstr_fd(" ", 0);
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		echo(cmd_line);

@@ -11,8 +11,9 @@ void	init(t_data *data, char **env)
 	data->syn_error = 0;
 	data->env = env;
 	data->cmd_count = 0;
-	data->str = NULL;
-	data->fd = 1;
+	data->line_read = NULL;
+	data->fd_out = 1;
+	data->fd_in = 0;
 }
 
 void	set_promt()
@@ -48,7 +49,6 @@ void	free_cmd_lines(char ***cmd_lines, char **str)
 int		main(int argc, char **argv, char **env)
 {
 	t_data 	*data;
-	char	c;
 	(void)argc;
 	(void)argv;
 
@@ -56,11 +56,10 @@ int		main(int argc, char **argv, char **env)
 	init(data, env);
 	while (1)
 	{
-		set_promt();
-		while (read(0, &c, 1) && c != '\n')
-			make_string(&data->str, c);
-		if (data->str)
+		data->line_read = readline_history("\e[32mminishell> \e[0m",
+										   data->line_read);
+		if (data->line_read)
 			parsing(data);
-		free_cmd_lines(data->cmd_lines, &data->str);
+		//free_cmd_lines(data->cmd_lines, &data->line_read);
 	}
 }

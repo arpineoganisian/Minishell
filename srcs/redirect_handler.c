@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-int	redirect(char *str, int i, t_data *data)
+int input_redirect(char *str, int i, t_data *data)
 {
 	char	*filename;
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i, data);
-	data->fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	filename = make_filename(str, i);
+	data->fd_in = open(filename, O_RDONLY, 0644);
 	free(filename);
-	if (data->fd == -1)
+	if (data->fd_in == -1)
 	{
 		ft_putendl_fd(strerror(errno), 2);
 		return (1);
@@ -17,76 +17,65 @@ int	redirect(char *str, int i, t_data *data)
 	return (0);
 }
 
-int 	app_redirect(char *str, int i, t_data *data)
+int output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 {
-	char	*filename;
+	int	error;
 
-	while (str[i] == ' ')
-		i++;
-	filename = make_filename(str, i, data);
-	data->fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-	free(filename);
-	if (data->fd == -1)
+	error = 0;
+	if ((*str)[*i] == '>')
 	{
-		ft_putendl_fd(strerror(errno), 2);
-		return (1);
+		if (fd_out_opened)
+			close(data->fd_out);
+		*fd_out_opened = 1;
+		if ((*str)[*i + 1] == '>')
+			error = app_redirect(*str, *i + 2, data);
+		else
+			error = redirect(*str, *i + 1, data);
+		remove_redirect(str, i, '>');
 	}
-	return (0);
+	return (error);
 }
 
-void	remove_redirect(char **str, int *i)
+int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 {
-	char	*new_str;
-	char	*first_part;
-	int		start;
+	int	error;
 
-	start = *i;
-	while ((*str)[*i] == '>')
-		(*i)++;
-	while ((*str)[*i] == ' ')
-		(*i)++;
-	if ((*str)[*i] == '\"' && closed_quotes(*str, *i, '\"'))
-		while ((*str)[++(*i)] != '\"')
+	error = 0;
+	if ((*str)[*i] == '<')
+	{
+		if (fd_in_opened)
+			close(data->fd_in);
+		*fd_in_opened = 1;
+		if ((*str)[*i + 1] == '<')
 			;
-	else if ((*str)[*i] == '\'' && closed_quotes(*str, *i, '\''))
-		while ((*str)[++(*i)] != '\'')
-			;
-	else
-		while ((*str)[++(*i)] != ' ' && (*str)[*i])
-			;
-	first_part = ft_substr(*str, 0, start);
-	new_str = ft_strjoin(first_part, *str + *i + 1);
-	free(first_part);
-	free(*str);
-	*str = ft_strdup(new_str);
-	free(new_str);
-	*i = start;
+		else
+			error = input_redirect(*str, *i + 1, data);
+		remove_redirect(str, i, '<');
+	}
+	return (error);
 }
 
 int	redirect_handler(char **str, t_data *data)
 {
-	int	fd_opened;
+	int	fd_out_opened;
+	int fd_in_opened;
 	int	i;
 	int	error;
 
-	fd_opened = 0;
-	i = -1;
-	while ((*str)[++i])
+	fd_out_opened = 0;
+	fd_in_opened = 0;
+	i = 0;
+	while ((*str)[i])
 	{
 		skip_other(*str, &i);
-		if ((*str)[i] == '>')
-		{
-			if (fd_opened)
-				close(data->fd);
-			fd_opened = 1;
-			if ((*str)[i + 1] == '>')
-				error = app_redirect(*str, i + 2, data);
-			else
-				error = redirect(*str, i + 1, data);
-			if (error)
-				return (1);
-			remove_redirect(str, &i);
-		}
+		error = output_redirect(str, &i, data, &fd_out_opened);
+		if (error)
+			return (1);
+		error = input_heredoc_redirect(str, &i, data, &fd_in_opened);
+		if (error)
+			return (1);
+		if ((*str)[i] != '>' && str[i])
+			i++;
 	}
 	return (0);
 }

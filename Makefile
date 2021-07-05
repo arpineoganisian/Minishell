@@ -7,17 +7,19 @@ SRCS_LIST	= main.c parser.c execute_cmd.c syntax_handler.c spec_sym_handler.c sp
 			strings_counter.c redirect_handler_utils.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
 LIB_FT		= -Llibft -lft
+RL_LIB		= -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 OBJ_LIST 	= $(patsubst %.c, %.o, $(SRCS_LIST))
 OBJ 		= $(addprefix $(OBJ_DIR)/, $(OBJ_LIST))
 INC_DIR		= inc
+RL_INC_DIR	= /Users/$(USER)/.brew/opt/readline/include
 SRCS_DIR	= srcs
 OBJ_DIR		= obj
 all:		$(NAME)
 $(NAME):	$(OBJ)
 #			cd libft && make bonus
-			$(CC) $(CFLAGS) $(OBJ) $(LIB_FT) $(LIB_MLX) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJ) $(LIB_FT) $(RL_LIB) -o $(NAME)
 $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJ_DIR)
-			$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
+			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RL_INC_DIR) -c $< -o $@
 $(OBJ_DIR):
 			mkdir -p $@
 clean:

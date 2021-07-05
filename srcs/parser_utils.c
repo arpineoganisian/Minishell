@@ -1,13 +1,14 @@
 #include "minishell.h"
 
-void	make_string(char **str, char c)
+char *readline_history(char *prompt, char *line_read)
 {
-	char	*tmp;
-	tmp = ft_calloc(ft_strlen(*str) + 2, sizeof (char));
-	ft_memcpy(tmp, *str, ft_strlen(*str));
-	tmp[ft_strlen(tmp)] = c;
-	if (*str)
-		free(*str);
-	*str = tmp;
+	if (line_read)
+	{
+		free (line_read);
+		line_read = NULL;
+	}
+	line_read = readline (prompt);
+	if (line_read && *line_read)
+		add_history (line_read);
+	return (line_read);
 }
-

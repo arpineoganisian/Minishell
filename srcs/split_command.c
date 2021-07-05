@@ -66,8 +66,8 @@ void	split_cmd(t_data *data)
 	int k;
 
 	data->cmd_lines = (char ***)malloc(sizeof(char **) * (command_line_count
-			(data->str) + 1));
-	tmp = split_cmds(data->str);
+			(data->line_read) + 1));
+	tmp = split_cmds(data->line_read);
 	i = 0;
 	while (tmp[i])
 	{
@@ -75,9 +75,10 @@ void	split_cmd(t_data *data)
 			return ;
 		data->cmd_lines[i] = split_line(tmp[i]);
 		k = 0;
-		while(data->cmd_lines[i][k])
-			spec_sym_handler(&data->cmd_lines[i][k++], data);
-		execute_cmd(data->cmd_lines[i], data);
+		while (data->cmd_lines[i][k])
+			spec_sym_handler(&data->cmd_lines[i][k++]);
+		if (data->cmd_lines[i][0])
+			execute_cmd(data->cmd_lines[i], data);
 		i++;
 		//free tmp
 	}
