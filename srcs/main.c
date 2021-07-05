@@ -6,14 +6,12 @@ void	error_handler(char *str)
 	ft_putendl_fd(str, 0);
 }
 
-void	init(t_data *data, char **env)
+void	init(t_data *data)
 {
-	data->syn_error = 0;
-	data->env = env;
-	data->cmd_count = 0;
 	data->line_read = NULL;
 	data->fd_out = 1;
 	data->fd_in = 0;
+	data->heredoc = NULL;
 }
 
 void	set_promt()
@@ -46,14 +44,12 @@ void	free_cmd_lines(char ***cmd_lines, char **str)
 	*str = NULL;
 }
 
-int		main(int argc, char **argv, char **env)
+int		main(void)
 {
 	t_data 	*data;
-	(void)argc;
-	(void)argv;
 
 	data = (t_data *) malloc(sizeof(t_data));
-	init(data, env);
+	init(data);
 	while (1)
 	{
 		data->line_read = readline_history("\e[32mminishell> \e[0m",
