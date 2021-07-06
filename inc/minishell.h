@@ -8,9 +8,8 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/types.h>
+//# include <sys/types.h>
 # include <dirent.h>
-# include "dir.h"
 # include "../libft/libft.h"
 
 typedef struct s_data
