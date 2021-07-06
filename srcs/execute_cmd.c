@@ -17,6 +17,11 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	if (data->fd_in != 0)
 		close(data->fd_in);
 	data->fd_in = 0;
+	if (data->fd_heredoc)
+	{
+		ft_putstr_fd("heredoc!! = \n", 1);
+		ft_putstr_fd(data->heredoc, 1);
+	}
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		echo(cmd_line);
@@ -42,14 +47,19 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	}
 	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen("pwd")))
 	{
-		printf("cmd = %s ", cmd_line[0]);
-		i = 1;
-		while (cmd_line[i])
-		{
-			printf("| %d arg = %s ", i, cmd_line[i]);
-			i++;
-		}
-		printf("\n");
+		//TODO:
+		// Оригинальный bash при команде "pwd+еще какая-то шняга без пробела" (напр: pwd000)
+		// говорит, что команда не найдена
+		// Наш работает, потому что strncmp все равно возвращает 0 в таком случае
+		pwd();
+//		printf("cmd = %s ", cmd_line[0]);
+//		i = 1;
+//		while (cmd_line[i])
+//		{
+//			printf("| %d arg = %s ", i, cmd_line[i]);
+//			i++;
+//		}
+//		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen("export")))
 	{

@@ -8,8 +8,8 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-//# include <sys/types.h>
 # include <dirent.h>
+# include <signal.h>
 # include "../libft/libft.h"
 
 typedef struct s_data
@@ -55,5 +55,6 @@ void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
+void 	pwd();
 #endif
 
