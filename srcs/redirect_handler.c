@@ -38,6 +38,34 @@ int output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 	return (error);
 }
 
+int heredoc_redirect(char *str, int i, t_data *data)
+{
+	char	*word;
+	char 	*tmp;
+	int		do_read;
+
+	while (str[i] == ' ')
+		i++;
+	word = make_filename(str, i);
+	data->heredoc = readline(">");
+	do_read = ft_strncmp(word, data->heredoc, ft_strlen(word));
+	data->heredoc = string_join(data->heredoc, "\n");
+	while (do_read)
+	{
+		data->heredoc = string_join(data->heredoc, tmp);
+		if (tmp && *tmp)
+			free(tmp);
+		tmp = readline(">");
+		do_read = ft_strncmp(word, tmp, ft_strlen(word));
+		tmp = string_join(tmp, "\n");
+	}
+	if (tmp && *tmp)
+		free(tmp);
+	data->fd_heredoc = 1;
+	free(word);
+	return (0);
+}
+
 int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 {
 	int	error;
@@ -49,7 +77,7 @@ int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 			close(data->fd_in);
 		*fd_in_opened = 1;
 		if ((*str)[*i + 1] == '<')
-			;
+			heredoc_redirect(*str, *i + 2, data);
 		else
 			error = input_redirect(*str, *i + 1, data);
 		remove_redirect(str, i, '<');

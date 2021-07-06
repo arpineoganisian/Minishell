@@ -12,21 +12,18 @@
 
 typedef struct s_data
 {
-	int		syn_error;
 	//вся введенная строка:
 	char	*line_read;
-	char	*cmd;
 	//массив строк - команды и аргументы:
 	char	***cmd_lines;
-	int 	cmd_count;
-	char	*arg;
-	int		flag;
-	//переменные окружения:
-	char	**env;
 	//тут храним фд вывода
 	int		fd_out;
 	//тут храним фд ввода
 	int 	fd_in;
+	//если бы heredoc, то фд = 1
+	int 	fd_heredoc;
+	//если фд_хередок = 1, то тут input строка
+	char	*heredoc;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -55,5 +52,6 @@ char	*readline_history(char *prompt, char *line_read);
 void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
+char	*string_join(char *str1, char *str2);
 #endif
 
