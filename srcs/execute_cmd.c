@@ -17,6 +17,11 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	if (data->fd_in != 0)
 		close(data->fd_in);
 	data->fd_in = 0;
+	if (data->fd_heredoc)
+	{
+		ft_putstr_fd("heredoc!! = \n", 1);
+		ft_putstr_fd(data->heredoc, 1);
+	}
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
 	{
 		echo(cmd_line);

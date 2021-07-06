@@ -50,6 +50,7 @@ int heredoc_redirect(char *str, int i, t_data *data)
 	data->heredoc = readline(">");
 	do_read = ft_strncmp(word, data->heredoc, ft_strlen(word));
 	data->heredoc = string_join(data->heredoc, "\n");
+	tmp = ft_strdup("");
 	while (do_read)
 	{
 		data->heredoc = string_join(data->heredoc, tmp);

@@ -10,7 +10,7 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <dirent.h>
-# include "dir.h"
+# include <signal.h>
 # include "../libft/libft.h"
 
 typedef struct s_data
