@@ -8,6 +8,9 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <dirent.h>
+# include "dir.h"
 # include "../libft/libft.h"
 
 typedef struct s_data
@@ -20,7 +23,7 @@ typedef struct s_data
 	int		fd_out;
 	//тут храним фд ввода
 	int 	fd_in;
-	//если бы heredoc, то фд = 1
+	//если был heredoc, то фд = 1
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
 	char	*heredoc;

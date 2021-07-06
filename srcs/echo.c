@@ -39,7 +39,6 @@ void    echo(char **cmd_line)
 	}
 	i = 1;
 	flag_n = check_flag(cmd_line, &i);
-//	printf("heheh %i\n", i);
 	while (i < strings_amount && cmd_line[i])
 	{
 		ft_putstr_fd(cmd_line[i], 1);
