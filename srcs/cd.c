@@ -33,7 +33,7 @@ int cd(char **cmd_line, t_data *data)
 	{
 		tmp = ft_strjoin("cd: ", cmd_line[1]);
 		error = ft_strjoin(tmp, ": ");
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
 		free(tmp);
 		free(error);
 		return 1;
