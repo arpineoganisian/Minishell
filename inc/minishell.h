@@ -26,8 +26,8 @@ typedef struct s_data
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
 	char	*heredoc;
-	//код завершения
-	int exit_status;
+	//TODO нужны переменные окружения из main()
+	char	**envp;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -45,7 +45,7 @@ void	copy_space_word(char *str, int *i, char **split_string);
 void 	copy_word(char *str, int *i, char **split_string, char s);
 int		command_line_count(char *str);
 void	line_char_count(char *str, int *i);
-void    echo(char **cmd_line);
+int		echo(char **cmd_line);
 int 	strings_counter(char **array);
 int		not_qs_char_count(char *str, int *i);
 int		redirect_handler(char **str, t_data *data);
@@ -57,6 +57,7 @@ void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
-void 	pwd();
+int		pwd();
+int		cd(char **cmd_line);
+int		env(t_data *data);
 #endif
-
