@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*make_filename(char *str, int i)
+char	*make_filename(char *str, int i, t_data *data)
 {
 	int		tmp;
 	char	*tmp_str;
@@ -24,7 +24,7 @@ char	*make_filename(char *str, int i)
 			;
 	}
 	tmp_str = ft_substr(str, tmp, i - tmp + 1);
-	spec_sym_handler(&tmp_str);
+	spec_sym_handler(&tmp_str, data);
 	return (tmp_str);
 }
 
@@ -85,7 +85,7 @@ int	redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i);
+	filename = make_filename(str, i, data);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (data->fd_out == -1)
 	{
@@ -108,7 +108,7 @@ int 	app_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i);
+	filename = make_filename(str, i, data);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (data->fd_out == -1)
 	{

@@ -27,7 +27,7 @@ char 	*key_found(char *value, char *str, int start, int end)
 	return (new_str);
 }
 
-char	*env_handler(char *str, int *i)
+char	*env_handler(char *str, int *i, t_data *data)
 {
 	char	*env_key;
 	char	*new_str;
@@ -36,10 +36,13 @@ char	*env_handler(char *str, int *i)
 
 	start = *i;
 	(*i)++;
-	while (str[*i] == '_' || ft_isalnum(str[*i]))
+	while (str[*i] == '_' || ft_isalnum(str[*i]) || str[*i] == '?')
 		(*i)++;
 	env_key = ft_substr(str, start + 1, *i - start - 1);
-	value = getenv(env_key);
+	if (!ft_strncmp(env_key, "?", ft_strlen(env_key)))
+		value = ft_itoa(data->exit_status);
+	else
+		value = getenv(env_key);
 	if (!value)
 	{
 		new_str = key_not_found(str, start, *i);
