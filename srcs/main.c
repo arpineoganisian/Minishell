@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-void	error_handler(char *str, t_data *data, int exit_status, int fd)
+void	error_handler(char *str, t_data *data, int exit_status)
 {
-	ft_putstr_fd("minishell: ", fd);
-	ft_putendl_fd(str, fd);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putendl_fd(str, 2);
+	free(str);
 	data->exit_status = exit_status;
 }
 

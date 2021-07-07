@@ -44,11 +44,9 @@ char	*env_handler(char *str, int *i, t_data *data)
 	else
 		value = getenv(env_key);
 	if (!value)
-	{
 		new_str = key_not_found(str, start, *i);
-		*i = start;
-	}
 	else
 		new_str = key_found(value, str, start, *i);
+	*i = start;
 	return (new_str);
 }
