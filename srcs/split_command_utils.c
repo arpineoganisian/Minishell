@@ -12,10 +12,10 @@ void	quotes_handle(char *str, int *i, char c)
 		*i = k;
 }
 
-int		command_line_count(char *str)
+int	command_line_count(char *str)
 {
 	int	i;
-	int count;
+	int	count;
 
 	count = 0;
 	i = 0;
@@ -35,7 +35,7 @@ int		command_line_count(char *str)
 
 void	line_char_count(char *str, int *i)
 {
-	int tmp_i;
+	int	tmp_i;
 
 	while (str[*i] != '|' && str[*i])
 	{

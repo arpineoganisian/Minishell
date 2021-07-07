@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *readline_history(char *prompt, char *line_read)
+char	*readline_history(char *prompt, char *line_read)
 {
 	if (line_read)
 	{

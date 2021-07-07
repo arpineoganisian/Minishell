@@ -36,7 +36,7 @@ char	**split_cmds(char *str)
 	char	**str_arr;
 	int		cl_count;
 	int		i;
-	int 	cmd_chr;
+	int		cmd_chr;
 	int		start;
 
 	str_arr = NULL;
@@ -62,11 +62,11 @@ char	**split_cmds(char *str)
 void	split_cmd(t_data *data)
 {
 	char	**tmp;
-	int	i;
-	int k;
+	int		i;
+	int		k;
 
 	data->cmd_lines = (char ***)malloc(sizeof(char **) * (command_line_count
-			(data->line_read) + 1));
+				(data->line_read) + 1));
 	tmp = split_cmds(data->line_read);
 	i = 0;
 	while (tmp[i])

@@ -14,8 +14,8 @@ char	*key_not_found(char *str, int start, int end)
 
 char 	*key_found(char *value, char *str, int start, int end)
 {
-	char 	*new_str;
-	char 	*merge_str;
+	char	*new_str;
+	char	*merge_str;
 
 	new_str = ft_substr(str, 0, start);
 	merge_str = ft_strjoin(new_str, value);

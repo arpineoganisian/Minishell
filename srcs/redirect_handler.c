@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int input_redirect(char *str, int i, t_data *data)
+int	input_redirect(char *str, int i, t_data *data)
 {
 	char	*filename;
 	char	*error;
@@ -23,7 +23,7 @@ int input_redirect(char *str, int i, t_data *data)
 	return (0);
 }
 
-int output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
+int	output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 {
 	int	error;
 
@@ -42,10 +42,10 @@ int output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 	return (error);
 }
 
-int heredoc_redirect(char *str, int i, t_data *data)
+int	heredoc_redirect(char *str, int i, t_data *data)
 {
 	char	*word;
-	char 	*tmp;
+	char	*tmp;
 	int		do_read;
 
 	while (str[i] == ' ')
@@ -93,7 +93,7 @@ int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 int	redirect_handler(char **str, t_data *data)
 {
 	int	fd_out_opened;
-	int fd_in_opened;
+	int	fd_in_opened;
 	int	i;
 	int	error;
 

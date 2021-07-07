@@ -54,7 +54,7 @@ char	*dquotes_handler(char *str, int *i, t_data *data)
 	return (new_str);
 }
 
-int		closed_quotes(char *str, int i, char qs)
+int	closed_quotes(char *str, int i, char qs)
 {
 	i++;
 	while (str[i])

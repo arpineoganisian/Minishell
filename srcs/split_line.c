@@ -2,8 +2,8 @@
 
 void	malloc_word(char *str, int *i, char **split_string, char s)
 {
-	*split_string = (char *)malloc(sizeof(char) *
-								   (char_count(str, i, s) + 1));
+	*split_string = (char *)malloc(sizeof(char)
+			   * (char_count(str, i, s) + 1));
 	if (str[*i] == s)
 		(*i)++;
 }
@@ -22,15 +22,15 @@ void	*split_words_malloc(char **split_string, char *str)
 		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 			malloc_word(str, &i, &split_string[words_count++], '\"');
 		if (str[i] != ' ' && str[i])
-			split_string[words_count++] = (char *)malloc(sizeof(char) *
-														 (not_qs_char_count(str, &i) + 1));
+			split_string[words_count++] = (char *)malloc(sizeof(char)
+					* (not_qs_char_count(str, &i) + 1));
 		if (str[i])
 			i++;
 	}
 	return (split_string);
 }
 
-int		count_words(char *str, int i, int count)
+int	count_words(char *str, int i, int count)
 {
 	while (str[i])
 	{
@@ -61,19 +61,18 @@ int		count_words(char *str, int i, int count)
 
 void	*split_string_malloc(char **split_string, char *str)
 {
-	split_string = (char **)malloc(sizeof(char *) *
-								   (count_words(str, 0, 0) + 1));
+	split_string = (char **)malloc(sizeof(char *)
+			* (count_words(str, 0, 0) + 1));
 	if (!split_string)
 		return (NULL);
 	return (split_words_malloc(split_string, str));
 }
 
-
 char	**split_line(char *str)
 {
 	char	**split_string;
 	int		i;
-	int 	words_count;
+	int		words_count;
 
 	split_string = NULL;
 	split_string = split_string_malloc(split_string, str);

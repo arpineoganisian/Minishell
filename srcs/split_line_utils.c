@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void	copy_word_qs(char *str, int *i, char **split_string, int *count)
+{
+	(*split_string)[(*count)++] = str[(*i)++];
+	while (str[*i] != '\'' && str[*i])
+		(*split_string)[(*count)++] = str[(*i)++];
+	(*split_string)[(*count)++] = str[(*i)++];
+}
+
 void 	copy_word(char *str, int *i, char **split_string, char s)
 {
 	int	count;
@@ -19,13 +27,8 @@ void 	copy_word(char *str, int *i, char **split_string, char s)
 			(*split_string)[count++] = str[(*i)++];
 		}
 		if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
-		{
-			(*split_string)[count++] = str[(*i)++];
-			while (str[*i] != '\'' && str[*i])
-				(*split_string)[count++] = str[(*i)++];
-			(*split_string)[count++] = str[(*i)++];
-		}
-		if (str[*i] != ' ')
+			copy_word_qs(str, i, split_string, &count);
+		if (str[*i] != ' ' && str[*i])
 			(*split_string)[count++] = str[(*i)++];
 	}
 	(*split_string)[count] = '\0';
@@ -69,7 +72,7 @@ int	char_count(char *str, int *i, char s)
 			count += char_count(str, i, '\"');
 		if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
 			count += char_count(str, i, '\'');
-		if (str[*i] != ' ')
+		if (str[*i] != ' ' && str[*i])
 		{
 			(*i)++;
 			count++;
@@ -80,23 +83,20 @@ int	char_count(char *str, int *i, char s)
 
 int	not_qs_char_count(char *str, int *i)
 {
-	int	char_count;
+	int	count;
 
-	char_count = 0;
+	count = 0;
 	while (str[*i] != ' ' && str[*i])
 	{
 		if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
+			count += char_count(str, i, '\'');
+		if (str[*i] == '\"' && closed_quotes(str, *i, '\"'))
+			count += char_count(str, i, '\"');
+		if (str[*i] != ' ' && str[*i])
 		{
 			(*i)++;
-			char_count++;
-			while (str[*i] != '\'' && str[*i])
-			{
-				(*i)++;
-				char_count++;
-			}
+			count++;
 		}
-		(*i)++;
-		char_count++;
 	}
-	return (char_count);
+	return (count);
 }
