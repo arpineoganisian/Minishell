@@ -28,11 +28,13 @@ typedef struct s_data
 	char	*heredoc;
 	//TODO нужны переменные окружения из main()
 	char	**envp;
+	//статус выхода
+	int		exit_status;
 }				t_data;
 
 void	parsing(t_data *data);
 void	execute_cmd(char **cmd_line, t_data *data);
-void	error_handler(char *str);
+void	error_handler(char *str, t_data *data, int exit_status, int fd);
 int		check_syntax(char *str);
 void 	spec_sym_handler(char **str);
 void	split_cmd(t_data *data);

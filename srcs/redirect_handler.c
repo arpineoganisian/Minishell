@@ -3,19 +3,23 @@
 int input_redirect(char *str, int i, t_data *data)
 {
 	char	*filename;
+	char	*error;
 
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i);
 	data->fd_in = open(filename, O_RDONLY, 0644);
-	free(filename);
 	if (data->fd_in == -1)
 	{
-		ft_putendl_fd(strerror(errno), 2);
+		error = ft_strjoin(filename, ": ");
+		free(filename);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		free(error);
 		close(data->fd_in);
 		data->fd_in = 0;
 		return (1);
 	}
+	free(filename);
 	return (0);
 }
 
@@ -78,7 +82,7 @@ int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 			close(data->fd_in);
 		*fd_in_opened = 1;
 		if ((*str)[*i + 1] == '<')
-			heredoc_redirect(*str, *i + 2, data);
+			error = heredoc_redirect(*str, *i + 2, data);
 		else
 			error = input_redirect(*str, *i + 1, data);
 		remove_redirect(str, i, '<');

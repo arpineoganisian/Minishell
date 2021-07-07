@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	error_handler(char *str)
+void	error_handler(char *str, t_data *data, int exit_status, int fd)
 {
-	ft_putstr_fd("minishell: ", 0);
-	ft_putendl_fd(str, 0);
-
+	ft_putstr_fd("minishell: ", fd);
+	ft_putendl_fd(str, fd);
+	data->exit_status = exit_status;
 }
 
 void ctrl_c(int sig)
@@ -15,7 +15,7 @@ void ctrl_c(int sig)
 	rl_redisplay();
 }
 
-void	init(t_data *data)
+void	init(t_data *data, char **envp)
 {
 	data->line_read = NULL;
 	data->fd_out = 1;
@@ -23,6 +23,7 @@ void	init(t_data *data)
 	data->heredoc = NULL;
 	data->fd_heredoc = 0;
 	data->exit_status = 0;
+	data->envp = envp;
 	rl_catch_signals = 0;
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
@@ -53,12 +54,14 @@ void	free_cmd_lines(char ***cmd_lines, char **str)
 	*str = NULL;
 }
 
-int		main(void)
+int		main(int argc, char **argv, char **envp)
 {
 	t_data 	*data;
+	(void)argc;
+	(void)argv;
 
 	data = (t_data *) malloc(sizeof(t_data));
-	init(data);
+	init(data, envp);
 	while (1)
 	{
 		data->line_read = readline_history("\e[32mminishell> \e[0m",

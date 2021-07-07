@@ -93,7 +93,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 //		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0])))
-		exit(0);
+		exit(data->exit_status);
 	else
 	{
 		ft_putstr_fd("minishell: ", 1);

@@ -81,37 +81,45 @@ void	remove_redirect(char **str, int *i, char c)
 int	redirect(char *str, int i, t_data *data)
 {
 	char	*filename;
+	char	*error;
 
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	free(filename);
 	if (data->fd_out == -1)
 	{
-		ft_putendl_fd(strerror(errno), 2);
+		error = ft_strjoin(filename, ": ");
+		free(filename);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;
 		return (1);
 	}
+	free(filename);
 	return (0);
 }
 
 int 	app_redirect(char *str, int i, t_data *data)
 {
 	char	*filename;
+	char	*error;
 
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-	free(filename);
 	if (data->fd_out == -1)
 	{
-		ft_putendl_fd(strerror(errno), 2);
+		error = ft_strjoin(filename, ": ");
+		free(filename);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;
 		return (1);
 	}
+	free(filename);
 	return (0);
 }
