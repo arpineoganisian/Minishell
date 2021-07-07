@@ -26,6 +26,8 @@ typedef struct s_data
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
 	char	*heredoc;
+	//TODO нужны переменные окружения из main()
+	char	**envp;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -56,5 +58,6 @@ int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
 int		pwd();
-int		cd();
+int		cd(char **cmd_line);
+int		env(t_data *data);
 #endif
