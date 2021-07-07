@@ -109,7 +109,7 @@ int	redirect_handler(char **str, t_data *data)
 		error = input_heredoc_redirect(str, &i, data, &fd_in_opened);
 		if (error)
 			return (1);
-		if ((*str)[i] != '>' && str[i])
+		if ((*str)[i] != '>' && (*str)[i])
 			i++;
 	}
 	return (0);
