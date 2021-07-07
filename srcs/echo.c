@@ -25,7 +25,7 @@ int		check_flag(char **cmd_line, int *i)
 	return 1;
 }
 
-void    echo(char **cmd_line)
+int    echo(char **cmd_line)
 {
 	int i;
 	int flag_n;
@@ -35,7 +35,7 @@ void    echo(char **cmd_line)
 	if (strings_amount == 1)
 	{
 		write(1, "\n", 1);
-		return;
+		return 0;
 	}
 	i = 1;
 	flag_n = check_flag(cmd_line, &i);
@@ -48,4 +48,5 @@ void    echo(char **cmd_line)
 	}
 	if (!flag_n)
 		write(1, "\n", 1);
+	return 0;
 }

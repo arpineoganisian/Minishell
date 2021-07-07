@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void cd()
+int cd()
 {
 
 }
