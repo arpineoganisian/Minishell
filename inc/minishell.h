@@ -34,7 +34,7 @@ typedef struct s_data
 
 void	parsing(t_data *data);
 void	execute_cmd(char **cmd_line, t_data *data);
-void	error_handler(char *str, t_data *data, int exit_status, int fd);
+void	error_handler(char *str, t_data *data, int exit_status);
 int		check_syntax(char *str);
 void 	spec_sym_handler(char **str, t_data *data);
 void	split_cmd(t_data *data);

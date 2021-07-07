@@ -13,7 +13,7 @@ int input_redirect(char *str, int i, t_data *data)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
 		free(error);
 		close(data->fd_in);
 		data->fd_in = 0;

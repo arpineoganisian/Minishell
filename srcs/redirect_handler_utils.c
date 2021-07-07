@@ -91,7 +91,7 @@ int	redirect(char *str, int i, t_data *data)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
 		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;
@@ -114,7 +114,7 @@ int 	app_redirect(char *str, int i, t_data *data)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1, 2);
+		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
 		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;
