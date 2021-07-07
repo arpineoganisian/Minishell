@@ -22,7 +22,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		ft_putstr_fd("heredoc!! = \n", 1);
 		ft_putstr_fd(data->heredoc, 1);
 	}
-	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
+	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen(cmd_line[0])))
 	{
 		echo(cmd_line);
 //		printf("cmd = %s ", cmd_line[0]);
@@ -34,7 +34,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 //		}
 //		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen("cd")))
+	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen(cmd_line[0])))
 	{
 		printf("cmd = %s ", cmd_line[0]);
 		i = 1;
@@ -45,12 +45,8 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		}
 		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen("pwd")))
+	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen(cmd_line[0])))
 	{
-		//TODO:
-		// Оригинальный bash при команде "pwd+еще какая-то шняга без пробела" (напр: pwd000)
-		// говорит, что команда не найдена
-		// Наш работает, потому что strncmp все равно возвращает 0 в таком случае
 		pwd();
 //		printf("cmd = %s ", cmd_line[0]);
 //		i = 1;
@@ -61,7 +57,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 //		}
 //		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen("export")))
+	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen(cmd_line[0])))
 	{
 		printf("cmd = %s ", cmd_line[0]);
 		i = 1;
@@ -72,7 +68,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		}
 		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen("unset")))
+	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0])))
 	{
 		printf("cmd = %s ", cmd_line[0]);
 		i = 1;
@@ -83,7 +79,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		}
 		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen("env")))
+	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0])))
 	{
 		printf("cmd = %s ", cmd_line[0]);
 		i = 1;
@@ -94,7 +90,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		}
 		printf("\n");
 	}
-	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen("exit")))
+	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0])))
 		exit(0);
 	else
 	{
@@ -102,5 +98,6 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		ft_putstr_fd(cmd_line[0], 1);
 		ft_putstr_fd(": ", 1);
 		ft_putendl_fd("command not found", 1);
+		data->exit_status = 127;
 	}
 }

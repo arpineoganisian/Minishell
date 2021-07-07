@@ -26,6 +26,8 @@ typedef struct s_data
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
 	char	*heredoc;
+	//код завершения
+	int exit_status;
 }				t_data;
 
 void	parsing(t_data *data);
