@@ -36,7 +36,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	}
 	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen(cmd_line[0])))
 	{
-		cd(cmd_line);
+		cd(cmd_line, data);
 //		printf("cmd = %s ", cmd_line[0]);
 //		i = 1;
 //		while (cmd_line[i])
