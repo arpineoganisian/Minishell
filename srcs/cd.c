@@ -30,7 +30,7 @@ int	cd_home(void)
 	return (0);
 }
 
-int	cd(char **cmd_line)
+int cd(char **cmd_line)
 {
 	if (strings_counter(cmd_line) == 1)
 		return (cd_home());

@@ -12,6 +12,8 @@
 # include <signal.h>
 # include "../libft/libft.h"
 
+int	exit_status;
+
 typedef struct s_data
 {
 	//вся введенная строка:
@@ -28,17 +30,15 @@ typedef struct s_data
 	char	*heredoc;
 	//TODO нужны переменные окружения из main()
 	char	**envp;
-	//статус выхода
-	int		exit_status;
 }				t_data;
 
 void	parsing(t_data *data);
 void	execute_cmd(char **cmd_line, t_data *data);
-void	error_handler(char *str, t_data *data, int exit_status);
+void	error_handler(char *str, int exit_status);
 int		check_syntax(char *str);
-void 	spec_sym_handler(char **str, t_data *data);
+void 	spec_sym_handler(char **str);
 void	split_cmd(t_data *data);
-char	*env_handler(char *str, int *i, t_data *data);
+char	*env_handler(char *str, int *i);
 int		closed_quotes(char *str, int i, char qs);
 char	**split_line(char *str);
 void	malloc_word(char *str, int *i, char **split_string, char s);
@@ -51,15 +51,16 @@ int		echo(char **cmd_line);
 int 	strings_counter(char **array);
 int		not_qs_char_count(char *str, int *i);
 int		redirect_handler(char **str, t_data *data);
-char	*dquotes_handler(char *str, int *i,t_data *data);
+char	*dquotes_handler(char *str, int *i);
 void	skip_other(char *str, int *i);
-char	*make_filename(char *str, int i, t_data *data);
+char	*make_filename(char *str, int i);
 char	*readline_history(char *prompt, char *line_read);
 void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
 int		pwd();
-int 	cd(char **cmd_line, t_data *data);
+int 	cd(char **cmd_line);
 int		env(t_data *data);
+int		export();
 #endif

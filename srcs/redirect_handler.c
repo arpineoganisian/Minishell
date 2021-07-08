@@ -7,13 +7,13 @@ int	input_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i, data);
+	filename = make_filename(str, i);
 	data->fd_in = open(filename, O_RDONLY, 0644);
 	if (data->fd_in == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
+		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
 		close(data->fd_in);
 		data->fd_in = 0;
@@ -50,8 +50,14 @@ int	heredoc_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	word = make_filename(str, i, data);
-	data->heredoc = readline(">");
+	word = make_filename(str, i);
+	data->heredoc = readline("> ");
+	if (!data->heredoc)
+	{
+		ft_putstr_fd("\e[1F\e[3G", 1);
+		free(word);
+		return (1);
+	}
 	do_read = ft_strncmp(word, data->heredoc, ft_strlen(word));
 	data->heredoc = string_join(data->heredoc, "\n");
 	tmp = ft_strdup("");
@@ -60,7 +66,15 @@ int	heredoc_redirect(char *str, int i, t_data *data)
 		data->heredoc = string_join(data->heredoc, tmp);
 		if (tmp && *tmp)
 			free(tmp);
-		tmp = readline(">");
+		tmp = readline("> ");
+		if (!tmp)
+		{
+			ft_putstr_fd("\e[1F\e[3G", 1);
+			ft_putstr_fd(data->heredoc, data->fd_out);
+			if (data->heredoc && *data->heredoc)
+				free(data->heredoc);
+			return (1);
+		}
 		do_read = ft_strncmp(word, tmp, ft_strlen(word));
 		tmp = string_join(tmp, "\n");
 	}
