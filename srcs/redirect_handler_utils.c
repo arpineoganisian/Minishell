@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*make_filename(char *str, int i, t_data *data)
+char	*make_filename(char *str, int i)
 {
 	int		tmp;
 	char	*tmp_str;
@@ -24,7 +24,7 @@ char	*make_filename(char *str, int i, t_data *data)
 			;
 	}
 	tmp_str = ft_substr(str, tmp, i - tmp + 1);
-	spec_sym_handler(&tmp_str, data);
+	spec_sym_handler(&tmp_str);
 	return (tmp_str);
 }
 
@@ -85,13 +85,13 @@ int	redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i, data);
+	filename = make_filename(str, i);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (data->fd_out == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
+		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;
@@ -108,13 +108,13 @@ int 	app_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i, data);
+	filename = make_filename(str, i);
 	data->fd_out = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (data->fd_out == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
-		error_handler(ft_strjoin(error, strerror(errno)), data, 1);
+		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
 		close(data->fd_out);
 		data->fd_out = 1;

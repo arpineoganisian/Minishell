@@ -1,18 +1,21 @@
 #include "minishell.h"
 
-void	error_handler(char *str, t_data *data, int exit_status)
+void	error_handler(char *str, int status)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putendl_fd(str, 2);
 	free(str);
-	data->exit_status = exit_status;
+	exit_status = status;
 }
 
 void ctrl_c(int sig)
 {
 	(void)sig;
-	ft_putstr_fd("\n", 1);
 	rl_on_new_line();
+	rl_redisplay();
+	ft_putstr_fd("  \b\b\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -23,9 +26,8 @@ void	init(t_data *data, char **envp)
 	data->fd_in = 0;
 	data->heredoc = NULL;
 	data->fd_heredoc = 0;
-	data->exit_status = 0;
+	exit_status = 0;
 	data->envp = envp;
-	rl_catch_signals = 0;
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }

@@ -76,7 +76,7 @@ void	split_cmd(t_data *data)
 		data->cmd_lines[i] = split_line(tmp[i]);
 		k = 0;
 		while (data->cmd_lines[i][k])
-			spec_sym_handler(&data->cmd_lines[i][k++], data);
+			spec_sym_handler(&data->cmd_lines[i][k++]);
 		if (data->cmd_lines[i][0])
 			execute_cmd(data->cmd_lines[i], data);
 		i++;
