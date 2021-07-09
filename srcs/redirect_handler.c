@@ -45,41 +45,11 @@ int	output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 int	heredoc_redirect(char *str, int i, t_data *data)
 {
 	char	*word;
-	char	*tmp;
-	int		do_read;
 
 	while (str[i] == ' ')
 		i++;
 	word = make_filename(str, i);
-	data->heredoc = readline("> ");
-	if (!data->heredoc)
-	{
-		ft_putstr_fd("\e[1F\e[3G", 1);
-		free(word);
-		return (1);
-	}
-	do_read = ft_strncmp(word, data->heredoc, ft_strlen(word));
-	data->heredoc = string_join(data->heredoc, "\n");
-	tmp = ft_strdup("");
-	while (do_read)
-	{
-		data->heredoc = string_join(data->heredoc, tmp);
-		if (tmp && *tmp)
-			free(tmp);
-		tmp = readline("> ");
-		if (!tmp)
-		{
-			ft_putstr_fd("\e[1F\e[3G", 1);
-			ft_putstr_fd(data->heredoc, data->fd_out);
-			if (data->heredoc && *data->heredoc)
-				free(data->heredoc);
-			return (1);
-		}
-		do_read = ft_strncmp(word, tmp, ft_strlen(word));
-		tmp = string_join(tmp, "\n");
-	}
-	if (tmp && *tmp)
-		free(tmp);
+	heredoc_read(data, word);
 	data->fd_heredoc = 1;
 	free(word);
 	return (0);
