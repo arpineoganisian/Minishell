@@ -10,6 +10,7 @@
 # include <readline/history.h>
 # include <dirent.h>
 # include <signal.h>
+# include <sys/types.h>
 # include "../libft/libft.h"
 
 int	exit_status;
