@@ -25,6 +25,7 @@ void	execute_bin(char **cmd_line, t_data *data)
 		while (paths[i])
 		{
 			path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
+			//TODO проверить бинарник
 			execve(path_to_bin, cmd_line, data->envp);
 			free(path_to_bin);
 			i++;
