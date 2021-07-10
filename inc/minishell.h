@@ -65,5 +65,5 @@ int 	cd(char **cmd_line);
 int		env(t_data *data);
 int		export();
 int 	heredoc_read(t_data *data, char *word);
-void		execute_file(char **cmd_line, t_data *data);
+void	execute_bin(char **cmd_line, t_data *data);
 #endif

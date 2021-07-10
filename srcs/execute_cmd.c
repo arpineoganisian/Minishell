@@ -3,7 +3,6 @@
 void	execute_cmd(char **cmd_line, t_data *data)
 {
 	int	i;
-	(void)data;
 
 //	ft_putstr_fd("fd output = ", 1);
 //	ft_putnbr_fd(data->fd_out, 1);
@@ -37,38 +36,14 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen(cmd_line[0])))
 	{
 		cd(cmd_line);
-//		printf("cmd = %s ", cmd_line[0]);
-//		i = 1;
-//		while (cmd_line[i])
-//		{
-//			printf("| %d arg = %s ", i, cmd_line[i]);
-//			i++;
-//		}
-//		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen(cmd_line[0])))
 	{
 		pwd();
-//		printf("cmd = %s ", cmd_line[0]);
-//		i = 1;
-//		while (cmd_line[i])
-//		{
-//			printf("| %d arg = %s ", i, cmd_line[i]);
-//			i++;
-//		}
-//		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen(cmd_line[0])))
 	{
 		export();
-//		printf("cmd = %s ", cmd_line[0]);
-//		i = 1;
-//		while (cmd_line[i])
-//		{
-//			printf("| %d arg = %s ", i, cmd_line[i]);
-//			i++;
-//		}
-//		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0])))
 	{
@@ -84,24 +59,11 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0])))
 	{
 		env(data);
-//		printf("cmd = %s ", cmd_line[0]);
-//		i = 1;
-//		while (cmd_line[i])
-//		{
-//			printf("| %d arg = %s ", i, cmd_line[i]);
-//			i++;
-//		}
-//		printf("\n");
 	}
 	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0])))
 		exit(exit_status);
 	else
 	{
-		execute_file(cmd_line, data);
-//		ft_putstr_fd("minishell: ", 1);
-//		ft_putstr_fd(cmd_line[0], 1);
-//		ft_putstr_fd(": ", 1);
-//		ft_putendl_fd("command not found", 1);
-//		exit_status = 127;
+		execute_bin(cmd_line, data);
 	}
 }
