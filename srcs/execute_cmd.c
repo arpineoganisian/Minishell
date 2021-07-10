@@ -97,10 +97,11 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		exit(exit_status);
 	else
 	{
-		ft_putstr_fd("minishell: ", 1);
-		ft_putstr_fd(cmd_line[0], 1);
-		ft_putstr_fd(": ", 1);
-		ft_putendl_fd("command not found", 1);
-		exit_status = 127;
+		execute_file(cmd_line, data);
+//		ft_putstr_fd("minishell: ", 1);
+//		ft_putstr_fd(cmd_line[0], 1);
+//		ft_putstr_fd(": ", 1);
+//		ft_putendl_fd("command not found", 1);
+//		exit_status = 127;
 	}
 }

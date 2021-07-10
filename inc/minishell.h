@@ -29,7 +29,7 @@ typedef struct s_data
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
 	char	*heredoc;
-	//TODO нужны переменные окружения из main()
+	//переменные окружения из main()
 	char	**envp;
 }				t_data;
 
@@ -65,4 +65,5 @@ int 	cd(char **cmd_line);
 int		env(t_data *data);
 int		export();
 int 	heredoc_read(t_data *data, char *word);
+void		execute_file(char **cmd_line, t_data *data);
 #endif
