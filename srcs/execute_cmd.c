@@ -19,7 +19,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	data->fd_in = 0;
 	if (data->fd_heredoc)
 	{
-//		ft_putstr_fd("heredoc!! = \n", 1);
+		ft_putstr_fd("heredoc!! = \n", 1);
 		ft_putstr_fd(data->heredoc, 1);
 	}
 	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen(cmd_line[0])))
