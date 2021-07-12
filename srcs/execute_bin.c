@@ -18,6 +18,7 @@ void	execute_bin(char **cmd_line, t_data *data)
 	int		status;
 
 	paths = ft_split(getenv("PATH"), ':');
+	//TODO free(paths)
 	i = 0;
 	pid = fork();
 	if (pid == 0)

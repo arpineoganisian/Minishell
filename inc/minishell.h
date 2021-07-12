@@ -48,8 +48,6 @@ void	copy_space_word(char *str, int *i, char **split_string);
 void 	copy_word(char *str, int *i, char **split_string, char s);
 int		command_line_count(char *str);
 void	line_char_count(char *str, int *i);
-int		echo(char **cmd_line);
-int 	strings_counter(char **array);
 int		not_qs_char_count(char *str, int *i);
 int		redirect_handler(char **str, t_data *data);
 char	*dquotes_handler(char *str, int *i);
@@ -60,10 +58,20 @@ void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
-int		pwd();
-int 	cd(char **cmd_line);
-int		env(t_data *data);
-int		export();
 int 	heredoc_read(t_data *data, char *word);
+
+/*
+** builtins
+*/
+
+int		echo(char **cmd_line);
+int 	cd(char **cmd_line);
+int		pwd();
+int		export();
+int		unset(char **cmd_line, t_data *data);
+int		env(t_data *data);
+
+int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
+int		find_env_var(char *var, t_data *data);
 #endif

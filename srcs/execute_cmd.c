@@ -2,7 +2,7 @@
 
 void	execute_cmd(char **cmd_line, t_data *data)
 {
-	int	i;
+//	int	i;
 
 //	ft_putstr_fd("fd output = ", 1);
 //	ft_putnbr_fd(data->fd_out, 1);
@@ -47,14 +47,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	}
 	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0])))
 	{
-		printf("cmd = %s ", cmd_line[0]);
-		i = 1;
-		while (cmd_line[i])
-		{
-			printf("| %d arg = %s ", i, cmd_line[i]);
-			i++;
-		}
-		printf("\n");
+		unset(cmd_line, data);
 	}
 	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0])))
 	{
@@ -65,5 +58,6 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	else
 	{
 		execute_bin(cmd_line, data);
+		//TODO если команда не найдена, все равно форкается
 	}
 }
