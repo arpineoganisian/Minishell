@@ -86,18 +86,20 @@ int	redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
-	data->fd_out = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (data->fd_out == -1)
+	data->fd_out[0] = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (data->fd_out[0] == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
 		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
-		close(data->fd_out);
-		data->fd_out = 1;
+		close(data->fd_out[0]);
+		data->fd_out[0] = STDOUT_FILENO;
 		return (1);
 	}
 	free(filename);
+	data->fd_out[1] = dup(STDOUT_FILENO);
+	dup2(data->fd_out[0], STDOUT_FILENO);
 	return (0);
 }
 
@@ -109,17 +111,19 @@ int 	app_redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
-	data->fd_out = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (data->fd_out == -1)
+	data->fd_out[0] = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
+	if (data->fd_out[0] == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
 		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
-		close(data->fd_out);
-		data->fd_out = 1;
+		close(data->fd_out[0]);
+		data->fd_out[0] = STDOUT_FILENO;
 		return (1);
 	}
 	free(filename);
+	data->fd_out[1] = dup(STDOUT_FILENO);
+	dup2(data->fd_out[0], STDOUT_FILENO);
 	return (0);
 }
