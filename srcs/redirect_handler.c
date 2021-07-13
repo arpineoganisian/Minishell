@@ -7,7 +7,7 @@ int	input_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	filename = make_filename(str, i);
+	filename = make_filename(str, i, data);
 	data->fd_in = open(filename, O_RDONLY, 0644);
 	if (data->fd_in == -1)
 	{
@@ -48,7 +48,7 @@ int	heredoc_redirect(char *str, int i, t_data *data)
 
 	while (str[i] == ' ')
 		i++;
-	word = make_filename(str, i);
+	word = make_filename(str, i, data);
 	heredoc_read(data, word);
 	data->fd_heredoc = 1;
 	if (word)

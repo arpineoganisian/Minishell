@@ -13,7 +13,7 @@ int	unset(char **cmd_line, t_data *data)
 	num_of_envp = strings_counter(data->envp);
 	while (num_of_envp - i > 0)
 	{
-		data->envp[i] = data->envp[i+1];
+		data->envp[i] = data->envp[i + 1];
 		i++;
 	}
 	data->envp[i] = NULL;

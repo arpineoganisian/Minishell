@@ -25,7 +25,7 @@ char	*quotes_handler(char *str, int *i)
 	return (new_str);
 }
 
-char	*dquotes_handler(char *str, int *i)
+char	*dquotes_handler(char *str, int *i, t_data *data)
 {
 	char	*new_str;
 	char	*in_quotes_part;
@@ -37,7 +37,7 @@ char	*dquotes_handler(char *str, int *i)
 	while (str[*i] != '\"' && str[*i])
 	{
 		if (str[*i] == '$')
-			str = env_handler(str, &(*i));
+			str = env_handler(str, &(*i), data->envp);
 		(*i)++;
 	}
 	new_str = ft_substr(str, 0, start);
@@ -66,7 +66,7 @@ int	closed_quotes(char *str, int i, char qs)
 	return (0);
 }
 
-void	spec_sym_handler(char **str)
+void	spec_sym_handler(char **str, t_data *data)
 {
 	int	i;
 
@@ -76,9 +76,9 @@ void	spec_sym_handler(char **str)
 		if ((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 			*str = quotes_handler(*str, &i);
 		if ((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
-			*str = dquotes_handler(*str, &i);
+			*str = dquotes_handler(*str, &i, data);
 		if ((*str)[i] == '$')
-			*str = env_handler(*str, &i);
+			*str = env_handler(*str, &i, data->envp);
 		if ((*str)[i] && !((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
 		&& !((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 		&& (*str)[i] != '$')
