@@ -60,5 +60,4 @@ void	execute_cmd(char **cmd_line, t_data *data)
 		execute_bin(cmd_line, data);
 	}
 	//TODO ./minishell и minishell
-	//TODO будем ли обрабатывать "a=arpine"
 }

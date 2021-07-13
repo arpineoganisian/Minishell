@@ -35,7 +35,7 @@ void	execute_bin(char **cmd_line, t_data *data)
 	{
 		//TODO после проверки всех путей, проверить еще и просто cmd_line[0]
 		path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
-		if (open(path_to_bin, O_RDONLY) != -1) //проверка open и stat
+		if (open(path_to_bin, O_RDONLY) != -1) //проверка open и stat(не сделано)
 			//close(fd) ?
 		{
 			fork_process(path_to_bin, cmd_line, data);
