@@ -8,18 +8,20 @@ int	input_redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
-	data->fd_in = open(filename, O_RDONLY, 0644);
-	if (data->fd_in == -1)
+	data->fd_in[0] = open(filename, O_RDONLY, 0644);
+	if (data->fd_in[0] == -1)
 	{
 		error = ft_strjoin(filename, ": ");
 		free(filename);
 		error_handler(ft_strjoin(error, strerror(errno)), 1);
 		free(error);
-		close(data->fd_in);
-		data->fd_in = 0;
+		close(data->fd_in[0]);
+		data->fd_in[0] = STDIN_FILENO;
 		return (1);
 	}
 	free(filename);
+	data->fd_in[1] = dup(STDIN_FILENO);
+	dup2(data->fd_in[0], STDIN_FILENO);
 	return (0);
 }
 
@@ -31,7 +33,7 @@ int	output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 	if ((*str)[*i] == '>')
 	{
 		if (*fd_out_opened)
-			close(data->fd_out);
+			close(data->fd_out[0]);
 		*fd_out_opened = 1;
 		if ((*str)[*i + 1] == '>')
 			error = app_redirect(*str, *i + 2, data);
@@ -64,7 +66,7 @@ int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
 	if ((*str)[*i] == '<')
 	{
 		if (*fd_in_opened)
-			close(data->fd_in);
+			close(data->fd_in[0]);
 		*fd_in_opened = 1;
 		if ((*str)[*i + 1] == '<')
 			error = heredoc_redirect(*str, *i + 2, data);

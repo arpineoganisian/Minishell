@@ -21,10 +21,10 @@ typedef struct s_data
 	char	*line_read;
 	//массив строк - команды и аргументы:
 	char	***cmd_lines;
-	//тут храним фд вывода
-	int		fd_out;
+	//тут храним фд вывода [0] - открытый файл [1] - копия STDOUT
+	int		fd_out[2];
 	//тут храним фд ввода
-	int 	fd_in;
+	int 	fd_in[2];
 	//если был heredoc, то фд = 1
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка

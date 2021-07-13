@@ -4,7 +4,6 @@ void	error_handler(char *str, int status)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putendl_fd(str, 2);
-	free(str);
 	exit_status = status;
 }
 
@@ -22,8 +21,8 @@ void ctrl_c(int sig)
 void	init(t_data *data, char **envp)
 {
 	data->line_read = NULL;
-	data->fd_out = 1;
-	data->fd_in = 0;
+	data->fd_out[0] = STDOUT_FILENO;
+	data->fd_in[0] = STDIN_FILENO;
 	data->heredoc = NULL;
 	data->fd_heredoc = 0;
 	exit_status = 0;
