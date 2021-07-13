@@ -55,6 +55,7 @@ int	heredoc_redirect(char *str, int i, t_data *data)
 	data->fd_heredoc = 1;
 	if (word)
 		free(word);
+	signal(SIGINT, ctrl_c);
 	return (0);
 }
 

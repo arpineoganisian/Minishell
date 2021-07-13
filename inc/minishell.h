@@ -59,6 +59,7 @@ int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
 int 	heredoc_read(t_data *data, char *word);
+void	ctrl_c(int sig);
 
 /*
 ** builtins
