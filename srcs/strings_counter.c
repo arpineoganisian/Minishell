@@ -9,5 +9,5 @@ int strings_counter(char **array)
 	{
 		i++;
 	}
-	return i;
+	return (i);
 }
