@@ -1,7 +1,8 @@
 #include "minishell.h"
 
-int	export()
+int	export(char **cmd_line, t_data *data)
 {
-	//TODO посмотреть getenv() и дочки
+	(void)cmd_line;
+	(void)data;
 	return (0);
 }

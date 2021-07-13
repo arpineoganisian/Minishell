@@ -43,6 +43,10 @@ char	*env_handler(char *str, int *i)
 		value = ft_itoa(exit_status);
 	else
 		value = getenv(env_key);
+	//TODO "echo $PWD" - обрабатывается здесь?
+	// если здесь, тогда вместо get_env(ключ)
+	// нужен
+	// data->envp[find_env_var(ключ, data)]
 	if (!value)
 		new_str = key_not_found(str, start, *i);
 	else

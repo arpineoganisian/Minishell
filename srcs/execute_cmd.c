@@ -43,7 +43,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	}
 	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen(cmd_line[0])))
 	{
-		export();
+		export(cmd_line, data);
 	}
 	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0])))
 	{
@@ -58,6 +58,7 @@ void	execute_cmd(char **cmd_line, t_data *data)
 	else
 	{
 		execute_bin(cmd_line, data);
-		//TODO если команда не найдена, все равно форкается
 	}
+	//TODO ./minishell и minishell
+	//TODO будем ли обрабатывать "a=arpine"
 }

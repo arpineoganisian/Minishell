@@ -67,7 +67,7 @@ int 	heredoc_read(t_data *data, char *word);
 int		echo(char **cmd_line);
 int 	cd(char **cmd_line);
 int		pwd();
-int		export();
+int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
 

@@ -9,29 +9,42 @@ void	cmd_not_found(char *cmd_line)
 	exit_status = 127;
 }
 
+void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+		execve(path_to_bin, cmd_line, data->envp);
+	else
+		waitpid(pid, &status, 0);
+}
+
 void	execute_bin(char **cmd_line, t_data *data)
 {
 	char	**paths;
 	int		i;
 	char	*path_to_bin;
-	pid_t	pid;
-	int		status;
+	int 	flag;
 
 	paths = ft_split(getenv("PATH"), ':');
-	//TODO free(paths)
 	i = 0;
-	pid = fork();
-	if (pid == 0)
+	flag = 0;
+	while (paths[i])
 	{
-		while (paths[i])
+		//TODO после проверки всех путей, проверить еще и просто cmd_line[0]
+		path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
+		if (open(path_to_bin, O_RDONLY) != -1) //проверка open и stat
+			//close(fd) ?
 		{
-			path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
-			//TODO проверить бинарник
-			execve(path_to_bin, cmd_line, data->envp);
-			free(path_to_bin);
-			i++;
+			fork_process(path_to_bin, cmd_line, data);
+			flag = 1;
 		}
-		cmd_not_found(cmd_line[0]);
+		free(path_to_bin);
+		i++;
 	}
-	waitpid(pid, &status, 0);
+	free(paths);
+	if (!flag)
+		cmd_not_found(cmd_line[0]);
 }
