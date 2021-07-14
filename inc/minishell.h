@@ -32,6 +32,7 @@ typedef struct s_data
 	char	*heredoc;
 	//переменные окружения из main()
 	char	**envp;
+	char	**envp_exp;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -73,7 +74,13 @@ int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
 
+/*
+** not builtins
+*/
+
 int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
 int		find_env_var(char *var, t_data *data);
+char 	**copy_envp(char **envp);
+char	**arrjoin(char **arr, char *str);
 #endif

@@ -15,8 +15,11 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	int		status;
 
 	pid = fork();
-	if (pid == 0)
-		execve(path_to_bin, cmd_line, data->envp);
+	if (pid == -1)
+		//TODO какой должен быть exit status?
+		error_handler(strerror(errno), -1);
+	else if (pid == 0)
+		execve(path_to_bin, cmd_line, data->envp_exp);
 	else
 		waitpid(pid, &status, 0);
 }
