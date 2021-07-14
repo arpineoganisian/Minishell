@@ -73,6 +73,7 @@ int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
+void 	exit_minishell();
 
 /*
 ** not builtins
