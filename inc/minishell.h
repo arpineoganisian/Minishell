@@ -11,6 +11,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 
 int	exit_status;
@@ -21,10 +22,10 @@ typedef struct s_data
 	char	*line_read;
 	//массив строк - команды и аргументы:
 	char	***cmd_lines;
-	//тут храним фд вывода
-	int		fd_out;
+	//тут храним фд вывода [0] - открытый файл [1] - копия STDOUT
+	int		fd_out[2];
 	//тут храним фд ввода
-	int 	fd_in;
+	int 	fd_in[2];
 	//если был heredoc, то фд = 1
 	int 	fd_heredoc;
 	//если фд_хередок = 1, то тут input строка
@@ -59,6 +60,7 @@ int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
 int 	heredoc_read(t_data *data, char *word);
+void	ctrl_c(int sig);
 
 /*
 ** builtins

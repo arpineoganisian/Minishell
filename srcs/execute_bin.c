@@ -21,6 +21,20 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 		waitpid(pid, &status, 0);
 }
 
+int check_paths(char *path_to_bin)
+{
+	int fd;
+	struct stat sb;
+	int res;
+
+	res = -1;
+	fd = open(path_to_bin, O_RDONLY);
+	if (fd != -1 && stat(path_to_bin, &sb) == 0 && sb.st_mode & S_IXUSR)
+		res = 0;
+	close(fd);
+	return (res);
+}
+
 void	execute_bin(char **cmd_line, t_data *data)
 {
 	char	**paths;
@@ -28,15 +42,13 @@ void	execute_bin(char **cmd_line, t_data *data)
 	char	*path_to_bin;
 	int 	flag;
 
-	paths = ft_split(getenv("PATH"), ':');
 	i = 0;
 	flag = 0;
+	paths = ft_split(getenv("PATH"), ':');
 	while (paths[i])
 	{
-		//TODO после проверки всех путей, проверить еще и просто cmd_line[0]
 		path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
-		if (open(path_to_bin, O_RDONLY) != -1) //проверка open и stat(не сделано)
-			//close(fd) ?
+		if (check_paths(path_to_bin) == 0)
 		{
 			fork_process(path_to_bin, cmd_line, data);
 			flag = 1;
@@ -45,6 +57,8 @@ void	execute_bin(char **cmd_line, t_data *data)
 		i++;
 	}
 	free(paths);
-	if (!flag)
+	if (!flag && check_paths(cmd_line[0]) == 0)
+		fork_process(cmd_line[0], cmd_line, data);
+	else if (!flag)
 		cmd_not_found(cmd_line[0]);
 }
