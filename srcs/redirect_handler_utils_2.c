@@ -71,7 +71,6 @@ int	heredoc_read(t_data *data, char *word)
 		signal(SIGINT, ctrl_c);
 		exit_status = WEXITSTATUS(status);
 		close(fd[1]);
-		data->fd_in[1] = dup(STDIN_FILENO);
 		data->fd_in[0] = fd[0];
 		dup2(data->fd_in[0], STDIN_FILENO);
 	}

@@ -62,6 +62,25 @@ char  *key_found(char *env_str, char *str, int start, int end)
 	return (new_str);
 }
 
+char *exit_status_env(char *str, int start, int end)
+{
+	char *env_value;
+	char  *new_str;
+	char  *merge_str;
+
+	env_value = ft_itoa(exit_status);
+	new_str = ft_substr(str, 0, start);
+	merge_str = ft_strjoin(new_str, env_value);
+	if (new_str)
+		free(new_str);
+	if (env_value)
+		free(env_value);
+	new_str = ft_strjoin(merge_str, str + end);
+	if (merge_str)
+		free(merge_str);
+	return (new_str);
+}
+
 char *env_handler(char *str, int *i, char **envp)
 {
 	char *env_key;
@@ -75,7 +94,9 @@ char *env_handler(char *str, int *i, char **envp)
 		(*i)++;
 	env_key = ft_substr(str, start + 1, *i - start - 1);
 	line_number = env_key_finder(envp, env_key);
-	if (line_number == -1)
+	if (!ft_strncmp("?", env_key, ft_strlen(env_key)))
+		new_str = exit_status_env(str, start, *i);
+	else if (line_number == -1)
 		new_str = key_not_found(str, start, *i);
 	else
 		new_str = key_found(envp[line_number], str, start, *i);
