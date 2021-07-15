@@ -1,37 +1,83 @@
 #include "minishell.h"
 
-int	ctrl_d_heredoc(char *tmp)
+int	get_out_from_child(char *tmp, char *heredoc, int *fd)
 {
-	ft_putstr_fd("\e[1F\e[3G", 1);
-	exit_status = 1;
 	if (tmp && *tmp)
 		free(tmp);
-	return (0);
+	close(fd[0]);
+	write(fd[1], heredoc, ft_strlen(heredoc) + 1);
+	close(fd[1]);
+	exit(0);
+}
+
+void ctrl_c_herdoc(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("\e[1F\e[1G\e[0K", 1);
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "\n", 1);
+	exit(1);
+}
+
+void make_string(char **str, char c)
+{
+	char *tmp;
+	tmp = ft_calloc(ft_strlen(*str) + 2, sizeof (char));
+	ft_memcpy(tmp, *str, ft_strlen(*str));
+	tmp[ft_strlen(tmp)] = c;
+	if (*str)
+		free(*str);
+	*str = tmp;
 }
 
 int	heredoc_read(t_data *data, char *word)
 {
 	int		do_read;
 	char	*tmp;
+	int 	fd[2];
+	int 	status;
+	char	*heredoc;
 
-	tmp = ft_strdup("");
-	data->heredoc = readline("> ");
-	if (!data->heredoc)
-		return (ctrl_d_heredoc(tmp));
-	do_read = ft_strncmp(word, data->heredoc, ft_strlen(word));
-	data->heredoc = string_join(data->heredoc, "\n");
-	while (do_read)
+	if (pipe(fd) == -1)
+		return (1);
+	data->pid_child = fork();
+	if (data->pid_child == -1)
+		return (1);
+	if (data->pid_child == 0)
 	{
-		data->heredoc = string_join(data->heredoc, tmp);
-		if (tmp && *tmp)
-			free(tmp);
-		tmp = readline("> ");
-		if (!tmp)
-			return (ctrl_d_heredoc(tmp));
-		do_read = ft_strncmp(word, tmp, ft_strlen(word));
-		tmp = string_join(tmp, "\n");
+		signal(SIGINT, ctrl_c_herdoc);
+		tmp = ft_strdup("");
+		heredoc = readline("> ");
+		if (!heredoc)
+			get_out_from_child(tmp, heredoc, fd);
+		else
+		{
+			do_read = ft_strncmp(word, heredoc, ft_strlen(word));
+			heredoc = string_join(heredoc, "\n");
+			while (do_read)
+			{
+				heredoc = string_join(heredoc, tmp);
+				if (tmp && *tmp)
+					free(tmp);
+				tmp = readline("> ");
+				if (!tmp)
+					get_out_from_child(tmp, heredoc, fd);
+				do_read = ft_strncmp(word, tmp, ft_strlen(word));
+				tmp = string_join(tmp, "\n");
+			}
+			get_out_from_child(tmp, heredoc, fd);
+		}
 	}
-	if (tmp && *tmp)
-		free(tmp);
+	else
+	{
+		wait(&status);
+		signal(SIGINT, ctrl_c);
+		exit_status = WEXITSTATUS(status);
+		close(fd[1]);
+		data->fd_in[1] = dup(STDIN_FILENO);
+		data->fd_in[0] = fd[0];
+		dup2(data->fd_in[0], STDIN_FILENO);
+	}
 	return (0);
 }

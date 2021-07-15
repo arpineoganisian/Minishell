@@ -72,7 +72,7 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_putstr_fd("\e[1F\e[12G", 1);
 			ft_putstr_fd("exit\n", 1);
-			exit(0);
+			exit(1);
 		}
 		if (data->line_read && *data->line_read)
 			parsing(data);

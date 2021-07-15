@@ -52,10 +52,8 @@ int	heredoc_redirect(char *str, int i, t_data *data)
 		i++;
 	word = make_filename(str, i, data);
 	heredoc_read(data, word);
-	data->fd_heredoc = 1;
 	if (word)
 		free(word);
-	signal(SIGINT, ctrl_c);
 	return (0);
 }
 
