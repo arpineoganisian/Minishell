@@ -18,9 +18,15 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	if (pid == -1)
 		error_handler(strerror(errno), 1);
 	else if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
 		execve(path_to_bin, cmd_line, data->envp_exp);
+	}
 	else
+	{
 		waitpid(pid, &status, 0);
+		signal(SIGINT, ctrl_c);
+	}
 }
 
 int check_paths(char *path_to_bin)

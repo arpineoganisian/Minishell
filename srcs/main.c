@@ -9,13 +9,15 @@ void	error_handler(char *str, int status)
 
 void ctrl_c(int sig)
 {
-	(void)sig;
-	rl_on_new_line();
-	rl_redisplay();
-	ft_putstr_fd("  \b\b\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (sig == SIGINT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putstr_fd("  \b\b\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 void	init(t_data *data, char **envp)
