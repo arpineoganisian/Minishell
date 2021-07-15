@@ -11,6 +11,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 
 int	exit_status;
@@ -31,7 +32,6 @@ typedef struct s_data
 	char	*heredoc;
 	//переменные окружения из main()
 	char	**envp;
-	pid_t	pid_child;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -72,8 +72,15 @@ int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
+void 	exit_minishell();
+
+/*
+** not builtins
+*/
 
 int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
 int		find_env_var(char *var, t_data *data);
+char 	**copy_envp(char **envp);
+char	**arrjoin(char **arr, char *str);
 #endif

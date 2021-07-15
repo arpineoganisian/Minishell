@@ -4,8 +4,8 @@ RM			= rm -rf
 CFLAGS		= -g -Wall -Wextra -Werror -fsanitize=address -g3
 SRCS_LIST	= main.c parser.c execute_cmd.c syntax_handler.c spec_sym_handler.c split_command.c parser_utils.c \
 			env_handler.c redirect_handler.c split_line.c split_line_utils.c split_command_utils.c \
-			echo.c cd.c pwd.c export.c unset.c env.c \
-			strings_counter.c execute_bin.c find_env_var.c \
+			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c \
+			strings_counter.c execute_bin.c find_env_var.c arrjoin.c \
 			redirect_handler_utils.c redirect_handler_utls_2.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
 LIB_FT		= -Llibft -lft

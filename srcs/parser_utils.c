@@ -31,3 +31,19 @@ char	*string_join(char *str1, char *str2)
 		free(str1);
 	return (str);
 }
+
+char **copy_envp(char **envp)
+{
+	char	**envp_copy;
+	int		i;
+
+	i = 0;
+	envp_copy = malloc(sizeof(char*) * (strings_counter(envp) + 1));
+	while (envp[i])
+	{
+		envp_copy[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	envp_copy[i] = NULL;
+	return (envp_copy);
+}

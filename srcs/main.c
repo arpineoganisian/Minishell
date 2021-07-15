@@ -27,6 +27,7 @@ void	init(t_data *data, char **envp)
 	data->fd_heredoc = 0;
 	exit_status = 0;
 	data->envp = envp;
+	data->envp_exp = copy_envp(envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }
