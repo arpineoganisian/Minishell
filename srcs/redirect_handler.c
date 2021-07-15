@@ -20,7 +20,6 @@ int	input_redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	data->fd_in[1] = dup(STDIN_FILENO);
 	dup2(data->fd_in[0], STDIN_FILENO);
 	return (0);
 }

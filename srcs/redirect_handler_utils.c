@@ -23,7 +23,7 @@ char	*make_filename(char *str, int i, t_data *data)
 		while (str[++i] != ' ' && str[i])
 			;
 	}
-	tmp_str = ft_substr(str, tmp, i - tmp + 1);
+	tmp_str = ft_substr(str, tmp, i - tmp);
 	spec_sym_handler(&tmp_str, data);
 	return (tmp_str);
 }
@@ -98,7 +98,6 @@ int	redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	data->fd_out[1] = dup(STDOUT_FILENO);
 	dup2(data->fd_out[0], STDOUT_FILENO);
 	return (0);
 }
@@ -123,7 +122,6 @@ int 	app_redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	data->fd_out[1] = dup(STDOUT_FILENO);
 	dup2(data->fd_out[0], STDOUT_FILENO);
 	return (0);
 }
