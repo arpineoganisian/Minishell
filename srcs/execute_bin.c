@@ -60,6 +60,9 @@ void	execute_bin(char **cmd_line, t_data *data)
 		{
 			fork_process(path_to_bin, cmd_line, data);
 			flag = 1;
+			free(path_to_bin);
+			//todo return
+			break;
 		}
 		free(path_to_bin);
 		i++;

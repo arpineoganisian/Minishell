@@ -21,9 +21,9 @@ int	command_line_count(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\"')
+		if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 			quotes_handle(str, &i, '\"');
-		if (str[i] == '\'')
+		if (str[i] == '\'' && closed_quotes(str, i, '\''))
 			quotes_handle(str, &i, '\'');
 		if (str[i] == '|')
 			count++;

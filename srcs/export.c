@@ -39,6 +39,7 @@ void	add_env_var(t_data *data, char *cmd_line)
 
 int	export(char **cmd_line, t_data *data)
 {
+	//todo вывод просто команды export
 	if (strings_counter(cmd_line) == 1)
 		return (0);
 	if (cmd_line[1][0] == '=')

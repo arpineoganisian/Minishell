@@ -25,10 +25,9 @@ void	init(t_data *data, char **envp)
 	data->line_read = NULL;
 	data->fd_out[0] = STDOUT_FILENO;
 	data->fd_in[0] = STDIN_FILENO;
+	data->fd_in_next = STDIN_FILENO;
 	data->fd_out[1] = dup(STDOUT_FILENO);
 	data->fd_in[1] = dup(STDIN_FILENO);
-	data->heredoc = NULL;
-	data->fd_heredoc = 0;
 	exit_status = 0;
 	data->envp = envp;
 	data->envp_exp = copy_envp(envp);
@@ -40,7 +39,7 @@ void	ctrl_d()
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
 	exit_status = 1;
-	exit_minishell()
+	exit_minishell();
 }
 
 int		main(int argc, char **argv, char **envp)

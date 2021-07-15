@@ -16,14 +16,16 @@ int	cd_home(void)
 {
 	char	*home;
 
+	//TODO проверить гетенв
 	home = getenv("HOME");
 	if (!home)
 	{
-		ft_putendl_fd("minishell: cd: HOME not set", 2);
+		error_handler("cd: HOME not set", 1);
 		return (1);
 	}
 	if (chdir(home) == -1)
 	{
+		//TODO проверить вывод этой ошибки
 		ft_putendl_fd(strerror(errno), 2);
 		return (1);
 	}

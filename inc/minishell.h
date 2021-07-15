@@ -26,10 +26,8 @@ typedef struct s_data
 	int		fd_out[2];
 	//тут храним фд ввода
 	int 	fd_in[2];
-	//если был heredoc, то фд = 1
-	int 	fd_heredoc;
-	//если фд_хередок = 1, то тут input строка
-	char	*heredoc;
+	int		fd[2];
+	int		fd_in_next;
 	//переменные окружения из main()
 	char	**envp;
 	char	**envp_exp;
@@ -37,7 +35,7 @@ typedef struct s_data
 }				t_data;
 
 void	parsing(t_data *data);
-void	execute_cmd(char **cmd_line, t_data *data);
+void	exec_commands(t_data *data, int i, int tokens_count);
 void	error_handler(char *str, int exit_status);
 int		check_syntax(char *str);
 void	spec_sym_handler(char **str, t_data *data);
