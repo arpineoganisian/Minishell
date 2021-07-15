@@ -32,6 +32,8 @@ typedef struct s_data
 	char	*heredoc;
 	//переменные окружения из main()
 	char	**envp;
+	char	**envp_exp;
+	pid_t	pid_child;
 }				t_data;
 
 void	parsing(t_data *data);
