@@ -42,7 +42,7 @@ void	print_export(char **envp)
 
 	while(envp[i])
 	{
-		while();
+//		while();
 		i++;
 	}
 	free(envp);
