@@ -24,14 +24,14 @@ void	*cmd_lines_malloc(char **str_arr, char *str)
 {
 	int	count;
 
-	count = command_line_count(str);
+	count = command_line_count(str) + 1;
 	str_arr = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!str_arr)
 		return (NULL);
 	return (cmd_line_malloc(str_arr, str));
 }
 
-char	**split_cmds(char *str)
+char	**split_by_pipe(char *str)
 {
 	char	**str_arr;
 	int		cl_count;
@@ -57,30 +57,4 @@ char	**split_cmds(char *str)
 	}
 	str_arr[cl_count] = NULL;
 	return (str_arr);
-}
-
-void	split_cmd(t_data *data)
-{
-	char	**tmp;
-	int		i;
-	int		k;
-	int		tokens_count;
-
-	tokens_count = command_line_count(data->line_read);
-	data->cmd_lines = (char ***)malloc(sizeof(char **) * (tokens_count + 1));
-	tmp = split_cmds(data->line_read);
-	i = 0;
-	while (tmp[i])
-	{
-		if (redirect_handler(&tmp[i], data))
-			return ;
-		data->cmd_lines[i] = split_line(tmp[i]);
-		k = 0;
-		while (data->cmd_lines[i][k])
-			spec_sym_handler(&data->cmd_lines[i][k++], data);
-		exec_commands(data, i, tokens_count);
-		i++;
-		//free tmp
-	}
-	data->cmd_lines[i] = NULL;
 }

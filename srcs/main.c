@@ -7,7 +7,7 @@ void	error_handler(char *str, int status)
 	exit_status = status;
 }
 
-void ctrl_c(int sig)
+void	ctrl_c(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -25,7 +25,6 @@ void	init(t_data *data, char **envp)
 	data->line_read = NULL;
 	data->fd_out[0] = STDOUT_FILENO;
 	data->fd_in[0] = STDIN_FILENO;
-	data->fd_in_next = STDIN_FILENO;
 	data->fd_out[1] = dup(STDOUT_FILENO);
 	data->fd_in[1] = dup(STDIN_FILENO);
 	exit_status = 0;
@@ -35,27 +34,27 @@ void	init(t_data *data, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ctrl_d()
+void	ctrl_d(t_data *data)
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
 	exit_status = 1;
-	exit_minishell();
+	exit_minishell(data);
 }
 
-int		main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_data 	*data;
+	t_data	*data;
+
 	(void)argc;
 	(void)argv;
-
 	data = (t_data *) malloc(sizeof(t_data));
 	init(data, envp);
 	while (1)
 	{
 		data->line_read = readline_history("\e[32mminishell> \e[0m",
-										   data->line_read);
+				data->line_read);
 		if (!data->line_read)
-			ctrl_d();
+			ctrl_d(data);
 		if (data->line_read && *data->line_read)
 			parsing(data);
 	}

@@ -21,13 +21,12 @@ typedef struct s_data
 	//вся введенная строка:
 	char	*line_read;
 	//массив строк - команды и аргументы:
-	char	***cmd_lines;
+	char	**cmd_lines;
 	//тут храним фд вывода [0] - открытый файл [1] - копия STDOUT
 	int		fd_out[2];
-	//тут храним фд ввода
+	//тут храним фд ввода - открытый файл [1] - копия STDOUT
 	int 	fd_in[2];
-	int		fd[2];
-	int		fd_in_next;
+	int		**fd;
 	//переменные окружения из main()
 	char	**envp;
 	char	**envp_exp;
@@ -35,11 +34,10 @@ typedef struct s_data
 }				t_data;
 
 void	parsing(t_data *data);
-void	exec_commands(t_data *data, int i, int tokens_count);
+void	exec_commands(t_data *data);
 void	error_handler(char *str, int exit_status);
 int		check_syntax(char *str);
 void	spec_sym_handler(char **str, t_data *data);
-void	split_cmd(t_data *data);
 char	*env_handler(char *str, int *i, char **envp);
 int		closed_quotes(char *str, int i, char qs);
 char	**split_line(char *str);
@@ -61,7 +59,13 @@ int		redirect(char *str, int i, t_data *data);
 char	*string_join(char *str1, char *str2);
 int 	heredoc_read(t_data *data, char *word);
 void	ctrl_c(int sig);
-
+void	split_and_exec(t_data * data, char *cmd_line);
+char	**split_by_pipe(char *str);
+void	make_string(char **str, char c);
+void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
+void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
+void	free_things(t_data *data, pid_t *pid, int tokens_count);
+void	reset_fd_to_default(t_data *data);
 /*
 ** builtins
 */

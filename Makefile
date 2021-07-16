@@ -2,9 +2,9 @@ NAME		= minishell
 CC			= gcc
 RM			= rm -rf
 CFLAGS		= -g -Wall -Wextra -Werror -fsanitize=address -g3
-SRCS_LIST	= main.c parser.c exec_commands.c syntax_handler.c spec_sym_handler.c split_command.c parser_utils.c \
-			env_handler.c redirect_handler.c split_line.c split_line_utils.c split_command_utils.c \
-			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c \
+SRCS_LIST	= main.c parser.c exec_commands.c syntax_handler.c spec_sym_handler.c split_by_pipe.c parser_utils.c \
+			env_handler.c redirect_handler.c split_line.c split_line_utils.c split_by_pipe_utils.c \
+			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c exec_with_pipe.c exec_with_pipe_utils.c \
 			strings_counter.c execute_bin.c find_env_var.c arrjoin.c get_minishell_env.c \
 			redirect_handler_utils.c redirect_handler_utils_2.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
