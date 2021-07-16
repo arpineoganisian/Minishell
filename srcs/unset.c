@@ -7,7 +7,7 @@ int	unset(char **cmd_line, t_data *data)
 
 	if (strings_counter(cmd_line) == 1)
 		return (0);
-	i = find_env_var(cmd_line[1], data);
+	i = find_env_var(cmd_line[1], data->envp);
 	if (i == -1)
 		return (0);
 	num_of_envp = strings_counter(data->envp);

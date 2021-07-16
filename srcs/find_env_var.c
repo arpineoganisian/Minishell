@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-int	find_env_var(char *var, t_data *data)
+int	find_env_var(char *var, char **env_vars)
 {
 	int	i;
 
 	i = 0;
-	while (data->envp[i])
+	while (env_vars[i])
 	{
-		if (ft_strncmp(var, data->envp[i], ft_strlen(var)) == 0
-			&& data->envp[i][ft_strlen(var)] == '=')
+		if (ft_strncmp(var, env_vars[i], ft_strlen(var)) == 0
+			&& env_vars[i][ft_strlen(var)] == '=')
 			return (i);
 		i++;
 	}

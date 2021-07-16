@@ -12,12 +12,11 @@ void	cd_err_handler(char *str1, char *str2, char *cmd_line)
 	free(error);
 }
 
-int	cd_home(void)
+int	cd_home(t_data *data)
 {
 	char	*home;
 
-	//TODO проверить гетенв
-	home = getenv("HOME");
+	home = get_minishell_env("HOME", data->envp);
 	if (!home)
 	{
 		error_handler("cd: HOME not set", 1);
@@ -25,17 +24,19 @@ int	cd_home(void)
 	}
 	if (chdir(home) == -1)
 	{
-		//TODO проверить вывод этой ошибки
-		ft_putendl_fd(strerror(errno), 2);
+		//bash: cd: 1111: No such file or directory
+		//TODO написать для джойнов строчек для ошибок
+		error_handler(ft_strjoin(ft_strjoin("cd: ", home), strerror(errno)), 2);
 		return (1);
 	}
+	free(home);
 	return (0);
 }
 
-int cd(char **cmd_line)
+int cd(char **cmd_line, t_data *data)
 {
 	if (strings_counter(cmd_line) == 1)
-		return (cd_home());
+		return (cd_home(data));
 	if (chdir(cmd_line[1]) == -1)
 	{
 		cd_err_handler("cd: ", ": ", cmd_line[1]);

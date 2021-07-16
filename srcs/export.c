@@ -14,7 +14,7 @@ int	check_and_change_env_vars(char *cmd_line, t_data *data)
 			break;
 	}
 	key = ft_substr(cmd_line, 0, i);
-	i = find_env_var(key, data);
+	i = find_env_var(key, data->envp);
 	if (i == -1)
 		ret = -1;
 	else
