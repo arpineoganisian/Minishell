@@ -1,5 +1,27 @@
 #include "minishell.h"
 
+void change_shlvl(t_data *data)
+{
+	char	*shlvl;
+	int		new_shlvl;
+	int 	i;
+
+	shlvl = get_minishell_env("SHLVL", data->envp);
+	if (!shlvl)
+		new_shlvl = 1;
+	new_shlvl = ft_atoi(shlvl);
+	if (new_shlvl < 0)
+		new_shlvl = 0;
+	else
+		new_shlvl++;
+	i = find_env_var("SHLVL", data->envp_exp);
+	free(data->envp_exp[i]);
+	free(shlvl);
+	shlvl = ft_itoa(new_shlvl);
+	data->envp_exp[i] = ft_strjoin("SHLVL=", shlvl);
+	free(shlvl);
+}
+
 void	error_handler(char *str, int status)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -19,6 +41,7 @@ void	init(t_data *data, char **envp)
 	data->envp_exp = copy_envp(envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
+	change_shlvl(data);
 }
 
 int	main(int argc, char **argv, char **envp)

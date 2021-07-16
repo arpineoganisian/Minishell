@@ -7,8 +7,7 @@ int	find_env_var(char *var, char **env_vars)
 	i = 0;
 	while (env_vars[i])
 	{
-		if (ft_strncmp(var, env_vars[i], ft_strlen(var)) == 0
-			&& env_vars[i][ft_strlen(var)] == '=')
+		if (ft_strncmp(var, env_vars[i], ft_strlen(var)) == 0 && env_vars[i][ft_strlen(var)] == '=')
 			return (i);
 		i++;
 	}
