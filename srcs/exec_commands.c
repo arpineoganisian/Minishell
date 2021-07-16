@@ -35,7 +35,10 @@ void	split_and_exec(t_data *data, char *cmd_line)
 		return ;
 	data->cmd_lines = split_line(cmd_line);
 	if (cmd_line)
+	{
 		free(cmd_line);
+		cmd_line = NULL;
+	}
 	i = 0;
 	while (data->cmd_lines[i])
 		spec_sym_handler(&data->cmd_lines[i++], data);

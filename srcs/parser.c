@@ -12,7 +12,10 @@ void	parsing_start(t_data *data)
 	if (pipes_count > 0)
 		exec_cmd_line_with_pipes(data, tmp, tokens_count);
 	else
+	{
 		split_and_exec(data, tmp[0]);
+		reset_fd_to_default(data);
+	}
 }
 
 void	parsing(t_data *data)

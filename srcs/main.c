@@ -25,7 +25,6 @@ void	init(t_data *data, char **envp)
 	data->line_read = NULL;
 	data->fd_out[0] = STDOUT_FILENO;
 	data->fd_in[0] = STDIN_FILENO;
-	data->fd_in_next = STDIN_FILENO;
 	data->fd_out[1] = dup(STDOUT_FILENO);
 	data->fd_in[1] = dup(STDIN_FILENO);
 	exit_status = 0;

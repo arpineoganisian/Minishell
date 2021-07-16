@@ -1,8 +1,16 @@
 #include "minishell.h"
 
+void	reset_fd_to_default(t_data *data)
+{
+	dup2(data->fd_out[1], STDOUT_FILENO);
+	dup2(data->fd_in[1], STDIN_FILENO);
+	data->fd_out[0] = STDOUT_FILENO;
+	data->fd_in[0] = STDIN_FILENO;
+}
+
 char	*readline_history(char *prompt, char *line_read)
 {
-	if (line_read)
+	if (line_read && *line_read)
 	{
 		free(line_read);
 		line_read = NULL;

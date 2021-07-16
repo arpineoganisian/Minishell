@@ -24,10 +24,9 @@ typedef struct s_data
 	char	**cmd_lines;
 	//тут храним фд вывода [0] - открытый файл [1] - копия STDOUT
 	int		fd_out[2];
-	//тут храним фд ввода
+	//тут храним фд ввода - открытый файл [1] - копия STDOUT
 	int 	fd_in[2];
 	int		**fd;
-	int		fd_in_next;
 	//переменные окружения из main()
 	char	**envp;
 	char	**envp_exp;
@@ -66,7 +65,7 @@ void	make_string(char **str, char c);
 void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
 void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
 void	free_things(t_data *data, pid_t *pid, int tokens_count);
-
+void	reset_fd_to_default(t_data *data);
 /*
 ** builtins
 */
