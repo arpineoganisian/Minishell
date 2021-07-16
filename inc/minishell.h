@@ -75,7 +75,7 @@ void	ctrl_c_child(int sig);
 */
 
 int		echo(char **cmd_line);
-int 	cd(char **cmd_line);
+int 	cd(char **cmd_line, t_data *data);
 int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
@@ -88,7 +88,8 @@ void 	exit_minishell();
 
 int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
-int		find_env_var(char *var, t_data *data);
+int		find_env_var(char *var, char **env_vars);
 char 	**copy_envp(char **envp);
 char	**arrjoin(char **arr, char *str);
+char	*get_minishell_env(char *key, char **env_vars);
 #endif

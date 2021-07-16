@@ -24,8 +24,8 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	}
 	else
 	{
-		//todo сохранить стутс в exit_status
 		waitpid(pid, &status, 0);
+		exit_status = status;
 		signal(SIGINT, ctrl_c);
 	}
 }
@@ -62,7 +62,6 @@ void	execute_bin(char **cmd_line, t_data *data)
 			fork_process(path_to_bin, cmd_line, data);
 			flag = 1;
 			free(path_to_bin);
-			//todo return
 			break;
 		}
 		free(path_to_bin);
