@@ -24,6 +24,7 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	}
 	else
 	{
+		//todo сохранить стутс в exit_status
 		waitpid(pid, &status, 0);
 		signal(SIGINT, ctrl_c);
 	}

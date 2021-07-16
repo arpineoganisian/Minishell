@@ -31,8 +31,8 @@ void	exec_commands(t_data *data, int i, int tokens_count)
 	{
 		pipe(data->fd);
 		data->fd_out[0] = data->fd[1];
-		data->fd_in_next = data->fd[0];
 		dup2(data->fd_out[0], STDOUT_FILENO);
+		data->fd_in_next = data->fd[0];
 	}
 	exec_cmd(data->cmd_lines[i], data);
 	if (data->fd_out[0] != STDOUT_FILENO)
@@ -40,8 +40,6 @@ void	exec_commands(t_data *data, int i, int tokens_count)
 		close(data->fd_out[0]);
 		dup2(data->fd_out[1], STDOUT_FILENO);
 		data->fd_out[0] = STDOUT_FILENO;
-		if (i < tokens_count - 1)
-			close(data->fd_in_next);
 	}
 	if (data->fd_in[0] != STDIN_FILENO)
 	{
