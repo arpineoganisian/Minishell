@@ -36,13 +36,28 @@ void	print_export(char **envp)
 {
 	int		i;
 	int		j;
+	int		flag;
 
 	i = 0;
-	j = 0;
+	flag = 0;
 
-	while(envp[i])
+	while (envp[i])
 	{
-//		while();
+		j = 0;
+		flag = 0;
+		write(STDOUT_FILENO, "declare -x ", 11);
+		while (envp[i][j])
+		{
+			if (!flag && envp[i][j] == '=')
+			{
+				write(STDOUT_FILENO, "=\"", 2);
+				flag = 1;
+			}
+			else
+				write(STDOUT_FILENO, &envp[i][j], 1);
+			j++;
+		}
+		write(STDOUT_FILENO, "\"\n", 2);
 		i++;
 	}
 	free(envp);
