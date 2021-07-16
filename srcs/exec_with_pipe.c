@@ -39,7 +39,6 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 	while (i < tokens_count)
 	{
 		pid[i] = fork();
-		signal(SIGINT, SIG_DFL);
 		if (pid[i] < 0)
 		{
 			error_handler("Error with creating process", 1);
@@ -47,6 +46,7 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 		}
 		if (pid[i] == 0)
 		{
+			signal(SIGINT, ctrl_c_child);
 			close_unused_fd_child(data, i, tokens_count);
 			data->fd_out[0] = data->fd[i + 1][1];
 			data->fd_in[0] = data->fd[i][0];

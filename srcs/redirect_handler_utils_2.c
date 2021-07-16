@@ -11,16 +11,6 @@ int	get_out_from_child(char *tmp, char *heredoc, int *fd)
 	exit(0);
 }
 
-void	ctrl_c_herdoc(int sig)
-{
-	(void)sig;
-	ft_putstr_fd("\e[1F\e[1G\e[0K", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_redisplay();
-	write(STDOUT_FILENO, "\n", 1);
-	exit(1);
-}
-
 void	read_heredoc_from_child(int *fd, char *word)
 {
 	int		do_read;

@@ -7,19 +7,6 @@ void	error_handler(char *str, int status)
 	exit_status = status;
 }
 
-void	ctrl_c(int sig)
-{
-	if (sig == SIGINT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \b\b\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
 void	init(t_data *data, char **envp)
 {
 	data->line_read = NULL;
@@ -32,13 +19,6 @@ void	init(t_data *data, char **envp)
 	data->envp_exp = copy_envp(envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-void	ctrl_d(t_data *data)
-{
-	ft_putstr_fd("\e[1F\e[12G", 1);
-	exit_status = 1;
-	exit_minishell(data);
 }
 
 int	main(int argc, char **argv, char **envp)

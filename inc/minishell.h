@@ -66,6 +66,10 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
 void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
 void	free_things(t_data *data, pid_t *pid, int tokens_count);
 void	reset_fd_to_default(t_data *data);
+void	ctrl_c_herdoc(int sig);
+void	ctrl_d(t_data *data);
+void	ctrl_c(int sig);
+void	ctrl_c_child(int sig);
 /*
 ** builtins
 */
