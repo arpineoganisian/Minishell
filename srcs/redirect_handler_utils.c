@@ -98,9 +98,9 @@ int	redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	close(STDOUT_FILENO);
-	dup2(data->fd_out[0], STDOUT_FILENO);
-	close(data->fd_out[0]);
+	//close(STDOUT_FILENO);
+	//dup2(data->fd_out[0], STDOUT_FILENO);
+	//close(data->fd_out[0]);
 	return (0);
 }
 

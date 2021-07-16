@@ -32,13 +32,13 @@ char	*string_join(char *str1, char *str2)
 	return (str);
 }
 
-char **copy_envp(char **envp)
+char	**copy_envp(char **envp)
 {
 	char	**envp_copy;
 	int		i;
 
 	i = 0;
-	envp_copy = malloc(sizeof(char*) * (strings_counter(envp) + 1));
+	envp_copy = malloc(sizeof(char *) * (strings_counter(envp) + 1));
 	while (envp[i])
 	{
 		envp_copy[i] = ft_strdup(envp[i]);
@@ -46,4 +46,16 @@ char **copy_envp(char **envp)
 	}
 	envp_copy[i] = NULL;
 	return (envp_copy);
+}
+
+void	make_string(char **str, char c)
+{
+	char	*tmp;
+
+	tmp = ft_calloc(ft_strlen(*str) + 2, sizeof (char));
+	ft_memcpy(tmp, *str, ft_strlen(*str));
+	tmp[ft_strlen(tmp)] = c;
+	if (*str)
+		free(*str);
+	*str = tmp;
 }

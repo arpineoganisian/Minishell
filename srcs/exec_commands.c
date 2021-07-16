@@ -20,31 +20,24 @@ void	exec_cmd(char **cmd_line, t_data *data)
 		execute_bin(cmd_line, data);
 }
 
-void	exec_commands(t_data *data, int i, int tokens_count)
+void	exec_commands(t_data *data)
 {
-	if (i != 0)
-	{
-		data->fd_in[0] = data->fd_in_next;
-		dup2(data->fd_in[0], STDIN_FILENO);
-	}
-	if (i < tokens_count - 1 && data->fd_out[0] == STDOUT_FILENO)
-	{
-		pipe(data->fd);
-		data->fd_out[0] = data->fd[1];
-		dup2(data->fd_out[0], STDOUT_FILENO);
-		data->fd_in_next = data->fd[0];
-	}
-	exec_cmd(data->cmd_lines[i], data);
-	if (data->fd_out[0] != STDOUT_FILENO)
-	{
-		close(data->fd_out[0]);
-		dup2(data->fd_out[1], STDOUT_FILENO);
-		data->fd_out[0] = STDOUT_FILENO;
-	}
-	if (data->fd_in[0] != STDIN_FILENO)
-	{
-		close(data->fd_in[0]);
-		dup2(data->fd_in[1], STDIN_FILENO);
-		data->fd_in[0] = STDIN_FILENO;
-	}
+	dup2(data->fd_out[0], STDOUT_FILENO);
+	dup2(data->fd_in[0], STDIN_FILENO);
+	exec_cmd(data->cmd_lines, data);
+}
+
+void	split_and_exec(t_data *data, char *cmd_line)
+{
+	int	i;
+
+	if (redirect_handler(&cmd_line, data))
+		return ;
+	data->cmd_lines = split_line(cmd_line);
+	if (cmd_line)
+		free(cmd_line);
+	i = 0;
+	while (data->cmd_lines[i])
+		spec_sym_handler(&data->cmd_lines[i++], data);
+	exec_commands(data);
 }

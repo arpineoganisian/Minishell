@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int  env_key_finder(char **envp, char *env_key)
+int	env_key_finder(char **envp, char *env_key)
 {
-	int  i;
-	int  k;
-	char *current_key;
+	int		i;
+	int		k;
+	char	*current_key;
 
 	i = 0;
 	while (envp[i])
@@ -27,10 +27,10 @@ int  env_key_finder(char **envp, char *env_key)
 	return (-1);
 }
 
-char *key_not_found(char *str, int start, int end)
+char	*key_not_found(char *str, int start, int end)
 {
-	char *before_variable;
-	char *new_str;
+	char	*before_variable;
+	char	*new_str;
 
 	before_variable = ft_substr(str, 0, start);
 	new_str = ft_strjoin(before_variable, str + end);
@@ -39,12 +39,12 @@ char *key_not_found(char *str, int start, int end)
 	return (new_str);
 }
 
-char  *key_found(char *env_str, char *str, int start, int end)
+char	*key_found(char *env_str, char *str, int start, int end)
 {
-	char *env_value;
-	char  *new_str;
-	char  *merge_str;
-	int  i;
+	char	*env_value;
+	char	*new_str;
+	char	*merge_str;
+	int		i;
 
 	i = 0;
 	while (env_str[i] != '=')
@@ -62,11 +62,11 @@ char  *key_found(char *env_str, char *str, int start, int end)
 	return (new_str);
 }
 
-char *exit_status_env(char *str, int start, int end)
+char	*exit_status_env(char *str, int start, int end)
 {
-	char *env_value;
-	char  *new_str;
-	char  *merge_str;
+	char	*env_value;
+	char	*new_str;
+	char	*merge_str;
 
 	env_value = ft_itoa(exit_status);
 	new_str = ft_substr(str, 0, start);
@@ -81,12 +81,12 @@ char *exit_status_env(char *str, int start, int end)
 	return (new_str);
 }
 
-char *env_handler(char *str, int *i, char **envp)
+char	*env_handler(char *str, int *i, char **envp)
 {
-	char *env_key;
-	char *new_str;
-	int  start;
-	int  line_number;
+	char	*env_key;
+	char	*new_str;
+	int		start;
+	int		line_number;
 
 	start = *i;
 	(*i)++;

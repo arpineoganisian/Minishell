@@ -30,7 +30,7 @@ int	command_line_count(char *str)
 		if (str[i])
 			i++;
 	}
-	return (count + 1);
+	return (count);
 }
 
 void	line_char_count(char *str, int *i)
