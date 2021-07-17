@@ -93,13 +93,16 @@ char	*env_handler(char *str, int *i, char **envp)
 	while (str[*i] == '_' || ft_isalnum(str[*i]) || str[*i] == '?')
 		(*i)++;
 	env_key = ft_substr(str, start + 1, *i - start - 1);
-	line_number = env_key_finder(envp, env_key);
 	if (!ft_strncmp("?", env_key, ft_strlen(env_key)))
 		new_str = exit_status_env(str, start, *i);
-	else if (line_number == -1)
-		new_str = key_not_found(str, start, *i);
 	else
-		new_str = key_found(envp[line_number], str, start, *i);
+	{
+		line_number = env_key_finder(envp, env_key);
+		if (line_number == -1)
+			new_str = key_not_found(str, start, *i);
+		else
+			new_str = key_found(envp[line_number], str, start, *i);
+	}
 	*i = start;
 	return (new_str);
 }

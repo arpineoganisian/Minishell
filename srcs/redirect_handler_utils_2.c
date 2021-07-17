@@ -1,9 +1,11 @@
 #include "minishell.h"
 
-int	get_out_from_child(char *tmp, char *heredoc, int *fd)
+int	get_out_from_child(char *tmp, char *heredoc, int *fd, t_data *data)
 {
 	if (tmp && *tmp)
 		free(tmp);
+	data->config.c_lflag |= ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	close(fd[0]);
 	write(fd[1], heredoc, ft_strlen(heredoc) + 1);
 	close(fd[1]);
@@ -22,7 +24,7 @@ void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	heredoc = readline("> ");
 	if (!heredoc)
-		get_out_from_child(tmp, heredoc, fd);
+		get_out_from_child(tmp, heredoc, fd, data);
 	else
 	{
 		do_read = ft_strncmp(word, heredoc, ft_strlen(word));
@@ -34,14 +36,12 @@ void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 				free(tmp);
 			tmp = readline("> ");
 			if (!tmp)
-				get_out_from_child(tmp, heredoc, fd);
+				get_out_from_child(tmp, heredoc, fd, data);
 			do_read = ft_strncmp(word, tmp, ft_strlen(word));
 			tmp = string_join(tmp, "\n");
 		}
-		get_out_from_child(tmp, heredoc, fd);
+		get_out_from_child(tmp, heredoc, fd, data);
 	}
-	data->config.c_lflag |= ECHOCTL;
-	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 }
 
 int	heredoc_read(t_data *data, char *word)
