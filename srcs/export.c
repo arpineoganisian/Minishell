@@ -57,7 +57,9 @@ void	print_export(char **envp)
 				write(STDOUT_FILENO, &envp[i][j], 1);
 			j++;
 		}
-		write(STDOUT_FILENO, "\"\n", 2);
+		if (ft_strncmp(envp[i], "OLDPWD", 6))
+			write(STDOUT_FILENO, "\"", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 	free(envp);

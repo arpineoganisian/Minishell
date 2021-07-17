@@ -31,7 +31,7 @@ void	change_oldpwd(t_data *data)
 	i = find_env_var("OLDPWD", data->envp);
 	if (i == -1)
 		return ;
-	data->envp[i] = ft_strlcpy(data->envp[i], "OLDPWD", 7);
+	ft_strlcpy(data->envp[i], "OLDPWD", 7);
 }
 
 void	error_handler(char *str, int status)

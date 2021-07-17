@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void change_envp_oldpwd(char *key, char *value, t_data *data, int flag)
-{
-
-}
+//void change_envp_oldpwd(char *key, char *value, t_data *data, int flag)
+//{
+//
+//}
 
 void change_envp_pwd(char *key, char *value, t_data *data, int flag)
 {
@@ -79,7 +79,7 @@ int cd(char **cmd_line, t_data *data)
 		error_handler(strerror(errno), 1);
 		return (1);
 	}
-	change_envp_oldpwd("OLDPWD", old_pwd, data, 1);
+//	change_envp_oldpwd("OLDPWD", old_pwd, data, 1);
 	change_envp_pwd("PWD", pwd, data, 2);
 	return (ret);
 }
