@@ -21,6 +21,7 @@ char	*readline_history(char *prompt, char *line_read, t_data *data)
 	line_read = readline(prompt);
 	data->config.c_lflag |= ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
+	signal(SIGINT, ctrl_c_child);
 	if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);

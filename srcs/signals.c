@@ -9,6 +9,12 @@ void	ctrl_c(int sig)
 	rl_redisplay();
 }
 
+void	ctrl_c_child(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("\n", STDOUT_FILENO);
+}
+
 void	ctrl_d(t_data *data)
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
