@@ -1,18 +1,11 @@
 #include "minishell.h"
 
-void change_envp(char *key, t_data *data, int flag)
+void change_envp(char *key, char *value, t_data *data, int flag)
 {
 	int		i;
 	char	*tmp;
-	char 	*pwd;
 
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-	{
-		error_handler(strerror(errno), 1);
-		return ;
-	}
-	tmp = str_3_join(key, "=", pwd);
+	tmp = str_3_join(key, "=", value);
 	if (flag == 2 && check_and_change_env_vars(tmp, data) == -1)
 		add_env_var(data, tmp);
 	else if (flag == 1)
@@ -24,19 +17,15 @@ void change_envp(char *key, t_data *data, int flag)
 		data->envp[i + 1] = NULL;
 	}
 	free(tmp);
-	free(pwd);
 }
 
-void	cd_err_handler(char *str1, char *str2, char *cmd_line)
+void	cd_err_handler(char *str1, char *str2, char *str3)
 {
-	char	*error;
 	char	*tmp;
 
-	tmp = ft_strjoin(str1, cmd_line);
-	error = ft_strjoin(tmp, str2);
-	error_handler(ft_strjoin(error, strerror(errno)), 1);
+	tmp = str_3_join(str1, str2, str3);
+	error_handler(ft_strjoin(tmp, strerror(errno)), 1);
 	free(tmp);
-	free(error);
 }
 
 int	cd_home(t_data *data)
@@ -51,7 +40,7 @@ int	cd_home(t_data *data)
 	}
 	if (chdir(home) == -1)
 	{
-		cd_err_handler("cd: ", ": ", home);
+		cd_err_handler("cd: ", home, ": ");
 		free(home);
 		return (1);
 	}
@@ -61,16 +50,31 @@ int	cd_home(t_data *data)
 
 int cd(char **cmd_line, t_data *data)
 {
-	int ret;
+	int		ret;
+	char	*old_pwd;
+	char	*pwd;
 
 	ret = 0;
+	old_pwd = getcwd(NULL, 0);
+	if (!old_pwd)
+	{
+		error_handler(strerror(errno), 1);
+		return (1);
+	}
 	if (strings_counter(cmd_line) == 1)
 		ret = cd_home(data);
 	else if (chdir(cmd_line[1]) == -1)
 	{
-		cd_err_handler("cd: ", ": ", cmd_line[1]);
+		cd_err_handler("cd: ", cmd_line[1], ": ");
 		ret = 1;
 	}
-	change_envp("PWD", data, 2);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		error_handler(strerror(errno), 1);
+		return (1);
+	}
+	change_envp("OLDPWD", old_pwd, data, 1);
+	change_envp("PWD", pwd, data, 2);
 	return (ret);
 }

@@ -63,7 +63,6 @@ void	print_export(char **envp)
 	free(envp);
 }
 
-
 int	export(char **cmd_line, t_data *data)
 {
 	if (strings_counter(cmd_line) == 1)
