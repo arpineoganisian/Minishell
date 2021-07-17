@@ -4,6 +4,7 @@ char	*str_3_join(char const *s1, char const *s2, char const *s3)
 {
 	char	*str;
 	int		i;
+	int		j;
 
 	if (!s1 || !s2 || !s3)
 		return (NULL);
@@ -11,12 +12,15 @@ char	*str_3_join(char const *s1, char const *s2, char const *s3)
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (*s1)
-		*(str + i++) = *s1++;
-	while (*s2)
-		*(str + i++) = *s2++;
-	while (*s3)
-		*(str + i++) = *s3++;
-	*(str + i) = '\0';
+	j = 0;
+	while (s1[j])
+		str[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		str[i++] = s2[j++];
+	j = 0;
+	while (s3[j])
+		str[i++] = s3[j++];
+	str[i] = '\0';
 	return (str);
 }
