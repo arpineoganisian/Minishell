@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+int 	empty_line(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ')
+		i++;
+	if (str[i] != '\0')
+		return (1);
+	return (0);
+}
+
 void	parsing_start(t_data *data)
 {
 	char	**tmp;

@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 				data->line_read, data);
 		if (!data->line_read)
 			ctrl_d(data);
-		if (data->line_read && *data->line_read)
+		if (data->line_read && *data->line_read && empty_line(data->line_read))
 			parsing(data);
 	}
 }

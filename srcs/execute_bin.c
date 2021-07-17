@@ -15,6 +15,7 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	int		status;
 
 	pid = fork();
+	//todo сделать crl-\ в дочке
 	if (pid == -1)
 		error_handler(strerror(errno), 1);
 	if (pid == 0)

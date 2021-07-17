@@ -71,6 +71,7 @@ void	ctrl_c_herdoc(int sig);
 void	ctrl_d(t_data *data);
 void	ctrl_c(int sig);
 void	ctrl_c_child(int sig);
+int 	empty_line(char *str);
 /*
 ** builtins
 */
