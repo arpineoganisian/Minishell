@@ -1,9 +1,23 @@
 #include "minishell.h"
 
-//void change_envp_oldpwd(char *key, char *value, t_data *data, int flag)
-//{
-//
-//}
+void change_envp_oldpwd(char *key, char *value, t_data *data)
+{
+	int	i;
+	char *tmp;
+
+	i = 0;
+	tmp = str_3_join(key, "=", value);
+	while (data->envp[i])
+	{
+		if (ft_strncmp(key, data->envp[i], ft_strlen(key)) == 0)
+		{
+			ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
+			return ;
+		}
+		i++;
+	}
+	data->envp[i] = tmp;
+}
 
 void change_envp_pwd(char *key, char *value, t_data *data, int flag)
 {
@@ -79,7 +93,7 @@ int cd(char **cmd_line, t_data *data)
 		error_handler(strerror(errno), 1);
 		return (1);
 	}
-//	change_envp_oldpwd("OLDPWD", old_pwd, data, 1);
+	change_envp_oldpwd("OLDPWD", old_pwd, data);
 	change_envp_pwd("PWD", pwd, data, 2);
 	return (ret);
 }
