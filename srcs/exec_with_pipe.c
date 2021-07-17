@@ -67,7 +67,8 @@ void 	close_unsed_fd_parent(t_data *data, int tokens_count)
 	{
 		if (k != tokens_count)
 			close(data->fd[k][0]);
-		close(data->fd[k][1]);
+		if (k != 0)
+			close(data->fd[k][1]);
 		k++;
 	}
 }
@@ -90,13 +91,13 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 	{
 		wait(&status);
 		//todo перепроверить статус
-		ft_putnbr_fd(WEXITSTATUS(status), STDOUT_FILENO);
 		exit_status = WEXITSTATUS(status);
 		i++;
 	}
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
 		make_string(&line_read, c);
-	close(data->fd[tokens_count][1]);
+	close(data->fd[tokens_count][0]);
+	close(data->fd[0][1]);
 	ft_putstr_fd(line_read, STDOUT_FILENO);
 	free_things(data, pid, tokens_count);
 }
