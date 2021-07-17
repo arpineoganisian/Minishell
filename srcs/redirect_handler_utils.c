@@ -86,6 +86,7 @@ int	redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
+	close(data->fd_out[0]);
 	data->fd_out[0] = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (data->fd_out[0] == -1)
 	{
@@ -98,9 +99,6 @@ int	redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	//close(STDOUT_FILENO);
-	//dup2(data->fd_out[0], STDOUT_FILENO);
-	//close(data->fd_out[0]);
 	return (0);
 }
 
@@ -112,6 +110,7 @@ int 	app_redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
+	close(data->fd_out[0]);
 	data->fd_out[0] = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (data->fd_out[0] == -1)
 	{
@@ -124,8 +123,5 @@ int 	app_redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	close(STDOUT_FILENO);
-	dup2(data->fd_out[0], STDOUT_FILENO);
-	close(data->fd_out[0]);
 	return (0);
 }
