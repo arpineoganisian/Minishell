@@ -47,7 +47,7 @@ char	*key_found(char *env_str, char *str, int start, int end)
 	int		i;
 
 	i = 0;
-	while (env_str[i] != '=')
+	while (env_str[i] != '=' && env_str[i])
 		i++;
 	env_value = ft_substr(env_str, i + 1, ft_strlen(env_str) - i);
 	new_str = ft_substr(str, 0, start);
