@@ -24,9 +24,7 @@ int	cd_home(t_data *data)
 	}
 	if (chdir(home) == -1)
 	{
-		//bash: cd: 1111: No such file or directory
-		//TODO написать для джойнов строчек для ошибок
-		error_handler(ft_strjoin(ft_strjoin("cd: ", home), strerror(errno)), 2);
+		cd_err_handler("cd: ", ": ", home);
 		return (1);
 	}
 	free(home);
