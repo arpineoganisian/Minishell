@@ -8,6 +8,7 @@ int	input_redirect(char *str, int i, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	filename = make_filename(str, i, data);
+	close(data->fd_in[0]);
 	data->fd_in[0] = open(filename, O_RDONLY, 0644);
 	if (data->fd_in[0] == -1)
 	{
@@ -20,9 +21,6 @@ int	input_redirect(char *str, int i, t_data *data)
 		return (1);
 	}
 	free(filename);
-	close(STDIN_FILENO);
-	dup2(data->fd_in[0], STDIN_FILENO);
-	close(data->fd_in[0]);
 	return (0);
 }
 

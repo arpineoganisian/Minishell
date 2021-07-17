@@ -11,13 +11,15 @@ int	get_out_from_child(char *tmp, char *heredoc, int *fd)
 	exit(0);
 }
 
-void	read_heredoc_from_child(int *fd, char *word)
+void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 {
 	int		do_read;
 	char	*tmp;
 	char	*heredoc;
 
 	tmp = ft_strdup("");
+	data->config.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	heredoc = readline("> ");
 	if (!heredoc)
 		get_out_from_child(tmp, heredoc, fd);
@@ -38,33 +40,34 @@ void	read_heredoc_from_child(int *fd, char *word)
 		}
 		get_out_from_child(tmp, heredoc, fd);
 	}
+	data->config.c_lflag |= ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 }
 
 int	heredoc_read(t_data *data, char *word)
 {
 	int	fd[2];
 	int	status;
+	pid_t pid_child;
 
 	if (pipe(fd) == -1)
 		return (1);
-	data->pid_child = fork();
-	if (data->pid_child == -1)
+	pid_child = fork();
+	if (pid_child == -1)
 		return (1);
-	if (data->pid_child == 0)
+	if (pid_child == 0)
 	{
-		signal(SIGINT, ctrl_c_herdoc);
-		read_heredoc_from_child(fd, word);
+		signal(SIGINT, SIG_DFL);
+		read_heredoc_from_child(fd, word, data);
 	}
 	else
 	{
 		wait(&status);
-		signal(SIGINT, ctrl_c);
 		exit_status = WEXITSTATUS(status);
+		signal(SIGINT, ctrl_c);
 		close(fd[1]);
-		close(STDIN_FILENO);
-		data->fd_in[0] = fd[0];
-		dup2(data->fd_in[0], STDIN_FILENO);
 		close(data->fd_in[0]);
+		data->fd_in[0] = fd[0];
 	}
 	return (0);
 }

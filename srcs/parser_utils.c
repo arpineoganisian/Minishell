@@ -8,14 +8,19 @@ void	reset_fd_to_default(t_data *data)
 	data->fd_in[0] = STDIN_FILENO;
 }
 
-char	*readline_history(char *prompt, char *line_read)
+char	*readline_history(char *prompt, char *line_read, t_data *data)
 {
 	if (line_read && *line_read)
 	{
 		free(line_read);
 		line_read = NULL;
 	}
+	tcgetattr(STDOUT_FILENO, &data->config);
+	data->config.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	line_read = readline(prompt);
+	data->config.c_lflag |= ECHOCTL;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);

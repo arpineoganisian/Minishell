@@ -13,6 +13,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include "../libft/libft.h"
+# include <sys/termios.h>
 
 int	exit_status;
 
@@ -30,7 +31,7 @@ typedef struct s_data
 	//переменные окружения из main()
 	char	**envp;
 	char	**envp_exp;
-	pid_t	pid_child;
+	struct termios config;
 }				t_data;
 
 void	parsing(t_data *data);
@@ -52,7 +53,7 @@ int		redirect_handler(char **str, t_data *data);
 char	*dquotes_handler(char *str, int *i, t_data *data);
 void	skip_other(char *str, int *i);
 char	*make_filename(char *str, int i, t_data *data);
-char	*readline_history(char *prompt, char *line_read);
+char	*readline_history(char *prompt, char *line_read, t_data *data);
 void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);

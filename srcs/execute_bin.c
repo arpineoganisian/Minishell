@@ -17,16 +17,12 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	pid = fork();
 	if (pid == -1)
 		error_handler(strerror(errno), 1);
-	else if (pid == 0)
-	{
-		signal(SIGINT, ctrl_c_child);
+	if (pid == 0)
 		execve(path_to_bin, cmd_line, data->envp_exp);
-	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		exit_status = status;
-		signal(SIGINT, ctrl_c);
+		exit_status = WEXITSTATUS(status);
 	}
 }
 

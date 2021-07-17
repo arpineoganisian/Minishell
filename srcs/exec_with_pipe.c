@@ -46,14 +46,13 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 		}
 		if (pid[i] == 0)
 		{
-			signal(SIGINT, ctrl_c_child);
 			close_unused_fd_child(data, i, tokens_count);
 			data->fd_out[0] = data->fd[i + 1][1];
 			data->fd_in[0] = data->fd[i][0];
 			split_and_exec(data, tmp[i]);
 			close(data->fd[i][0]);
 			close(data->fd[i + 1][1]);
-			exit(0);
+			exit(exit_status);
 		}
 		i++;
 	}
@@ -90,7 +89,9 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 	while (i < tokens_count)
 	{
 		wait(&status);
-		signal(SIGINT, ctrl_c);
+		//todo перепроверить статус
+		ft_putnbr_fd(WEXITSTATUS(status), STDOUT_FILENO);
+		exit_status = WEXITSTATUS(status);
 		i++;
 	}
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
