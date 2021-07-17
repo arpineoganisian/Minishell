@@ -7,8 +7,7 @@ int pwd()
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		//todo использовать еррор хегдлер
-		ft_putendl_fd(strerror(errno), 2);
+		error_handler(strerror(errno), 1);
 		return 1;
 	}
 	else

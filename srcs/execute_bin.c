@@ -46,10 +46,19 @@ void	execute_bin(char **cmd_line, t_data *data)
 	int		i;
 	char	*path_to_bin;
 	int 	flag;
+	char	*path_value;
 
 	i = 0;
 	flag = 0;
-	paths = ft_split(getenv("PATH"), ':');
+
+	path_value = get_minishell_env("PATH", data->envp);
+	if (!path_value)
+	{
+		error_handler(ft_strjoin(cmd_line[0], ": No such file or directory"), 127);
+		return ;
+	}
+	paths = ft_split(path_value, ':');
+	free(path_value);
 	while (paths[i])
 	{
 		path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));

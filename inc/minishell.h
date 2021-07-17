@@ -89,8 +89,12 @@ void 	exit_minishell();
 
 int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
-int		find_env_var(char *var, char **env_vars);
+int		find_env_var(char *key, char **env_vars);
 char 	**copy_envp(char **envp);
-char	**arrjoin(char **arr, char *str);
+char	**join_str_to_arr(char **old_arr, char *str);
 char	*get_minishell_env(char *key, char **env_vars);
+void	add_env_var(t_data *data, char *cmd_line);
+int		check_and_change_env_vars(char *cmd_line, t_data *data);
+char	*str_3_join(char const *s1, char const *s2, char const *s3);
+
 #endif
