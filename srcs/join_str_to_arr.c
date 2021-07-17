@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**arrjoin(char **old_arr, char *str)
+char	**join_str_to_arr(char **old_arr, char *str)
 {
 	char	**new_arr;
 	int		i;

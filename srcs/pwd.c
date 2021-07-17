@@ -8,7 +8,6 @@ int pwd()
 	if (!pwd)
 	{
 		error_handler(strerror(errno), 1);
-//		ft_putendl_fd(strerror(errno), 2);
 		return 1;
 	}
 	else
