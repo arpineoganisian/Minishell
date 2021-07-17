@@ -24,6 +24,16 @@ void change_shlvl(t_data *data)
 	free(shlvl);
 }
 
+void	change_oldpwd(t_data *data)
+{
+	int i;
+
+	i = find_env_var("OLDPWD", data->envp);
+	if (i == -1)
+		return ;
+	data->envp[i] = ft_strlcpy(data->envp[i], "OLDPWD", 7);
+}
+
 void	error_handler(char *str, int status)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -41,6 +51,7 @@ void	init(t_data *data, char **envp)
 	exit_status = 0;
 	data->envp = envp;
 	change_shlvl(data);
+	change_oldpwd(data);
 	data->envp_exp = copy_envp(envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
