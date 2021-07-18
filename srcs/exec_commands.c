@@ -2,24 +2,27 @@
 
 void	exec_cmd(char **cmd_line, t_data *data)
 {
-	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen(cmd_line[0])))
+	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen(cmd_line[0]) + 1))
 		echo(cmd_line);
-	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen(cmd_line[0]) + 1))
 		cd(cmd_line, data);
-	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen(cmd_line[0]) + 1))
 		pwd();
-	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen(cmd_line[0]) + 1))
 		export(cmd_line, data);
-	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen(cmd_line[0]) + 1))
 		unset(cmd_line, data);
-	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0]) + 1))
 		env(data);
-	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0])))
+	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0]) + 1))
 		exit_minishell();
 	else
 		execute_bin(cmd_line, data);
-	// todo если выполнить по порядку unset PATH ; ls ; bin/ls то ls не
-	//  сработает, а /bin/ls сработает
+
+	//TODO чекнуть остальные ft_strncmp()
+	// потому что отрабатывали команды без одной буквы, напр:
+	// expor, ech, c, pw, unse, en, exi
+	// добавила к strlen + 1
 
 	//todo посмотреть кейсы ниже "unset первого элемента экспорта"
 }

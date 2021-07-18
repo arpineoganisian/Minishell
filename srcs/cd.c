@@ -19,22 +19,22 @@ void change_envp_oldpwd(char *key, char *value, t_data *data)
 	data->envp[i] = tmp;
 }
 
-void change_envp_pwd(char *key, char *value, t_data *data, int flag)
+void change_envp_pwd(char *key, char *value, t_data *data)
 {
-	int		i;
+//	int		i;
 	char	*tmp;
 
 	tmp = str_3_join(key, "=", value);
-	if (flag == 2 && check_and_change_env_vars(tmp, data) == -1)
+	if (check_and_change_env_vars(tmp, data) == -1)
 		add_env_var(data, tmp);
-	else if (flag == 1)
-	{
-		i = find_env_var("key", data->envp);
-		if (i == -1)
-			i = strings_counter(data->envp);
-		data->envp[i] = tmp;
-		data->envp[i + 1] = NULL;
-	}
+//	else if (flag == 1)
+//	{
+//		i = find_env_var("key", data->envp);
+//		if (i == -1)
+//			i = strings_counter(data->envp);
+//		data->envp[i] = tmp;
+//		data->envp[i + 1] = NULL;
+//	}
 	free(tmp);
 }
 
@@ -94,6 +94,6 @@ int cd(char **cmd_line, t_data *data)
 		return (1);
 	}
 	change_envp_oldpwd("OLDPWD", old_pwd, data);
-	change_envp_pwd("PWD", pwd, data, 2);
+	change_envp_pwd("PWD", pwd, data);
 	return (ret);
 }

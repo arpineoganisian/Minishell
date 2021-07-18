@@ -57,7 +57,7 @@ void	print_export(char **envp)
 				write(STDOUT_FILENO, &envp[i][j], 1);
 			j++;
 		}
-		if (ft_strncmp(envp[i], "OLDPWD", 6))
+		if (ft_strchr(envp[i], '='))
 			write(STDOUT_FILENO, "\"", 1);
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
@@ -67,20 +67,25 @@ void	print_export(char **envp)
 
 int	export(char **cmd_line, t_data *data)
 {
-	//todo сделать две переменные подряд типа export a=l d=s
+	int i;
+
+	i = 1;
 	if (strings_counter(cmd_line) == 1)
 	{
 		print_export(sort_envp(data->envp));
 		return (0);
 	}
-	if (cmd_line[1][0] == '=')
+	while(cmd_line[i])
 	{
-		error_handler(ft_strjoin(ft_strjoin("export: `", cmd_line[1]), "': not a valid identifier"), 1);
-		return (1);
-	}
-	if (ft_strchr(cmd_line[1], '=') != NULL && check_and_change_env_vars(cmd_line[1], data) == -1)
-	{
-		add_env_var(data, cmd_line[1]);
+		if (cmd_line[i][0] == '=')
+		{
+			error_handler(ft_strjoin(ft_strjoin("export: `", cmd_line[1]), "': not a valid identifier"), 1);
+			return (1);
+		}
+		if (check_and_change_env_vars(cmd_line[i], data) == -1)
+			add_env_var(data, cmd_line[i]);
+		i++;
+
 	}
 	return (0);
 }
