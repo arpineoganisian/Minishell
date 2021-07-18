@@ -67,11 +67,14 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
 void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
 void	free_things(t_data *data, pid_t *pid, int tokens_count);
 void	reset_fd_to_default(t_data *data);
-void	ctrl_c_herdoc(int sig);
 void	ctrl_d(t_data *data);
 void	ctrl_c(int sig);
 void	ctrl_c_child(int sig);
 int 	empty_line(char *str);
+void	ctrl_slash_child(int sig);
+char	*positional_parameter(char *str, int start, int end);
+char	*exit_status_env(char *str, int start, int end);
+void	skip_filename(char *str, int *i);
 /*
 ** builtins
 */

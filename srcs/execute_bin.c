@@ -1,11 +1,12 @@
 #include "minishell.h"
 
-void	cmd_not_found(char *cmd_line)
+void	cmd_not_found(char *cmd_line, t_data *data)
 {
-	ft_putstr_fd("minishell: ", 1);
-	ft_putstr_fd(cmd_line, 1);
-	ft_putstr_fd(": ", 1);
-	ft_putendl_fd("command not found", 1);
+	reset_fd_to_default(data);
+	ft_putstr_fd("minishell: ", STDOUT_FILENO);
+	ft_putstr_fd(cmd_line, STDOUT_FILENO);
+	ft_putstr_fd(": ", STDOUT_FILENO);
+	ft_putendl_fd("command not found", STDOUT_FILENO);
 	exit_status = 127;
 }
 
@@ -15,7 +16,6 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	int		status;
 
 	pid = fork();
-	//todo сделать crl-\ в дочке
 	if (pid == -1)
 		error_handler(strerror(errno), 1);
 	if (pid == 0)
@@ -25,7 +25,6 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	else
 	{
 		waitpid(pid, &status, 0);
-		signal(SIGINT, SIG_DFL);
 		exit_status = WEXITSTATUS(status);
 	}
 }
@@ -80,5 +79,5 @@ void	execute_bin(char **cmd_line, t_data *data)
 	if (!flag && check_paths(cmd_line[0]) == 0)
 		fork_process(cmd_line[0], cmd_line, data);
 	else if (!flag)
-		cmd_not_found(cmd_line[0]);
+		cmd_not_found(cmd_line[0], data);
 }

@@ -18,6 +18,10 @@ void	exec_cmd(char **cmd_line, t_data *data)
 		exit_minishell();
 	else
 		execute_bin(cmd_line, data);
+	// todo если выполнить по порядку unset PATH ; ls ; bin/ls то ls не
+	//  сработает, а /bin/ls сработает
+
+	//todo посмотреть кейсы ниже "unset первого элемента экспорта"
 }
 
 void	exec_commands(t_data *data)
@@ -42,5 +46,6 @@ void	split_and_exec(t_data *data, char *cmd_line)
 	i = 0;
 	while (data->cmd_lines[i])
 		spec_sym_handler(&data->cmd_lines[i++], data);
-	exec_commands(data);
+	if (data->cmd_lines[0])
+		exec_commands(data);
 }

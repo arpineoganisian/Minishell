@@ -7,23 +7,24 @@ char	*make_filename(char *str, int i, t_data *data)
 
 	if (str[i] == '\"' && closed_quotes(str, i, '\"'))
 	{
-		tmp = i;
-		while (str[++i] != '\"')
-			;
+		tmp = i++;
+		while (str[i] != '\"')
+			i++;
 	}
 	else if (str[i] == '\'' && closed_quotes(str, i, '\''))
 	{
-		tmp = i;
-		while (str[++i] != '\'')
-			;
+		tmp = i++;
+		while (str[i] != '\'')
+			i++;
 	}
 	else
 	{
 		tmp = i;
-		while (str[++i] != ' ' && str[i])
-			;
+		while (str[i] != ' ' && str[i] != '>' && str[i] != '<' && str[i])
+			i++;
+		i--;
 	}
-	tmp_str = ft_substr(str, tmp, i - tmp);
+	tmp_str = ft_substr(str, tmp, i - tmp + 1);
 	spec_sym_handler(&tmp_str, data);
 	return (tmp_str);
 }
@@ -60,15 +61,7 @@ void	remove_redirect(char **str, int *i, char c)
 		(*i)++;
 	while ((*str)[*i] == ' ')
 		(*i)++;
-	if ((*str)[*i] == '\"' && closed_quotes(*str, *i, '\"'))
-		while ((*str)[++(*i)] != '\"')
-			;
-	else if ((*str)[*i] == '\'' && closed_quotes(*str, *i, '\''))
-		while ((*str)[++(*i)] != '\'')
-			;
-	else
-		while ((*str)[++(*i)] != ' ' && (*str)[*i])
-			;
+	skip_filename(*str, i);
 	first_part = ft_substr(*str, 0, start);
 	new_str = ft_strjoin(first_part, *str + *i + 1);
 	free(first_part);

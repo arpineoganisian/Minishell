@@ -21,3 +21,10 @@ void	ctrl_d(t_data *data)
 	exit_status = 1;
 	exit_minishell(data);
 }
+
+void	ctrl_slash_child(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
+	exit_status = 131;
+}

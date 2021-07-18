@@ -67,6 +67,7 @@ void	print_export(char **envp)
 
 int	export(char **cmd_line, t_data *data)
 {
+	//todo сделать две переменные подряд типа export a=l d=s
 	if (strings_counter(cmd_line) == 1)
 	{
 		print_export(sort_envp(data->envp));

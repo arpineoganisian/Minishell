@@ -15,6 +15,8 @@ char	*readline_history(char *prompt, char *line_read, t_data *data)
 		free(line_read);
 		line_read = NULL;
 	}
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 	tcgetattr(STDOUT_FILENO, &data->config);
 	data->config.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
@@ -22,6 +24,7 @@ char	*readline_history(char *prompt, char *line_read, t_data *data)
 	data->config.c_lflag |= ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	signal(SIGINT, ctrl_c_child);
+	signal(SIGQUIT, ctrl_slash_child);
 	if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);

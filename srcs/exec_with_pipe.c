@@ -94,6 +94,7 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 		exit_status = WEXITSTATUS(status);
 		i++;
 	}
+//	printf("\n%zu\n", read(data->fd[tokens_count][0], &c, 1));
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
 		make_string(&line_read, c);
 	close(data->fd[tokens_count][0]);

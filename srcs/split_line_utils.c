@@ -47,7 +47,14 @@ void	copy_space_word(char *str, int *i, char **split_string)
 			while (str[*i] != '\'' && str[*i])
 				(*split_string)[char_count++] = str[(*i)++];
 		}
-		(*split_string)[char_count++] = str[(*i)++];
+		if (str[*i] == '\"' && closed_quotes(str, *i, '\"'))
+		{
+			(*split_string)[char_count++] = str[(*i)++];
+			while (str[*i] != '\"' && str[*i])
+				(*split_string)[char_count++] = str[(*i)++];
+		}
+		if (str[*i] != ' ' && str[*i])
+			(*split_string)[char_count++] = str[(*i)++];
 	}
 	(*split_string)[char_count] = '\0';
 }

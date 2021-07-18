@@ -53,6 +53,7 @@ int	heredoc_read(t_data *data, char *word)
 	if (pipe(fd) == -1)
 		return (1);
 	pid_child = fork();
+	signal(SIGQUIT, SIG_IGN);
 	if (pid_child == -1)
 		return (1);
 	if (pid_child == 0)
@@ -70,4 +71,26 @@ int	heredoc_read(t_data *data, char *word)
 		data->fd_in[0] = fd[0];
 	}
 	return (0);
+}
+
+void	skip_filename(char *str, int *i)
+{
+	if (str[*i] == '\"' && closed_quotes(str, *i, '\"'))
+	{
+		(*i)++;
+		while (str[*i] != '\"')
+			(*i)++;;
+	}
+	else if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
+	{
+		(*i)++;
+		while (str[*i] != '\'')
+			(*i)++;
+	}
+	else
+	{
+		while (str[*i] != ' ' && str[*i] != '>' && str[*i] != '<' && str[*i])
+			(*i)++;
+		(*i)--;
+	}
 }
