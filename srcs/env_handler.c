@@ -9,7 +9,7 @@ int	env_key_finder(char **envp, char *env_key)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strnstr(envp[i], env_key, ft_strlen(env_key)))
+		if (ft_strnstr(envp[i], env_key, ft_strlen(envp[i])))
 		{
 			k = 0;
 			while (envp[i][k] != '=' && envp[i][k])
