@@ -1,31 +1,5 @@
 #include "minishell.h"
 
-char	*ft_strnstr2(const char *haystack, const char *needle, size_t len)
-{
-	size_t	i;
-	size_t	tmp;
-
-	tmp = 0;
-	if (needle[tmp] == '\0')
-		return ((char *)haystack);
-	i = 0;
-	while (haystack[i])
-	{
-		while (haystack[i + tmp] == needle[tmp] && (tmp + i) < len)
-		{
-			if (haystack[i + tmp] == '\0' && needle[tmp] == '\0')
-				return ((char *)&haystack[i]);
-			tmp++;
-		}
-		if (needle[tmp] == '\0')
-			return ((char *)&haystack[i]);
-		tmp = 0;
-		i++;
-	}
-	return (NULL);
-}
-
-
 int	env_key_finder(char **envp, char *env_key)
 {
 	int		i;
@@ -35,7 +9,7 @@ int	env_key_finder(char **envp, char *env_key)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strnstr2(envp[i], env_key, ft_strlen(env_key)))
+		if (ft_strnstr(envp[i], env_key, ft_strlen(env_key)))
 		{
 			k = 0;
 			while (envp[i][k] != '=' && envp[i][k])
