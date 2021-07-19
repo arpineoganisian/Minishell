@@ -50,8 +50,8 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 			data->fd_out[0] = data->fd[i + 1][1];
 			data->fd_in[0] = data->fd[i][0];
 			split_and_exec(data, tmp[i]);
-			close(data->fd[i][0]);
-			close(data->fd[i + 1][1]);
+			close(data->fd_in[0]);
+			close(data->fd_out[0]);
 			exit(exit_status);
 		}
 		i++;
@@ -94,7 +94,6 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 		exit_status = WEXITSTATUS(status);
 		i++;
 	}
-//	printf("\n%zu\n", read(data->fd[tokens_count][0], &c, 1));
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
 		make_string(&line_read, c);
 	close(data->fd[tokens_count][0]);
