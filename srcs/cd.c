@@ -17,6 +17,7 @@ void	change_envp_oldpwd(char *key, char *value, t_data *data)
 		i++;
 	}
 	data->envp[i] = tmp;
+	free(tmp);
 }
 
 void	change_envp_pwd(char *key, char *value, t_data *data)
