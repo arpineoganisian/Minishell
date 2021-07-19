@@ -12,11 +12,12 @@ void	change_envp_oldpwd(char *key, char *value, t_data *data)
 		if (ft_strncmp(key, data->envp[i], ft_strlen(key)) == 0)
 		{
 			ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
+			free(tmp);
 			return ;
 		}
 		i++;
 	}
-	data->envp[i] = tmp;
+	ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
 	free(tmp);
 }
 
@@ -85,5 +86,7 @@ int	cd(char **cmd_line, t_data *data, int ret)
 	}
 	change_envp_oldpwd("OLDPWD", old_pwd, data);
 	change_envp_pwd("PWD", pwd, data);
+	free(pwd);
+	free(old_pwd);
 	return (ret);
 }
