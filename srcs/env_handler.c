@@ -15,12 +15,12 @@ int	env_key_finder(char **envp, char *env_key)
 			while (envp[i][k] != '=' && envp[i][k])
 				k++;
 			current_key = ft_substr(envp[i], 0, k);
-			if (!ft_strncmp(env_key, current_key, ft_strlen(current_key) + 1))
+			if (!ft_strncmp(env_key, current_key, ft_strlen(current_key)))
 			{
-				free(env_key);
 				free(current_key);
 				return (i);
 			}
+			free(current_key);
 		}
 		i++;
 	}
@@ -96,7 +96,9 @@ char	*env_handler(char *str, int *i, char **envp)
 			else
 				new_str = key_found(envp[line_number], str, start, *i);
 		}
+		free(env_key);
 	}
+	free(str);
 	*i = start;
 	return (new_str);
 }
