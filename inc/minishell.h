@@ -67,7 +67,7 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
 void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
 void	free_things(t_data *data, pid_t *pid, int tokens_count);
 void	reset_fd_to_default(t_data *data);
-void	ctrl_d(t_data *data);
+void	ctrl_d();
 void	ctrl_c(int sig);
 void	ctrl_c_child(int sig);
 int 	empty_line(char *str);
@@ -80,12 +80,13 @@ void	skip_filename(char *str, int *i);
 */
 
 int		echo(char **cmd_line);
-int 	cd(char **cmd_line, t_data *data);
+int		cd(char **cmd_line, t_data *data, int ret);
 int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
-void 	exit_minishell();
+int 	exit_minishell(char **cmd_line);
+void	cmd_not_found(char *cmd_line, t_data *data);
 
 /*
 ** not builtins
@@ -100,5 +101,6 @@ char	*get_minishell_env(char *key, char **env_vars);
 void	add_env_var(t_data *data, char *cmd_line);
 int		check_and_change_env_vars(char *cmd_line, t_data *data);
 char	*str_3_join(char const *s1, char const *s2, char const *s3);
+void	free_splited_arr(char **arr);
 
 #endif

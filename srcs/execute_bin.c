@@ -1,15 +1,5 @@
 #include "minishell.h"
 
-void	cmd_not_found(char *cmd_line, t_data *data)
-{
-	reset_fd_to_default(data);
-	ft_putstr_fd("minishell: ", STDOUT_FILENO);
-	ft_putstr_fd(cmd_line, STDOUT_FILENO);
-	ft_putstr_fd(": ", STDOUT_FILENO);
-	ft_putendl_fd("command not found", STDOUT_FILENO);
-	exit_status = 127;
-}
-
 void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 {
 	pid_t	pid;
@@ -29,11 +19,11 @@ void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	}
 }
 
-int check_paths(char *path_to_bin)
+int	is_executable(char *path_to_bin)
 {
-	int fd;
-	struct stat sb;
-	int res;
+	int			fd;
+	struct stat	sb;
+	int			res;
 
 	res = -1;
 	fd = open(path_to_bin, O_RDONLY);
@@ -43,41 +33,52 @@ int check_paths(char *path_to_bin)
 	return (res);
 }
 
-void	execute_bin(char **cmd_line, t_data *data)
+int	check_and_exec_paths(char *path_value, char **cmd_line, t_data *data)
 {
+	char	*path_to_bin;
 	char	**paths;
 	int		i;
-	char	*path_to_bin;
-	int 	flag;
-	char	*path_value;
+	int		flag;
 
 	i = 0;
 	flag = 0;
-
-	path_value = get_minishell_env("PATH", data->envp);
-	if (!path_value)
-	{
-		error_handler(ft_strjoin(cmd_line[0], ": No such file or directory"), 127);
-		return ;
-	}
 	paths = ft_split(path_value, ':');
 	free(path_value);
 	while (paths[i])
 	{
-		path_to_bin = ft_strjoin(paths[i], ft_strjoin("/", cmd_line[0]));
-		if (check_paths(path_to_bin) == 0)
+		path_to_bin = str_3_join(paths[i], "/", cmd_line[0]);
+		if (is_executable(path_to_bin) == 0)
 		{
 			fork_process(path_to_bin, cmd_line, data);
 			flag = 1;
 			free(path_to_bin);
-			break;
+			break ;
 		}
 		free(path_to_bin);
 		i++;
 	}
-	free(paths);
-	if (!flag && check_paths(cmd_line[0]) == 0)
+	free_splited_arr(paths);
+	return (flag);
+}
+
+void	execute_bin(char **cmd_line, t_data *data)
+{
+	int		flag;
+	char	*path_value;
+	char	*tmp;
+
+	flag = 0;
+	path_value = get_minishell_env("PATH", data->envp);
+	if (path_value)
+		flag = check_and_exec_paths(path_value, cmd_line, data);
+	if (!flag && is_executable(cmd_line[0]) == 0)
 		fork_process(cmd_line[0], cmd_line, data);
+	else if (!path_value)
+	{
+		tmp = ft_strjoin(cmd_line[0], ": No such file or directory");
+		error_handler(tmp, 127);
+		free(tmp);
+	}
 	else if (!flag)
 		cmd_not_found(cmd_line[0], data);
 }

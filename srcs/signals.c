@@ -15,11 +15,11 @@ void	ctrl_c_child(int sig)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
-void	ctrl_d(t_data *data)
+void	ctrl_d()
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
 	exit_status = 1;
-	exit_minishell(data);
+	exit_minishell(NULL);
 }
 
 void	ctrl_slash_child(int sig)

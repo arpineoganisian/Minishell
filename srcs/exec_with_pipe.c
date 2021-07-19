@@ -53,8 +53,8 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 			else
 				data->fd_in[0] = data->fd[i][0];
 			split_and_exec(data, tmp[i]);
-			close(data->fd[i][0]);
-			close(data->fd[i + 1][1]);
+			close(data->fd_in[0]);
+			close(data->fd_out[0]);
 			exit(exit_status);
 		}
 		i++;
