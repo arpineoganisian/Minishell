@@ -30,7 +30,8 @@ int	is_executable(char *path_to_bin)
 	fd = open(path_to_bin, O_RDONLY);
 	if (fd != -1 && stat(path_to_bin, &sb) == 0 && sb.st_mode & S_IXUSR)
 		res = 0;
-	close(fd);
+	if (fd > 0)
+		close(fd);
 	return (res);
 }
 
