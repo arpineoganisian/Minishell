@@ -19,5 +19,4 @@ int exit_minishell(char **cmd_line)
 		}
 	}
 	exit(exit_status);
-
 }

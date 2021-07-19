@@ -92,15 +92,14 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 	i = 0;
 	while (i < tokens_count)
 	{
-		wait(&status);
-		//todo перепроверить статус
-		exit_status = WEXITSTATUS(status);
+		waitpid(pid[i], &status, 0);
 		i++;
 	}
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
 		make_string(&line_read, c);
 	close(data->fd[tokens_count][0]);
 	close(data->fd[0][1]);
-	ft_putstr_fd(line_read, STDOUT_FILENO);
+	if (line_read && *line_read && *line_read != '\n')
+		ft_putstr_fd(line_read, STDOUT_FILENO);
 	free_things(data, pid, tokens_count);
 }
