@@ -33,7 +33,7 @@ void	add_env_var(t_data *data, char *cmd_line)
 	int	i;
 
 	i = strings_counter(data->envp);
-	ft_strlcpy(data->envp[i], cmd_line, (ft_strlen(cmd_line) + 1));
+	data->envp[i] = cmd_line;
 	data->envp[i + 1] = NULL;
 	if (ft_strchr(cmd_line, '='))
 		data->envp_exp = join_str_to_arr(data->envp_exp, cmd_line);

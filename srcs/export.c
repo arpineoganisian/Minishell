@@ -39,7 +39,6 @@ void	print_export(char **envp)
 	int		flag;
 
 	i = 0;
-	flag = 0;
 
 	while (envp[i])
 	{
@@ -62,12 +61,13 @@ void	print_export(char **envp)
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
-	free(envp);
+	free_splited_arr(envp);
 }
 
 int	export(char **cmd_line, t_data *data)
 {
-	int i;
+	int		i;
+	char	*tmp;
 
 	i = 1;
 	if (strings_counter(cmd_line) == 1)
@@ -79,7 +79,9 @@ int	export(char **cmd_line, t_data *data)
 	{
 		if (cmd_line[i][0] == '=')
 		{
-			error_handler(ft_strjoin(ft_strjoin("export: `", cmd_line[1]), "': not a valid identifier"), 1);
+			tmp = str_3_join("export: `", cmd_line[1], "': not a valid identifier");
+			error_handler(tmp, 1);
+			free(tmp);
 			return (1);
 		}
 		if (check_and_change_env_vars(cmd_line[i], data) == -1)

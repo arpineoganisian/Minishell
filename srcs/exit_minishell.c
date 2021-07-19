@@ -18,5 +18,8 @@ int exit_minishell(char **cmd_line)
 			exit_status = exit_arg;
 		}
 	}
+	//TODO exit со строчкой
+	//TODO реализовывать ли exit с оч длинным числом(за пределами лонга воспринимает как строчку)
+	// bash: exit: 4444444444444444444444444444444444444: numeric argument required
 	exit(exit_status);
 }
