@@ -67,7 +67,7 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count);
 void	malloc_things(t_data *data, pid_t **pid, int tokens_count);
 void	free_things(t_data *data, pid_t *pid, int tokens_count);
 void	reset_fd_to_default(t_data *data);
-void	ctrl_d(t_data *data);
+void	ctrl_d();
 void	ctrl_c(int sig);
 void	ctrl_c_child(int sig);
 int 	empty_line(char *str);
@@ -85,7 +85,7 @@ int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
-void 	exit_minishell();
+int 	exit_minishell(char **cmd_line);
 
 /*
 ** not builtins

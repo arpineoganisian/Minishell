@@ -15,7 +15,7 @@ void	exec_cmd(char **cmd_line, t_data *data)
 	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen(cmd_line[0]) + 1))
 		env(data);
 	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen(cmd_line[0]) + 1))
-		exit_minishell();
+		exit_minishell(cmd_line);
 	else
 		execute_bin(cmd_line, data);
 
