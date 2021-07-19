@@ -87,7 +87,6 @@ int	export(char **cmd_line, t_data *data)
 		if (check_and_change_env_vars(cmd_line[i], data) == -1)
 			add_env_var(data, cmd_line[i]);
 		i++;
-
 	}
 	return (0);
 }
