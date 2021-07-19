@@ -34,10 +34,13 @@ void	change_envp_pwd(char *key, char *value, t_data *data)
 void	cd_err_handler(char *str1, char *str2, char *str3)
 {
 	char	*tmp;
+	char	*tmp2;
 
 	tmp = str_3_join(str1, str2, str3);
-	error_handler(ft_strjoin(tmp, strerror(errno)), 1);
+	tmp2 = ft_strjoin(tmp, strerror(errno));
+	error_handler(tmp2, 1);
 	free(tmp);
+	free(tmp2);
 }
 
 int	cd_home(t_data *data)
