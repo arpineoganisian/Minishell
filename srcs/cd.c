@@ -12,11 +12,12 @@ void	change_envp_oldpwd(char *key, char *value, t_data *data)
 		if (ft_strncmp(key, data->envp[i], ft_strlen(key)) == 0)
 		{
 			ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
+			free(tmp);
 			return ;
 		}
 		i++;
 	}
-	data->envp[i] = tmp;
+	ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
 	free(tmp);
 }
 
@@ -33,10 +34,13 @@ void	change_envp_pwd(char *key, char *value, t_data *data)
 void	cd_err_handler(char *str1, char *str2, char *str3)
 {
 	char	*tmp;
+	char	*tmp2;
 
 	tmp = str_3_join(str1, str2, str3);
-	error_handler(ft_strjoin(tmp, strerror(errno)), 1);
+	tmp2 = ft_strjoin(tmp, strerror(errno));
+	error_handler(tmp2, 1);
 	free(tmp);
+	free(tmp2);
 }
 
 int	cd_home(t_data *data)
@@ -85,5 +89,7 @@ int	cd(char **cmd_line, t_data *data, int ret)
 	}
 	change_envp_oldpwd("OLDPWD", old_pwd, data);
 	change_envp_pwd("PWD", pwd, data);
+	free(pwd);
+	free(old_pwd);
 	return (ret);
 }
