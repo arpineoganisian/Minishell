@@ -102,5 +102,7 @@ void	add_env_var(t_data *data, char *cmd_line);
 int		check_and_change_env_vars(char *cmd_line, t_data *data);
 char	*str_3_join(char const *s1, char const *s2, char const *s3);
 void	free_splited_arr(char **arr);
+void	change_envp_oldpwd(char *key, char *value, t_data *data);
+void	change_envp_pwd(char *key, char *value, t_data *data);
 
 #endif
