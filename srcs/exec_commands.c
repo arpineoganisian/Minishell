@@ -1,20 +1,33 @@
 #include "minishell.h"
 
+int 	equal_str(char *str1, char *str2)
+{
+	size_t	len1;
+	size_t	len2;
+
+	len1 = ft_strlen(str1);
+	len2 = ft_strlen(str2);
+	if (len1 == len2)
+		if (!ft_strncmp(str1, str2, len1))
+		return (1);
+	return (0);
+}
+
 void	exec_cmd(char **cmd_line, t_data *data)
 {
-	if (!ft_strncmp(cmd_line[0], "echo", ft_strlen("echo")))
+	if (equal_str(cmd_line[0], "echo"))
 		echo(cmd_line);
-	else if (!ft_strncmp(cmd_line[0], "cd", ft_strlen("cd")))
+	else if (equal_str(cmd_line[0], "cd"))
 		cd(cmd_line, data, 0);
-	else if (!ft_strncmp(cmd_line[0], "pwd", ft_strlen("pwd")))
+	else if (equal_str(cmd_line[0], "pwd"))
 		pwd();
-	else if (!ft_strncmp(cmd_line[0], "export", ft_strlen("export")))
+	else if (equal_str(cmd_line[0], "export"))
 		export(cmd_line, data);
-	else if (!ft_strncmp(cmd_line[0], "unset", ft_strlen("unset")))
+	else if (equal_str(cmd_line[0], "unset"))
 		unset(cmd_line, data);
-	else if (!ft_strncmp(cmd_line[0], "env", ft_strlen("env")))
+	else if (equal_str(cmd_line[0], "env"))
 		env(data);
-	else if (!ft_strncmp(cmd_line[0], "exit", ft_strlen("exit")))
+	else if (equal_str(cmd_line[0], "exit"))
 		exit_minishell(cmd_line);
 	else
 		execute_bin(cmd_line, data);

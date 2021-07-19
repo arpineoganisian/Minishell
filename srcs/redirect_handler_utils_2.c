@@ -27,9 +27,9 @@ void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 		get_out_from_child(tmp, heredoc, fd, data);
 	else
 	{
-		do_read = ft_strncmp(word, heredoc, ft_strlen(word));
+		do_read = equal_str(word, heredoc);
 		heredoc = string_join(heredoc, "\n");
-		while (do_read)
+		while (!do_read)
 		{
 			heredoc = string_join(heredoc, tmp);
 			if (tmp && *tmp)
@@ -37,7 +37,7 @@ void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 			tmp = readline("> ");
 			if (!tmp)
 				get_out_from_child(tmp, heredoc, fd, data);
-			do_read = ft_strncmp(word, tmp, ft_strlen(word));
+			do_read = equal_str(word, tmp);
 			tmp = string_join(tmp, "\n");
 		}
 		get_out_from_child(tmp, heredoc, fd, data);

@@ -1,5 +1,31 @@
 #include "minishell.h"
 
+char	*ft_strnstr2(const char *haystack, const char *needle, size_t len)
+{
+	size_t	i;
+	size_t	tmp;
+
+	tmp = 0;
+	if (needle[tmp] == '\0')
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i])
+	{
+		while (haystack[i + tmp] == needle[tmp] && (tmp + i) < len)
+		{
+			if (haystack[i + tmp] == '\0' && needle[tmp] == '\0')
+				return ((char *)&haystack[i]);
+			tmp++;
+		}
+		if (needle[tmp] == '\0')
+			return ((char *)&haystack[i]);
+		tmp = 0;
+		i++;
+	}
+	return (NULL);
+}
+
+
 int	env_key_finder(char **envp, char *env_key)
 {
 	int		i;
@@ -9,13 +35,13 @@ int	env_key_finder(char **envp, char *env_key)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strnstr(envp[i], env_key, ft_strlen(env_key)))
+		if (ft_strnstr2(envp[i], env_key, ft_strlen(env_key)))
 		{
 			k = 0;
 			while (envp[i][k] != '=' && envp[i][k])
 				k++;
 			current_key = ft_substr(envp[i], 0, k);
-			if (!ft_strncmp(env_key, current_key, ft_strlen(current_key)))
+			if (equal_str(env_key, current_key))
 			{
 				free(current_key);
 				return (i);
@@ -86,7 +112,7 @@ char	*env_handler(char *str, int *i, char **envp)
 	else
 	{
 		env_key = make_env_key(str, i, start);
-		if (!ft_strncmp("?", env_key, ft_strlen(env_key)))
+		if (equal_str("?", env_key))
 			new_str = exit_status_env(str, start, *i);
 		else
 		{
