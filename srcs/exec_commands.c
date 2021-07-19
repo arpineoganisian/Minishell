@@ -18,11 +18,13 @@ void	exec_cmd(char **cmd_line, t_data *data)
 		exit_minishell(cmd_line);
 	else
 		execute_bin(cmd_line, data);
+	free_splited_arr(cmd_line);
 
 	//TODO чекнуть остальные ft_strncmp()
 	// потому что отрабатывали команды без одной буквы, напр:
 	// expor, ech, c, pw, unse, en, exi
 	// добавила к strlen + 1
+	// cвои проверила
 
 	//todo посмотреть кейсы ниже "unset первого элемента экспорта"
 }

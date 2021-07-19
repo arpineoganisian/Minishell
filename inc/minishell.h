@@ -86,6 +86,7 @@ int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
 int 	exit_minishell(char **cmd_line);
+void	cmd_not_found(char *cmd_line, t_data *data);
 
 /*
 ** not builtins
@@ -100,5 +101,6 @@ char	*get_minishell_env(char *key, char **env_vars);
 void	add_env_var(t_data *data, char *cmd_line);
 int		check_and_change_env_vars(char *cmd_line, t_data *data);
 char	*str_3_join(char const *s1, char const *s2, char const *s3);
+void	free_splited_arr(char **arr);
 
 #endif
