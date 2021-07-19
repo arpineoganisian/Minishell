@@ -80,7 +80,7 @@ void	skip_filename(char *str, int *i);
 */
 
 int		echo(char **cmd_line);
-int 	cd(char **cmd_line, t_data *data);
+int		cd(char **cmd_line, t_data *data, int ret);
 int		pwd();
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
