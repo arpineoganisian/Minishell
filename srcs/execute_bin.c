@@ -13,8 +13,11 @@ void fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 	else
 	{
 		waitpid(pid, &status, 0);
+		printf("st = %d\n", status);
 		if (WIFSIGNALED(status))
 			exit_status = 128 + WTERMSIG(status);
+		else if (WIFEXITED(status))
+			exit_status = 0;
 		else
 			exit_status = WIFEXITED(status);
 	}

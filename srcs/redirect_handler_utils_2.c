@@ -6,7 +6,6 @@ int	get_out_from_child(char *tmp, char *heredoc, int *fd, t_data *data)
 		free(tmp);
 	data->config.c_lflag |= ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
-	close(fd[0]);
 	write(fd[1], heredoc, ft_strlen(heredoc) + 1);
 	close(fd[1]);
 	ft_putstr_fd("\e[1A\e[2C", STDOUT_FILENO);
@@ -51,24 +50,36 @@ int	heredoc_read(t_data *data, char *word)
 	pid_t pid_child;
 
 	if (pipe(fd) == -1)
+	{
+		error_handler("error with creating pipe", 1);
 		return (1);
+	}
 	pid_child = fork();
-	signal(SIGQUIT, SIG_IGN);
-	if (pid_child == -1)
+	if (pid_child < 0)
+	{
+		error_handler("Error with creating process", 1);
 		return (1);
+	}
 	if (pid_child == 0)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_DFL);
+		close(fd[0]);
 		read_heredoc_from_child(fd, word, data);
 	}
 	else
 	{
-		wait(&status);
-		exit_status = WEXITSTATUS(status);
-		signal(SIGINT, ctrl_c);
 		close(fd[1]);
-		close(data->fd_in[0]);
 		data->fd_in[0] = fd[0];
+		wait(&status);
+		if (WIFSIGNALED(status))
+			exit_status = 128 + WTERMSIG(status);
+		else if (WIFEXITED(status))
+			exit_status = 0;
+		else
+			exit_status = WIFEXITED(status);
+		signal(SIGINT, ctrl_c);
+
 	}
 	return (0);
 }
