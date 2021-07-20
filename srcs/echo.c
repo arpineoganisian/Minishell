@@ -48,6 +48,6 @@ int	echo(char **cmd_line)
 	}
 	if (!flag_n)
 		write(STDOUT_FILENO, "\n", 1);
-	exit_status = 0;
+	g_exit_status = 0;
 	return (0);
 }

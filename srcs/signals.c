@@ -3,7 +3,7 @@
 void	ctrl_c(int sig)
 {
 	(void)sig;
-	exit_status = 1;
+	g_exit_status = 1;
 	ft_putstr_fd("\n", STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -31,5 +31,5 @@ void	ctrl_slash_child(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
-	exit_status = 131;
+	g_exit_status = 131;
 }

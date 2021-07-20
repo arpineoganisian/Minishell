@@ -60,11 +60,11 @@ int	heredoc_parent(t_data *data, int *fd)
 	data->fd_in[0] = open("/tmp/heredoc", O_RDONLY, 0644);
 	if (WIFSIGNALED(status))
 	{
-		exit_status = 1;
+		g_exit_status = 1;
 		return (1);
 	}
 	else if (WIFEXITED(status))
-		exit_status = WEXITSTATUS(status);
+		g_exit_status = WEXITSTATUS(status);
 	signal(SIGINT, ctrl_c);
 	unlink("/tmp/heredoc");
 	return (0);

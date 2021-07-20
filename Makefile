@@ -1,7 +1,7 @@
 NAME		= minishell
 CC			= gcc
 RM			= rm -rf
-CFLAGS		= -g -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS		= -g -Wall -Wextra -Werror
 SRCS_LIST	= main.c parser.c exec_commands.c syntax_handler.c spec_sym_handler.c split_by_pipe.c parser_utils.c \
 			env_handler.c redirect_handler.c split_line.c split_line_utils.c split_by_pipe_utils.c \
 			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c exec_with_pipe.c exec_with_pipe_utils.c \
@@ -19,17 +19,17 @@ SRCS_DIR	= srcs
 OBJ_DIR		= obj
 all:		$(NAME)
 $(NAME):	$(OBJ)
-#			cd libft && make bonus
+			cd libft && make bonus
 			$(CC) $(CFLAGS) $(OBJ) $(LIB_FT) $(RL_LIB) -o $(NAME)
 $(OBJ_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJ_DIR)
 			$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RL_INC_DIR) -c $< -o $@
 $(OBJ_DIR):
 			mkdir -p $@
 clean:
-#			cd libft && make clean
+			cd libft && make clean
 			$(RM) $(OBJ_DIR)
 fclean:		clean
-#			cd libft && make fclean
+			cd libft && make fclean
 			$(RM) $(NAME)
 re:			fclean all
 .PHONY:		all clean fclean re

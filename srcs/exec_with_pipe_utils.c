@@ -36,9 +36,9 @@ void	waitpids(pid_t *pid, int tokens_count)
 	{
 		waitpid(pid[i], &status, 0);
 		if (WIFSIGNALED(status))
-			exit_status = 128 + WTERMSIG(status);
+			g_exit_status = 128 + WTERMSIG(status);
 		else if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
+			g_exit_status = WEXITSTATUS(status);
 		i++;
 	}
 }

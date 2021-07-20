@@ -56,7 +56,7 @@ void	init(t_data *data, char **envp)
 	data->fd_in[0] = STDIN_FILENO;
 	data->fd_out[1] = dup(STDOUT_FILENO);
 	data->fd_in[1] = dup(STDIN_FILENO);
-	exit_status = 0;
+	g_exit_status = 0;
 	data->envp = copy_envp(envp);
 	data->envp_exp = copy_envp(envp);
 	change_shlvl(data);
@@ -76,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		readline_history("\e[32mminishell> \e[0m", data);
 		if (!data->line_read)
-			ctrl_d(data);
+			ctrl_d();
 		if (data->line_read && *data->line_read && empty_line(data->line_read))
 			parsing(data);
 	}

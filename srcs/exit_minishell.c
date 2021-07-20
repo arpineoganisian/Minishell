@@ -51,8 +51,8 @@ int	exit_minishell(char **cmd_line)
 		else if (strings_counter(cmd_line) == 2)
 		{
 			exit_arg = ft_atoi(cmd_line[1]);
-			exit_status = exit_arg;
+			g_exit_status = exit_arg;
 		}
 	}
-	exit(exit_status);
+	exit(g_exit_status);
 }

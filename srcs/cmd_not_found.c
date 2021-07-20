@@ -7,5 +7,5 @@ void	cmd_not_found(char *cmd_line, t_data *data)
 	ft_putstr_fd(cmd_line, STDOUT_FILENO);
 	ft_putstr_fd(": ", STDOUT_FILENO);
 	ft_putendl_fd("command not found", STDOUT_FILENO);
-	exit_status = 127;
+	g_exit_status = 127;
 }

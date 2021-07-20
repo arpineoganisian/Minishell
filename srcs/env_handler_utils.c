@@ -35,7 +35,7 @@ char	*exit_status_env(char *str, int start, int end)
 	char	*new_str;
 	char	*merge_str;
 
-	env_value = ft_itoa(exit_status);
+	env_value = ft_itoa(g_exit_status);
 	new_str = ft_substr(str, 0, start);
 	merge_str = ft_strjoin(new_str, env_value);
 	if (new_str)

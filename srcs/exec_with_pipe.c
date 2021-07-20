@@ -52,7 +52,7 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 			split_and_exec(data, tmp[i]);
 			close(data->fd_in[0]);
 			close(data->fd_out[0]);
-			exit(exit_status);
+			exit(g_exit_status);
 		}
 		i++;
 	}
@@ -90,6 +90,9 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 	close(data->fd[tokens_count][0]);
 	close(data->fd[0][1]);
 	if (line_read && *line_read && *line_read != '\n')
+	{
 		ft_putstr_fd(line_read, STDOUT_FILENO);
+		free(line_read);
+	}
 	free_things(data, pid, tokens_count);
 }
