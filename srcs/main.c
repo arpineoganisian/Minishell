@@ -66,8 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	init(data, envp);
 	while (1)
 	{
-		data->line_read = readline_history("\e[32mminishell> \e[0m",
-				data->line_read, data);
+		readline_history("\e[32mminishell> \e[0m", data);
 		if (!data->line_read)
 			ctrl_d(data);
 		if (data->line_read && *data->line_read && empty_line(data->line_read))

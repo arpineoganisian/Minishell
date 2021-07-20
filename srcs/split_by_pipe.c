@@ -48,7 +48,7 @@ char	**split_by_pipe(char *str)
 		start = i;
 		line_char_count(str, &i);
 		cmd_chr = 0;
-		while (start <= i - 1)
+		while (start < i)
 			str_arr[cl_count][cmd_chr++] = str[start++];
 		str_arr[cl_count][cmd_chr] = '\0';
 		cl_count++;

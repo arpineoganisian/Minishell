@@ -1,7 +1,7 @@
 NAME		= minishell
 CC			= gcc
 RM			= rm -rf
-CFLAGS		= -g -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS		= -g -Wall -Wextra -Werror #-fsanitize=address -g3
 SRCS_LIST	= main.c parser.c exec_commands.c syntax_handler.c spec_sym_handler.c split_by_pipe.c parser_utils.c \
 			env_handler.c redirect_handler.c split_line.c split_line_utils.c split_by_pipe_utils.c \
 			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c exec_with_pipe.c exec_with_pipe_utils.c \

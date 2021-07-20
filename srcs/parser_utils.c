@@ -8,26 +8,25 @@ void	reset_fd_to_default(t_data *data)
 	data->fd_in[0] = STDIN_FILENO;
 }
 
-char	*readline_history(char *prompt, char *line_read, t_data *data)
+void	readline_history(char *prompt, t_data *data)
 {
-	if (line_read && *line_read)
+	if (data->line_read && *data->line_read)
 	{
-		free(line_read);
-		line_read = NULL;
+		free(data->line_read);
+		data->line_read = NULL;
 	}
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	tcgetattr(STDOUT_FILENO, &data->config);
 	data->config.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
-	line_read = readline(prompt);
+	data->line_read = readline(prompt);
 	data->config.c_lflag |= ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	signal(SIGINT, ctrl_c_child);
 	signal(SIGQUIT, ctrl_slash_child);
-	if (line_read && *line_read)
-		add_history(line_read);
-	return (line_read);
+	if (data->line_read && *data->line_read)
+		add_history(data->line_read);
 }
 
 char	*string_join(char *str1, char *str2)

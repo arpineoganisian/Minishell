@@ -15,19 +15,21 @@ int 	empty_line(char *str)
 void	parsing_start(t_data *data)
 {
 	char	**tmp;
+	char	*line_read;
 	int		pipes_count;
-	int		tokens_count;
 
 	pipes_count = command_line_count(data->line_read);
-	tokens_count = pipes_count + 1;
-	tmp = split_by_pipe(data->line_read);
-	free(data->line_read);
-	data->line_read = NULL;
 	if (pipes_count > 0)
-		exec_cmd_line_with_pipes(data, tmp, tokens_count);
+	{
+		tmp = split_by_pipe(data->line_read);
+		free(data->line_read);
+		data->line_read = NULL;
+		exec_cmd_line_with_pipes(data, tmp, pipes_count + 1);
+	}
 	else
 	{
-		split_and_exec(data, tmp[0]);
+		line_read = ft_strdup(data->line_read);
+		split_and_exec(data, line_read);
 		reset_fd_to_default(data);
 	}
 }

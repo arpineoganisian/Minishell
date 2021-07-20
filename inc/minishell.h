@@ -54,7 +54,7 @@ int		redirect_handler(char **str, t_data *data);
 char	*dquotes_handler(char *str, int *i, t_data *data);
 void	skip_other(char *str, int *i);
 char	*make_filename(char *str, int i, t_data *data);
-char	*readline_history(char *prompt, char *line_read, t_data *data);
+void	readline_history(char *prompt, t_data *data);
 void	remove_redirect(char **str, int *i, char c);
 int 	app_redirect(char *str, int i, t_data *data);
 int		redirect(char *str, int i, t_data *data);
