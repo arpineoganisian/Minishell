@@ -8,7 +8,8 @@ int	get_out_from_child(char *tmp, char *heredoc, int *fd, t_data *data)
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	write(fd[1], heredoc, ft_strlen(heredoc) + 1);
 	close(fd[1]);
-	ft_putstr_fd("\e[1A\e[2C", STDOUT_FILENO);
+	if (data->heredoc_ctrl_d == 0)
+		ft_putstr_fd("\e[1A\e[2C", STDOUT_FILENO);
 	exit(0);
 }
 
@@ -24,30 +25,55 @@ void	read_heredoc_from_child(int *fd, char *word, t_data *data)
 	heredoc = readline("> ");
 	if (!heredoc)
 		get_out_from_child(tmp, heredoc, fd, data);
-	else
+	do_read = equal_str(word, heredoc);
+	heredoc = string_join(heredoc, "\n");
+	while (!do_read)
 	{
-		do_read = equal_str(word, heredoc);
-		heredoc = string_join(heredoc, "\n");
-		while (!do_read)
-		{
-			heredoc = string_join(heredoc, tmp);
-			if (tmp && *tmp)
-				free(tmp);
-			tmp = readline("> ");
-			if (!tmp)
-				get_out_from_child(tmp, heredoc, fd, data);
-			do_read = equal_str(word, tmp);
-			tmp = string_join(tmp, "\n");
-		}
-		get_out_from_child(tmp, heredoc, fd, data);
+		heredoc = string_join(heredoc, tmp);
+		if (tmp)
+			free(tmp);
+		tmp = readline("> ");
+		if (!tmp)
+			get_out_from_child(tmp, heredoc, fd, data);
+		do_read = equal_str(word, tmp);
+		tmp = string_join(tmp, "\n");
 	}
+	data->heredoc_ctrl_d = 1;
+	get_out_from_child(tmp, heredoc, fd, data);
+}
+
+int	heredoc_parent(t_data *data, int *fd)
+{
+	char	*heredoc;
+	int		status;
+	char	c;
+
+	close(fd[1]);
+	heredoc = NULL;
+	while (read(fd[0], &c, 1))
+		make_string(&heredoc, c);
+	close(data->fd_in[0]);
+	wait(&status);
+	data->fd_in[0] = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	ft_putstr_fd(heredoc, data->fd_in[0]);
+	close(data->fd_in[0]);
+	data->fd_in[0] = open("/tmp/heredoc", O_RDONLY, 0644);
+	if (WIFSIGNALED(status))
+	{
+		exit_status = 1;
+		return (1);
+	}
+	else if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
+	signal(SIGINT, ctrl_c);
+	unlink("/tmp/heredoc");
+	return (0);
 }
 
 int	heredoc_read(t_data *data, char *word)
 {
-	int	fd[2];
-	int	status;
-	pid_t pid_child;
+	int		fd[2];
+	pid_t	pid_child;
 
 	if (pipe(fd) == -1)
 	{
@@ -68,19 +94,7 @@ int	heredoc_read(t_data *data, char *word)
 		read_heredoc_from_child(fd, word, data);
 	}
 	else
-	{
-		close(fd[1]);
-		data->fd_in[0] = fd[0];
-		wait(&status);
-		if (WIFSIGNALED(status))
-			exit_status = 128 + WTERMSIG(status);
-		else if (WIFEXITED(status))
-			exit_status = 0;
-		else
-			exit_status = WIFEXITED(status);
-		signal(SIGINT, ctrl_c);
-
-	}
+		return (heredoc_parent(data, fd));
 	return (0);
 }
 
@@ -90,7 +104,7 @@ void	skip_filename(char *str, int *i)
 	{
 		(*i)++;
 		while (str[*i] != '\"')
-			(*i)++;;
+			(*i)++;
 	}
 	else if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
 	{

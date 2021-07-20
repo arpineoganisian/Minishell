@@ -32,6 +32,7 @@ typedef struct s_data
 	char	**envp;
 	char	**envp_exp;
 	struct termios config;
+	int		heredoc_ctrl_d;
 }				t_data;
 
 void	parsing(t_data *data);

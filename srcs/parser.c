@@ -21,6 +21,8 @@ void	parsing_start(t_data *data)
 	pipes_count = command_line_count(data->line_read);
 	tokens_count = pipes_count + 1;
 	tmp = split_by_pipe(data->line_read);
+	free(data->line_read);
+	data->line_read = NULL;
 	if (pipes_count > 0)
 		exec_cmd_line_with_pipes(data, tmp, tokens_count);
 	else

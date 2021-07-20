@@ -12,9 +12,8 @@ void	ctrl_c(int sig)
 
 void	ctrl_c_child(int sig)
 {
-	(void)sig;
+	(void) sig;
 	ft_putstr_fd("\n", STDOUT_FILENO);
-	exit_status = 130;
 }
 
 void	ctrl_d()
