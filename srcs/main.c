@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void change_shlvl(t_data *data)
+void	change_shlvl(t_data *data)
 {
 	char	*shlvl;
 	int		new_shlvl;
-	int 	i;
+	int		i;
 
 	shlvl = get_minishell_env("SHLVL", data->envp);
 	if (!shlvl)
@@ -26,7 +26,7 @@ void change_shlvl(t_data *data)
 
 void	change_oldpwd(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = find_env_var("OLDPWD", data->envp);
 	if (i == -1)
@@ -62,7 +62,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-
 	data = (t_data *) malloc(sizeof(t_data));
 	init(data, envp);
 	while (1)

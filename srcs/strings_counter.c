@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int strings_counter(char **array)
+int	strings_counter(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])

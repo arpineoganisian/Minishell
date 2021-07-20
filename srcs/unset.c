@@ -3,7 +3,7 @@
 int	unset(char **cmd_line, t_data *data)
 {
 	int	i;
-	int num_of_envp;
+	int	num_of_envp;
 
 	if (strings_counter(cmd_line) == 1)
 		return (0);

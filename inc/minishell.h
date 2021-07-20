@@ -83,7 +83,7 @@ int 	equal_str(char *str1, char *str2);
 
 int		echo(char **cmd_line);
 int		cd(char **cmd_line, t_data *data, int ret);
-int		pwd();
+int		pwd(void);
 int		export(char **cmd_line, t_data *data);
 int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
