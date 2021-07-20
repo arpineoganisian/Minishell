@@ -21,10 +21,10 @@ void	ctrl_c_child_m(int sig)
 	(void) sig;
 }
 
-void	ctrl_d(void)
+void	ctrl_d(t_data *data)
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
-	exit_minishell(NULL);
+	exit_minishell(NULL, data);
 }
 
 void	ctrl_slash_child(int sig)

@@ -7,6 +7,7 @@ int	get_out_from_child(char *tmp, char *heredoc, int *fd, t_data *data)
 	data->config.c_lflag |= ECHOCTL;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &data->config);
 	write(fd[1], heredoc, ft_strlen(heredoc) + 1);
+	free(heredoc);
 	close(fd[1]);
 	if (data->heredoc_ctrl_d == 0)
 		ft_putstr_fd("\e[1A\e[2C", STDOUT_FILENO);
@@ -56,6 +57,7 @@ int	heredoc_parent(t_data *data, int *fd)
 	wait(&status);
 	data->fd_in[0] = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	ft_putstr_fd(heredoc, data->fd_in[0]);
+	free(heredoc);
 	close(data->fd_in[0]);
 	data->fd_in[0] = open("/tmp/heredoc", O_RDONLY, 0644);
 	if (WIFSIGNALED(status))

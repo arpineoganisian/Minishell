@@ -10,6 +10,6 @@ void	free_splited_arr(char **arr)
 		free(arr[i]);
 		i++;
 	}
-	free(arr[i]);
-	free(arr);
+	if (arr)
+		free(arr);
 }

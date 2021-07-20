@@ -29,11 +29,12 @@ int	check_cmd_lines(char **cmd_line)
 	return (0);
 }
 
-int	exit_minishell(char **cmd_line)
+int	exit_minishell(char **cmd_line, t_data *data)
 {
 	unsigned char	exit_arg;
 	char			*tmp;
 
+	(void)data;
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd_line && cmd_line[1])
 	{

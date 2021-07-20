@@ -1,14 +1,15 @@
 #include "minishell.h"
 
-void	add_shlvl(t_data *data, char *shlvl, int new_shlvl)
+void	add_shlvl(t_data *data, int new_shlvl)
 {
 	int		i;
 	char	*tmp;
+	char	*shlvl;
 
 	i = find_env_var("SHLVL", data->envp);
-	free(shlvl);
 	shlvl = ft_itoa(new_shlvl);
 	tmp = str_3_join("SHLVL", "=", shlvl);
+	free(shlvl);
 	if (i == -1)
 		add_env_var(data, tmp);
 	else
@@ -24,19 +25,20 @@ void	change_shlvl(t_data *data)
 	char	*shlvl;
 	int		new_shlvl;
 
+	shlvl = NULL;
 	shlvl = get_minishell_env("SHLVL", data->envp);
 	if (!shlvl)
 		new_shlvl = 1;
 	else
 	{
 		new_shlvl = ft_atoi(shlvl);
+		free(shlvl);
 		if (new_shlvl < 0)
 			new_shlvl = 0;
 		else
 			new_shlvl++;
 	}
-	add_shlvl(data, shlvl, new_shlvl);
-	free(shlvl);
+	add_shlvl(data, new_shlvl);
 }
 
 void	change_oldpwd(t_data *data)
@@ -52,6 +54,7 @@ void	change_oldpwd(t_data *data)
 void	init(t_data *data, char **envp)
 {
 	data->line_read = NULL;
+	data->cmd_lines = NULL;
 	data->fd_out[0] = STDOUT_FILENO;
 	data->fd_in[0] = STDIN_FILENO;
 	data->fd_out[1] = dup(STDOUT_FILENO);
@@ -76,7 +79,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		readline_history("\e[32mminishell> \e[0m", data);
 		if (!data->line_read)
-			ctrl_d();
+			ctrl_d(data);
 		if (data->line_read && *data->line_read && empty_line(data->line_read))
 			parsing(data);
 	}
