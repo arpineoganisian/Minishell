@@ -52,9 +52,6 @@ int	cd(char **cmd_line, t_data *data, int ret)
 	tmp = get_minishell_env("OLDPWD", data->envp);
 	if (!old_pwd && tmp)
 	{
-//		free(tmp);
-//		tmp = ft_strdup("OLDPWD=");
-//		add_env_var(data, tmp);
 		add_env_var(data, "OLDPWD=\0");
 		free(tmp);
 	}
