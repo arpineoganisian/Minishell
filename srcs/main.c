@@ -53,6 +53,7 @@ void	init(t_data *data, char **envp)
 	change_shlvl(data);
 	change_oldpwd(data);
 	data->envp_exp = copy_envp(envp);
+	data->heredoc_ctrl_d = 0;
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -15,8 +15,8 @@ void fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 			exit_status = 128 + WTERMSIG(status);
-		else
-			exit_status = WIFEXITED(status);
+		else if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
 	}
 }
 

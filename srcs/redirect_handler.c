@@ -46,14 +46,15 @@ int	output_redirect(char **str, int *i, t_data *data, int *fd_out_opened)
 int	heredoc_redirect(char *str, int i, t_data *data)
 {
 	char	*word;
+	int		exit_status;
 
 	while (str[i] == ' ')
 		i++;
 	word = make_filename(str, i, data);
-	heredoc_read(data, word);
+	exit_status = heredoc_read(data, word);
 	if (word)
 		free(word);
-	return (0);
+	return (exit_status);
 }
 
 int	input_heredoc_redirect(char **str, int *i, t_data *data, int *fd_in_opened)
