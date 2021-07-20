@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void fork_process(char *path_to_bin, char **cmd_line, t_data *data)
+void	fork_process(char *path_to_bin, char **cmd_line, t_data *data)
 {
 	pid_t	pid;
 	int		status;

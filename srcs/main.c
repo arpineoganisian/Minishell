@@ -1,23 +1,10 @@
 #include "minishell.h"
 
-void	change_shlvl(t_data *data)
+void	add_shlvl(t_data *data, char *shlvl, int new_shlvl)
 {
-	char	*shlvl;
-	int		new_shlvl;
 	int		i;
 	char	*tmp;
 
-	shlvl = get_minishell_env("SHLVL", data->envp);
-	if (!shlvl)
-		new_shlvl = 1;
-	else
-	{
-		new_shlvl = ft_atoi(shlvl);
-		if (new_shlvl < 0)
-			new_shlvl = 0;
-		else
-			new_shlvl++;
-	}
 	i = find_env_var("SHLVL", data->envp);
 	free(shlvl);
 	shlvl = ft_itoa(new_shlvl);
@@ -30,6 +17,25 @@ void	change_shlvl(t_data *data)
 		data->envp[i] = ft_strdup(tmp);
 	}
 	free(tmp);
+}
+
+void	change_shlvl(t_data *data)
+{
+	char	*shlvl;
+	int		new_shlvl;
+
+	shlvl = get_minishell_env("SHLVL", data->envp);
+	if (!shlvl)
+		new_shlvl = 1;
+	else
+	{
+		new_shlvl = ft_atoi(shlvl);
+		if (new_shlvl < 0)
+			new_shlvl = 0;
+		else
+			new_shlvl++;
+	}
+	add_shlvl(data, shlvl, new_shlvl);
 	free(shlvl);
 }
 
@@ -41,13 +47,6 @@ void	change_oldpwd(t_data *data)
 	if (i == -1)
 		return ;
 	ft_strlcpy(data->envp[i], "OLDPWD", 7);
-}
-
-void	error_handler(char *str, int status)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putendl_fd(str, 2);
-	exit_status = status;
 }
 
 void	init(t_data *data, char **envp)

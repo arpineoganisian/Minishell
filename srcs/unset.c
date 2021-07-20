@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char **del_str_from_arr(char **old_arr, int n, int num_of_envp)
+char	**del_str_from_arr(char **old_arr, int n, int num_of_envp)
 {
 	char	**new_arr;
 	int		i;

@@ -2,7 +2,7 @@
 
 void	free_splited_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])

@@ -19,16 +19,11 @@ int	exit_status;
 
 typedef struct s_data
 {
-	//вся введенная строка:
 	char	*line_read;
-	//массив строк - команды и аргументы:
 	char	**cmd_lines;
-	//тут храним фд вывода [0] - открытый файл [1] - копия STDOUT
 	int		fd_out[2];
-	//тут храним фд ввода - открытый файл [1] - копия STDOUT
 	int 	fd_in[2];
 	int		**fd;
-	//переменные окружения из main()
 	char	**envp;
 	char	**envp_exp;
 	struct termios config;
@@ -81,10 +76,7 @@ void	ctrl_c_child_m(int sig);
 void	waitpids(pid_t *pid, int tokens_count);
 void	fork_error(void);
 char	*make_env_key(char *str, int *i, int start);
-/*
-** builtins
-*/
-
+void	error_handler(char *str, int status);
 int		echo(char **cmd_line);
 int		cd(char **cmd_line, t_data *data, int ret);
 int		pwd(void);
@@ -93,11 +85,6 @@ int		unset(char **cmd_line, t_data *data);
 int		env(t_data *data);
 int 	exit_minishell(char **cmd_line);
 void	cmd_not_found(char *cmd_line, t_data *data);
-
-/*
-** not builtins
-*/
-
 int 	strings_counter(char **array);
 void	execute_bin(char **cmd_line, t_data *data);
 int		find_env_var(char *key, char **env_vars);
