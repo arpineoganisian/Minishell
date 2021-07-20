@@ -77,6 +77,7 @@ char	*positional_parameter(char *str, int start, int end);
 char	*exit_status_env(char *str, int start, int end);
 void	skip_filename(char *str, int *i);
 int 	equal_str(char *str1, char *str2);
+void	ctrl_c_child_m(int sig);
 /*
 ** builtins
 */

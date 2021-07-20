@@ -25,7 +25,7 @@ int exit_minishell(char **cmd_line)
 	char			*tmp;
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (cmd_line[1])
+	if (cmd_line && cmd_line[1])
 	{
 		if (is_numeric_arg(cmd_line[1]) == 0 && strings_counter(cmd_line) > 2)
 		{

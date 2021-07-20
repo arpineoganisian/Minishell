@@ -16,6 +16,12 @@ void	ctrl_c_child(int sig)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
+void	ctrl_c_child_m(int sig)
+{
+	(void) sig;
+	//ft_putstr_fd("\n", STDOUT_FILENO);
+}
+
 void	ctrl_d()
 {
 	ft_putstr_fd("\e[1F\e[12G", 1);
