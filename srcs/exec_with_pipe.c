@@ -93,6 +93,10 @@ void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 	while (i < tokens_count)
 	{
 		waitpid(pid[i], &status, 0);
+		if (WIFSIGNALED(status))
+			exit_status = 128 + WTERMSIG(status);
+		else if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
 		i++;
 	}
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)

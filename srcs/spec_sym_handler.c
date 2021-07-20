@@ -77,11 +77,13 @@ void	spec_sym_handler(char **str, t_data *data)
 			*str = quotes_handler(*str, &i);
 		if ((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
 			*str = dquotes_handler(*str, &i, data);
-		if ((*str)[i] == '$')
+		if ((*str)[i] == '$' && (*str)[i + 1] != '\0' && (*str)[i + 1] != '$')
 			*str = env_handler(*str, &i, data->envp);
 		if ((*str)[i] && !((*str)[i] == '\"' && closed_quotes(*str, i, '\"'))
 		&& !((*str)[i] == '\'' && closed_quotes(*str, i, '\''))
 		&& (*str)[i] != '$')
+			i++;
+		if ((*str)[i] == '$' && ((*str)[i + 1] == '\0' || (*str)[i + 1] == '$'))
 			i++;
 	}
 }
