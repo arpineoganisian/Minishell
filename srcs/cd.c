@@ -42,13 +42,10 @@ int	cd_home(t_data *data)
 	return (0);
 }
 
-int	cd(char **cmd_line, t_data *data, int ret)
+void	check_and_change_oldpwd(char *old_pwd, t_data *data)
 {
-	char	*old_pwd;
-	char	*pwd;
 	char	*tmp;
 
-	old_pwd = get_minishell_env("PWD", data->envp);
 	tmp = get_minishell_env("OLDPWD", data->envp);
 	if (!old_pwd && tmp)
 	{
@@ -57,6 +54,15 @@ int	cd(char **cmd_line, t_data *data, int ret)
 	}
 	else
 		change_envp_oldpwd("OLDPWD", old_pwd, data);
+}
+
+int	cd(char **cmd_line, t_data *data, int ret)
+{
+	char	*old_pwd;
+	char	*pwd;
+
+	old_pwd = get_minishell_env("PWD", data->envp);
+	check_and_change_oldpwd(old_pwd, data);
 	if (strings_counter(cmd_line) == 1)
 		ret = cd_home(data);
 	else if (chdir(cmd_line[1]) == -1)

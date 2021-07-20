@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int env(t_data *data)
+int	env(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (data->envp[i])
@@ -11,5 +11,5 @@ int env(t_data *data)
 			ft_putendl_fd(data->envp[i], STDOUT_FILENO);
 		i++;
 	}
-	return 0;
+	return (0);
 }

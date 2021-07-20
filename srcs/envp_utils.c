@@ -7,7 +7,8 @@ int	find_env_var(char *key, char **env_vars)
 	i = 0;
 	while (env_vars[i])
 	{
-		if (ft_strncmp(key, env_vars[i], ft_strlen(key)) == 0 && env_vars[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(key, env_vars[i], ft_strlen(key)) == 0
+			&& env_vars[i][ft_strlen(key)] == '=')
 			return (i);
 		i++;
 	}
@@ -21,7 +22,9 @@ int	find_env_var_without_equals_sign(char *key, char **env_vars)
 	i = 0;
 	while (env_vars[i])
 	{
-		if (ft_strncmp(key, env_vars[i], ft_strlen(key)) == 0 && (env_vars[i][ft_strlen(key)] == '=' || env_vars[i][ft_strlen(key)] == '\0'))
+		if (ft_strncmp(key, env_vars[i], ft_strlen(key)) == 0
+			&& (env_vars[i][ft_strlen(key)] == '='
+			|| env_vars[i][ft_strlen(key)] == '\0'))
 			return (i);
 		i++;
 	}
@@ -43,9 +46,9 @@ int	check_and_change_env_vars(char *cmd_line, t_data *data)
 
 	i = -1;
 	ret = 0;
-	while(cmd_line[++i])
+	while (cmd_line[++i])
 		if (cmd_line[i] == '=')
-			break;
+			break ;
 	key = ft_substr(cmd_line, 0, i);
 	i = find_env_var_without_equals_sign(key, data->envp);
 	if (i == -1)

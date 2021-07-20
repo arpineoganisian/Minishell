@@ -1,14 +1,11 @@
 #include "minishell.h"
 
-char	**sort_envp(char **envp)
+char	**sort_envp(char **envp, int i, int j)
 {
-	int		i;
-	int		j;
 	char	**sorted;
 	int		n;
 	char	*tmp;
 
-	i = 0;
 	n = strings_counter(envp);
 	sorted = copy_envp(envp);
 	while (i < n - 1)
@@ -38,13 +35,13 @@ void	print_export(char **envp)
 	int		j;
 	int		flag;
 
-	i = 0;
-	while (envp[i])
+	i = -1;
+	while (envp[++i])
 	{
-		j = 0;
+		j = -1;
 		flag = 0;
 		write(STDOUT_FILENO, "declare -x ", 11);
-		while (envp[i][j])
+		while (envp[i][++j])
 		{
 			if (!flag && envp[i][j] == '=')
 			{
@@ -53,12 +50,10 @@ void	print_export(char **envp)
 			}
 			else
 				write(STDOUT_FILENO, &envp[i][j], 1);
-			j++;
 		}
 		if (ft_strchr(envp[i], '='))
 			write(STDOUT_FILENO, "\"", 1);
 		write(STDOUT_FILENO, "\n", 1);
-		i++;
 	}
 	free_splited_arr(envp);
 }
@@ -71,7 +66,7 @@ int	export(char **cmd_line, t_data *data)
 	i = 1;
 	if (strings_counter(cmd_line) == 1)
 	{
-		print_export(sort_envp(data->envp));
+		print_export(sort_envp(data->envp, 0, 0));
 		return (0);
 	}
 	while (cmd_line[i])

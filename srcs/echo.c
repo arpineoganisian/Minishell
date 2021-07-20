@@ -1,22 +1,22 @@
 #include "minishell.h"
 
-int		check_flag(char **cmd_line, int *i)
+int	check_flag(char **cmd_line, int *i)
 {
-	int j;
+	int	j;
 
 	j = 2;
-	if(ft_strncmp(cmd_line[*i], "-n", 2 != 0) || ft_strlen(cmd_line[*i]) < 2)
-		return 0;
-	while(cmd_line[(*i)])
+	if (ft_strncmp(cmd_line[*i], "-n", 2 != 0) || ft_strlen(cmd_line[*i]) < 2)
+		return (0);
+	while (cmd_line[(*i)])
 	{
 		if (ft_strncmp(cmd_line[*i], "-n", 2 != 0))
-			return 1;
+			return (1);
 		else
 		{
 			while (cmd_line[*i][j])
 			{
 				if (cmd_line[*i][j] != 'n')
-					return 1;
+					return (1);
 				j++;
 			}
 		}
@@ -25,11 +25,11 @@ int		check_flag(char **cmd_line, int *i)
 	return (1);
 }
 
-int		echo(char **cmd_line)
+int	echo(char **cmd_line)
 {
-	int i;
-	int flag_n;
-	int strings_amount;
+	int	i;
+	int	flag_n;
+	int	strings_amount;
 
 	strings_amount = strings_counter(cmd_line);
 	if (strings_amount == 1)

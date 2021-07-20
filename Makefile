@@ -7,7 +7,7 @@ SRCS_LIST	= main.c parser.c exec_commands.c syntax_handler.c spec_sym_handler.c 
 			echo.c cd.c pwd.c export.c unset.c env.c exit_minishell.c exec_with_pipe.c exec_with_pipe_utils.c \
 			strings_counter.c execute_bin.c join_str_to_arr.c get_minishell_env.c signals.c \
 			redirect_handler_utils.c redirect_handler_utils_2.c envp_utils.c str_3_join.c env_handler_utils.c \
-			cmd_not_found.c command_execution_utils.c cd_utils.c
+			cmd_not_found.c command_execution_utils.c cd_utils.c error_handler.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(SRCS_LIST))
 LIB_FT		= -Llibft -lft
 RL_LIB		= -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
