@@ -39,7 +39,7 @@ void	line_char_count(char *str, int *i)
 
 	while (str[*i] != '|' && str[*i])
 	{
-		if (str[*i] == '\"')
+		if (str[*i] == '\"' && closed_quotes(str, *i, '\"'))
 		{
 			tmp_i = *i;
 			(*i)++;
@@ -48,7 +48,7 @@ void	line_char_count(char *str, int *i)
 			if (str[*i] != '\"')
 				*i = tmp_i;
 		}
-		if (str[*i] == '\'')
+		if (str[*i] == '\'' && closed_quotes(str, *i, '\''))
 		{
 			tmp_i = *i;
 			(*i)++;

@@ -31,7 +31,6 @@ void	exec_cmd(char **cmd_line, t_data *data)
 		exit_minishell(cmd_line);
 	else
 		execute_bin(cmd_line, data);
-	free_splited_arr(cmd_line);
 }
 
 void	exec_commands(t_data *data)
@@ -48,14 +47,13 @@ void	split_and_exec(t_data *data, char *cmd_line)
 	if (redirect_handler(&cmd_line, data))
 		return ;
 	data->cmd_lines = split_line(cmd_line);
-	if (cmd_line)
-	{
-		free(cmd_line);
-		cmd_line = NULL;
-	}
 	i = 0;
 	while (data->cmd_lines[i])
 		spec_sym_handler(&data->cmd_lines[i++], data);
 	if (data->cmd_lines[0])
 		exec_commands(data);
+	i = 0;
+	while (data->cmd_lines[i])
+		free(data->cmd_lines[i++]);
+	free(data->cmd_lines);
 }

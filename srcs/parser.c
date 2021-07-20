@@ -17,19 +17,25 @@ void	parsing_start(t_data *data)
 	char	**tmp;
 	char	*line_read;
 	int		pipes_count;
+	int		i;
 
+	tmp = NULL;
+	line_read = NULL;
 	pipes_count = command_line_count(data->line_read);
 	if (pipes_count > 0)
 	{
 		tmp = split_by_pipe(data->line_read);
-		free(data->line_read);
-		data->line_read = NULL;
 		exec_cmd_line_with_pipes(data, tmp, pipes_count + 1);
+		i = 0;
+		while (tmp[i])
+			free(tmp[i++]);
+		free(tmp);
 	}
 	else
 	{
 		line_read = ft_strdup(data->line_read);
 		split_and_exec(data, line_read);
+		free(line_read);
 		reset_fd_to_default(data);
 	}
 }
