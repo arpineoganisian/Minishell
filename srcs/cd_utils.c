@@ -6,18 +6,22 @@ void	change_envp_oldpwd(char *key, char *value, t_data *data)
 	char	*tmp;
 
 	i = 0;
-	tmp = str_3_join(key, "=", value);
+	if (!value)
+		tmp = ft_strjoin(key, "=");
+	else
+		tmp = str_3_join(key, "=", value);
 	while (data->envp[i])
 	{
 		if (ft_strncmp(key, data->envp[i], ft_strlen(key)) == 0)
 		{
-			ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
+			free(data->envp[i]);
+			data->envp[i] = ft_strdup(tmp);
 			free(tmp);
 			return ;
 		}
 		i++;
 	}
-	ft_strlcpy(data->envp[i], tmp, (ft_strlen(tmp) + 1));
+	data->envp = join_str_to_arr(data->envp, tmp);
 	free(tmp);
 }
 

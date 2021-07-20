@@ -30,12 +30,7 @@ int	find_env_var_without_equals_sign(char *key, char **env_vars)
 
 void	add_env_var(t_data *data, char *cmd_line)
 {
-	int	i;
-
-	i = strings_counter(data->envp);
-	data->envp[i] = ft_strdup(cmd_line);
-//	data->envp[i] = cmd_line;
-	data->envp[i + 1] = NULL;
+	data->envp = join_str_to_arr(data->envp, cmd_line);
 	if (ft_strchr(cmd_line, '='))
 		data->envp_exp = join_str_to_arr(data->envp_exp, cmd_line);
 }
@@ -57,7 +52,8 @@ int	check_and_change_env_vars(char *cmd_line, t_data *data)
 		ret = -1;
 	else if (ft_strchr(cmd_line, '='))
 	{
-		ft_strlcpy(data->envp[i], cmd_line, ft_strlen(cmd_line) + 1);
+		free(data->envp[i]);
+		data->envp[i] = ft_strdup(cmd_line);
 		free(data->envp_exp[i]);
 		data->envp_exp[i] = ft_strdup(cmd_line);
 	}
