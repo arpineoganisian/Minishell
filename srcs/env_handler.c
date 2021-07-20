@@ -62,42 +62,38 @@ char	*key_found(char *env_str, char *str, int start, int end)
 	return (new_str);
 }
 
-char	*make_env_key(char *str, int *i, int start)
+char	*find_correct_env(char *str, char **envp, int *i, int start)
 {
 	char	*env_key;
+	int		line_number;
+	char	*new_str;
 
-	while (str[*i] == '_' || ft_isalnum(str[*i]) || str[*i] == '?')
-		(*i)++;
-	env_key = ft_substr(str, start + 1, *i - start - 1);
-	return (env_key);
+	env_key = make_env_key(str, i, start);
+	if (equal_str("?", env_key))
+		new_str = exit_status_env(str, start, *i);
+	else
+	{
+		line_number = env_key_finder(envp, env_key);
+		if (line_number == -1)
+			new_str = key_not_found(str, start, *i);
+		else
+			new_str = key_found(envp[line_number], str, start, *i);
+	}
+	free(env_key);
+	return (new_str);
 }
 
 char	*env_handler(char *str, int *i, char **envp)
 {
-	char	*env_key;
 	char	*new_str;
 	int		start;
-	int		line_number;
 
 	start = *i;
 	(*i)++;
 	if (ft_isdigit(str[*i]))
 		new_str = positional_parameter(str, start, ++(*i));
 	else
-	{
-		env_key = make_env_key(str, i, start);
-		if (equal_str("?", env_key))
-			new_str = exit_status_env(str, start, *i);
-		else
-		{
-			line_number = env_key_finder(envp, env_key);
-			if (line_number == -1)
-				new_str = key_not_found(str, start, *i);
-			else
-				new_str = key_found(envp[line_number], str, start, *i);
-		}
-		free(env_key);
-	}
+		new_str = find_correct_env(str, envp, i, start);
 	free(str);
 	*i = start;
 	return (new_str);

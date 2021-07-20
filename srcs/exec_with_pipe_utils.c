@@ -25,3 +25,26 @@ void	free_things(t_data *data, pid_t *pid, int tokens_count)
 		free(data->fd[tokens_count--]);
 	free(data->fd);
 }
+
+void	waitpids(pid_t *pid, int tokens_count)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < tokens_count)
+	{
+		waitpid(pid[i], &status, 0);
+		if (WIFSIGNALED(status))
+			exit_status = 128 + WTERMSIG(status);
+		else if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
+		i++;
+	}
+}
+
+void	fork_error(void)
+{
+	error_handler("Error with creating process", 1);
+	exit(1);
+}

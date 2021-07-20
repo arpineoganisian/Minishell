@@ -40,10 +40,7 @@ void	create_child(t_data *data, int tokens_count, pid_t *pid, char **tmp)
 	{
 		pid[i] = fork();
 		if (pid[i] < 0)
-		{
-			error_handler("Error with creating process", 1);
-			exit(1);
-		}
+			fork_error();
 		if (pid[i] == 0)
 		{
 			close_unused_fd_child(data, i, tokens_count);
@@ -79,26 +76,15 @@ void 	close_unsed_fd_parent(t_data *data, int tokens_count)
 void	exec_cmd_line_with_pipes(t_data *data, char **tmp, int tokens_count)
 {
 	pid_t	*pid;
-	int		status;
 	char	c;
 	char	*line_read;
-	int		i;
 
 	line_read = NULL;
 	malloc_things(data, &pid, tokens_count);
 	open_pipes(data, tokens_count);
 	create_child(data, tokens_count, pid, tmp);
 	close_unsed_fd_parent(data, tokens_count);
-	i = 0;
-	while (i < tokens_count)
-	{
-		waitpid(pid[i], &status, 0);
-		if (WIFSIGNALED(status))
-			exit_status = 128 + WTERMSIG(status);
-		else if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
-		i++;
-	}
+	waitpids(pid, tokens_count);
 	while (read(data->fd[tokens_count][0], &c, 1) != 0)
 		make_string(&line_read, c);
 	close(data->fd[tokens_count][0]);
