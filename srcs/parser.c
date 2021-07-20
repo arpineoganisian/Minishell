@@ -35,7 +35,8 @@ void	parsing_start(t_data *data)
 	{
 		line_read = ft_strdup(data->line_read);
 		split_and_exec(data, line_read);
-		free(line_read);
+		if (line_read)
+			free(line_read);
 		reset_fd_to_default(data);
 	}
 }

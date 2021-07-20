@@ -65,7 +65,6 @@ void	remove_redirect(char **str, int *i, char c)
 	first_part = ft_substr(*str, 0, start);
 	new_str = ft_strjoin(first_part, *str + *i + 1);
 	free(first_part);
-	free(*str);
 	*str = ft_strdup(new_str);
 	free(new_str);
 	*i = start;
